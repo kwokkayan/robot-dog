@@ -27,13 +27,19 @@ class Hardware : public Adafruit_PWMServoDriver {
     const int pulse_max = 500;
 
     // ## pulse offset - offset value to adjust servo to center 90°
-   int s_offset_pulse[4][3] = {
-     {-10, 15, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-     {0, -15, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-     {0, 30, 20}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-     {0, 100, 55}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
-   };    
-   
+  //  int s_offset_pulse[4][3] = {
+  //    {-10, 15, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+  //    {-11, -15, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+  //    {0, 30, 20}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+  //    {0, -30, -10}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+  //  };    
+  int s_offset_pulse[4][3] = {
+    {-10, 15, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+    {0, 0, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+    {0, 10, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+    {0, -8, -7}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+  };    
+   //55
   //  int s_offset_pulse[4][3] = {
   //    { -10, -10, -15},
   //    {10, 10, 0},      
@@ -55,12 +61,6 @@ class Hardware : public Adafruit_PWMServoDriver {
       {0, 1, 1}, // ## {dir, dir, dir}
       {1, 1, 1}  // ## {dir, dir, dir}
     };
-    // const int s_optinv[4][3] = {
-    //   {0, 1, 0}, // ## {dir, dir, dir}
-    //   {1, 1, 0}, // ## {dir, dir, dir}
-    //   {0, 0, 1}, // ## {dir, dir, dir}
-    //   {1, 0, 1}  // ## {dir, dir, dir}
-    // };
     const int d_constraint_min[3] { -70, 20, 40}; // ## {deg, deg, deg}
     const int d_constraint_max[3] {70, 110, 150}; // ## {deg, deg, deg}
 

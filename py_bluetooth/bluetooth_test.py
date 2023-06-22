@@ -11,7 +11,9 @@ HEADER = b'\x55\xAA\x11'
 async def scanner():
     devices = await BleakScanner.discover()
     for d in devices:
-      print(d)
+      print("{} {}".format(d.address, d.name))
+      if (d.name != None):
+         print(d)
 
 async def main(address):
     device = await BleakScanner.find_device_by_address(address)
@@ -32,4 +34,5 @@ async def main(address):
       # print(data)
       # await client.write_gatt_char(MODEL_NBR_UUID, data)     
 
-asyncio.run(main(ADDRESS))
+# asyncio.run(main(ADDRESS))
+asyncio.run(scanner())

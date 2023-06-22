@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 bleak = "*"
+click = "*"
+xbox360controller = "*"
 
 [dev-packages]
 
