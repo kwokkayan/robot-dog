@@ -25,20 +25,26 @@ class Hardware : public Adafruit_PWMServoDriver {
 
     const int pulse_min = 105;
     const int pulse_max = 500;
-
-    // ## pulse offset - offset value to adjust servo to center 90°
     int s_offset_pulse[4][3] = {
-      {-17, 25, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-      {-10, 0, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-      {-7, 5, 20}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-      {5, 0, -5}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+      {-3, 20, 10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+      {-12, 20, -2}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+      {-7,  -10, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+      {0, -15, -20}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
     };
     // int s_offset_pulse[4][3] = {
-    //   {-10, 17, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-    //   {-10, -20, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-    //   {-7, 5, 20}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-    //   {5, 0, -5}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+    //   {9, 0, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+    //   {-12, 0, -22}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+    //   {-7,  5, 22}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+    //   {0, -2, 10}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
     // };
+    //  int s_offset_pulse[4][3] = {
+    //   {10, 0, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+    //   {-12, 0, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+    //   {5, 0, 0}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+    //   {-8, 0, 0}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+    // };
+    // ## pulse offset - offset value to adjust servo to center 90°
+
 
   //  int s_offset_pulse[4][3] = {
   //    { -10, -10, -15},

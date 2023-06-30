@@ -67,7 +67,7 @@ class Kinematics {
     const datatypes::Transform body_transform = {
       {0, 0, 0},     // ## {mm, mm, mm}
       {0, 0, 0},     // ## {deg, deg, deg}
-      {300, 40, 180} // ## {mm, mm, mm}
+      {300, 60, 180} // ## {mm, mm, mm}
     };
     //: stores the parent joint location relative to the [body]
     const datatypes::Vector p_joint_origin[4] = {
