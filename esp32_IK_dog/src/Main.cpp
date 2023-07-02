@@ -19,7 +19,7 @@
 #include "Buzzer.hpp"
 #include "Hardware.hpp"
 #include "Kinematics.hpp"
-
+#include "cc.h"
 /*
   ==============================
   HARDWARE - control method

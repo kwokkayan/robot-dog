@@ -1,0 +1,17 @@
+void parseA(int, int);
+int parseE();
+int parseE_();
+int parseT();
+int parseF();
+char next_token();
+int match(char);
+int min(int, int);
+int max(int, int);
+int match_start_digit(char);
+int match_digit(char);
+extern char *input_string;
+extern int buffer_val;
+extern char current_token;
+extern int **offset_matrix;
+extern int val_min;
+extern int val_max;
