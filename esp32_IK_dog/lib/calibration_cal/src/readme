@@ -1,0 +1,8 @@
+lrcal - left-recursive LR calculator (choice)
+lrcal-r - original right-recursive LR calculator
+
+To run:
+make lrr ; ./lrr     or
+make lrl ; ./lrl
+
+To turn on debug, uncomment the yydebug line in the .y file.

@@ -1,54 +1,66 @@
-#include <stdexcept>
 #include "cc.h"
+#ifdef CC_DEBUG
+#include <iostream>
+#include <string>
+#include <string.h>
+#endif
+#include <stdexcept>
 #define EOL 0
 char *input_string;
 int buffer_val = 0;
-char current_token = 0;
-int **offset_matrix;
+char current_token = -1;
 int val_min;
 int val_max;
-void parseA()
+int string_index = 0;
+void parseA(int m[][3])
 {
+  std::cout << "\nIn A" << std::endl;
+  string_index = 0;
+  current_token = -1;
   if (match('m') && match('['))
   {
-    int e1 = parseE();
-    if (!match(','))
-      throw std::invalid_argument("Syntax Error");
-    int e2 = parseE();
-    if (!match(']') || !match('='))
-      throw std::invalid_argument("Syntax Error");
-    int e3 = parseE();
+    int e1 = parseE(m);
+    if (current_token != ',')
+      throw std::invalid_argument("Syntax Error A1");
+    int e2 = parseE(m);
+    if (current_token != ']' || !match('='))
+      throw std::invalid_argument("Syntax Error A2");
+    int e3 = parseE(m);
     // check range errors :(
+    std::cout << e1 << " " << e2 << " " << e3 << std::endl; 
     if (e1 < 1 || e1 > 3)
       throw std::range_error("x selector out of range!");
     if (e2 < 1 || e2 > 4)
       throw std::range_error("y selector out of range!");
     // clamp value
     e3 = min(max(val_min, e3), val_max);
-    offset_matrix[e2][e1] = e3;
+    m[e2-1][e1-1] = e3;
   }
   else
   {
-    throw std::invalid_argument("Syntax Error");
+    throw std::invalid_argument("Syntax Error A");
   }
 }
 
-int parseE()
+int parseE(int m[][3])
 {
+  std::cout << "\nIn E" << std::endl;
   // no need checking: parse F has same sets
   buffer_val = 0;
-  parseF();
-  parseT();
-  parseE_();
+  parseF(m);
+  parseT(m);
+  parseE_(m);
   return buffer_val;
 }
 
-int parseF()
+int parseF(int m[][3])
 {
+  std::cout << "\nIn F" << std::endl;
   current_token = next_token();
   if (match_start_digit(current_token))
   { // integer constant
     buffer_val = atoi(&current_token);
+    std::cout << "\nbuffer:" << buffer_val << std::endl;
     while (true)
     {
       current_token = next_token();
@@ -69,63 +81,65 @@ int parseF()
         case ')':
         case ',':
         case EOL:
-          break;
+          return 0;
         default:
-          std::invalid_argument("Syntax Error");
+          std::invalid_argument("Syntax Error F1");
         }
       }
     }
   }
+  else if (current_token == '0') {
+    buffer_val = 0;
+  }
   else if (current_token == 'm')
   { // matrix access
     if (!match('['))
-      throw std::invalid_argument("Syntax Error");
-    int e1 = parseE();
+      throw std::invalid_argument("Syntax Error F2");
+    int e1 = parseE(m);
     if (!match(','))
-      throw std::invalid_argument("Syntax Error");
-    int e2 = parseE();
+      throw std::invalid_argument("Syntax Error F3");
+    int e2 = parseE(m);
     if (!match(']'))
-      throw std::invalid_argument("Syntax Error");
+      throw std::invalid_argument("Syntax Error F4");
     // check range errors :(
     if (e1 < 1 || e1 > 3)
       throw std::range_error("x selector out of range!");
     if (e2 < 1 || e2 > 4)
       throw std::range_error("y selector out of range!");
-    // clamp value
-    buffer_val = offset_matrix[e2][e1];
+    buffer_val = m[e2-1][e1-1];
   }
   else if (current_token == '(')
   { // nested expression
-    buffer_val = parseE();
+    buffer_val = parseE(m);
     if (!match(')'))
-      throw std::invalid_argument("Syntax Error");
+      throw std::invalid_argument("Syntax Error F5");
   }
   else
   {
-    throw std::invalid_argument("Syntax Error");
+    throw std::invalid_argument("Syntax Error F");
   }
 }
 
-int parseT()
+int parseT(int m[][3])
 {
+  std::cout << "\nIn T" << std::endl;
   // save current value
   int e1 = buffer_val;
   buffer_val = 0;
-  current_token = next_token();
   if (current_token == '*')
   {
-    parseF();
+    parseF(m);
     buffer_val *= e1;
-    parseT();
+    parseT(m);
   }
   else if (current_token == '/')
   {
-    parseF();
+    parseF(m);
     // check division by zero
     if (buffer_val == 0)
       throw std::range_error("Division by zero.");
     buffer_val = e1 / buffer_val;
-    parseT();
+    parseT(m);
   }
   else
   {
@@ -139,32 +153,33 @@ int parseT()
     case ',':
     case EOL:
       /* code */
+      buffer_val = e1;
       break;
     default:
-      throw std::invalid_argument("Syntax Error");
+      throw std::invalid_argument("Syntax Error T");
     }
   }
 }
 
-int parseE_()
+int parseE_(int m[][3])
 {
+  std::cout << "\nIn E_" << std::endl;
   // save current value
   int e1 = buffer_val;
   buffer_val = 0;
-  current_token = next_token();
   if (current_token == '+')
   {
-    parseF();
+    parseF(m);
     buffer_val += e1;
-    parseT();
-    parseE_();
+    parseT(m);
+    parseE_(m);
   }
   else if (current_token == '-')
   {
-    parseF();
+    parseF(m);
     buffer_val = e1 - buffer_val;
-    parseT();
-    parseE_();
+    parseT(m);
+    parseE_(m);
   }
   else
   {
@@ -176,18 +191,22 @@ int parseE_()
     case ',':
     case EOL:
       /* code */
+      buffer_val = e1;
       break;
     default:
-      throw std::invalid_argument("Syntax Error");
+      throw std::invalid_argument("Syntax Error E_");
     }
   }
 }
 
 char next_token()
 {
-  if (current_token == EOL)
-    return EOL;
-  char token = *(input_string++);
+  if (current_token == EOL) {
+    std::cout << "EOL\n";
+    return EOL; 
+  }
+  char token = input_string[string_index++];
+  std::cout << token;
   return token == '\0' ? EOL : token;
 }
 
@@ -199,12 +218,12 @@ int match(char c)
 
 int match_start_digit(char token)
 {
-  return token > 48 || token <= 57;
+  return token > 48 && token <= 57;
 }
 
 int match_digit(char token)
 {
-  return token >= 48 || token <= 57;
+  return token >= 48 && token <= 57;
 }
 
 int min(int x, int y)
@@ -216,3 +235,24 @@ int max(int x, int y)
 {
   return x > y ? x : y;
 }
+
+#ifdef CC_DEBUG
+int main() {
+  int matrix[4][3] = {
+    {1, 1, 1},
+    {1, 1, 1},
+    {1, 1, 1},
+    {1, 1, 1}
+  };
+  std::string s;
+  std::cin >> s;
+  input_string = (char*) malloc(sizeof(char) * (s.length() + 1));
+  strcpy(input_string, s.c_str());
+  try {
+    parseA(matrix);
+  } catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
+  free(input_string);
+}
+#endif

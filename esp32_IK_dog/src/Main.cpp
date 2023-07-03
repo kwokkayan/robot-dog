@@ -19,7 +19,6 @@
 #include "Buzzer.hpp"
 #include "Hardware.hpp"
 #include "Kinematics.hpp"
-#include "cc.h"
 /*
   ==============================
   HARDWARE - control method
@@ -309,6 +308,7 @@ void setup()
   //: servo calibration mode - while PIN 25 connects to 3.3V, all servos in 90° for servo arm adjustment °
   pinMode(SERVO_CAL_PIN, INPUT_PULLDOWN);
   while (digitalRead(SERVO_CAL_PIN)) {
+    hardware.set_offset_with_command();
     delay(1000);
   }
   //
