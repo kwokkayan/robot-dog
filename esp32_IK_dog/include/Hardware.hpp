@@ -4,11 +4,9 @@
 #include <Adafruit_PWMServoDriver.h> //https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
 #include "datatypes.h"
 #include <exception>
-#include "cc.h"
-
-extern char *input_string;
-extern int buffer_val;
-extern char current_token;
+#include "cc.hpp"
+#include "lex.cc.hpp"
+extern int matrix[4][3];
 extern int val_min;
 extern int val_max;
 /*
@@ -32,13 +30,18 @@ class Hardware : public Adafruit_PWMServoDriver {
 
     const int pulse_min = 105;
     const int pulse_max = 500;
-
     int s_offset_pulse[4][3] = {
-      {-3, 20, 10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-      {-12, 20, -2}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-      {-7,  -10, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-      {0, -15, -20}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+      {0, 0, 0},
+      {0, 0, 0},
+      {0, 0, 0},
+      {0, 0, 0}
     };
+    // int s_offset_pulse[4][3] = {
+    //   {-3, 20, 10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+    //   {-12, 20, -2}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
+    //   {-7,  -10, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+    //   {0, -15, -20}  // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
+    // };
     // int s_offset_pulse[4][3] = {
     //   {9, 0, -10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
     //   {-12, 0, -22}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
@@ -146,31 +149,32 @@ class Hardware : public Adafruit_PWMServoDriver {
 
     void set_offset_with_command()
     {
-      // val_min = pulse_min;
-      // val_max = pulse_max;
-      // print_offset();
-      // String s;
-      // while (true) {
-      //   if (Console.available()) {
-      //     char c = Serial.read();
-      //     if (c == '\n') break;
-      //     s += c;
-      //     Serial.print(c);
-      //   }
-      // }
-      // Serial.println(s);
-      // input_string = (char*) malloc(sizeof(char) * (s.length() + 1));
-      // strcpy(input_string, s.c_str());
-      // try {
-      //   parseA(s_offset_pulse);
-      //   detach();
-      //   delay(1000);
-      //   attach();
-      // } catch (std::exception& e) {
-      //   Console.printf("%s\n", e.what());
-      // }
-      // free(input_string);
-
+      val_min = -100;
+      val_max = 100;
+      String s;
+      while (true) {
+        if (Console.available()) {
+          char c = Serial.read();
+          s += c;
+          Serial.print(c);
+          if (c == '\n') break;
+        }
+      }
+      char *exp = (char *) malloc(sizeof(char) *(s.length() + 1));
+      strcpy(exp, s.c_str());
+      yy_scan_string(exp);
+      int status = yyparse();
+      free(exp);
+      for (int i = 0; i < 4; i++) {
+        if (status == 0) {
+          s_offset_pulse[i][0] = matrix[i][0];
+          s_offset_pulse[i][1] = matrix[i][1];
+          s_offset_pulse[i][2] = matrix[i][2];
+        }
+      }
+      print_offset();
+      detach();
+      attach();
     }
 
   private:

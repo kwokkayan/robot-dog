@@ -8,20 +8,27 @@
 %{ 
   void yyerror(char *); 
   int yylex(void);
-  void test();
-  void test2();
   int matrix[4][3] = {
     {1, 1, 1},
     {1, 1, 1},
     {1, 1, 1},
     {1, 1, 1}
   };
+  int val_min = 0;
+  int val_max = 0;
 %} 
 
 %% 
 
 prog: 
-  'm' '[' expr ',' expr ']' '=' expr END { matrix[$3][$5] = $8; return 0;}
+  'm' '[' expr ',' expr ']' '=' expr END { 
+    int val = $8;
+    if ($8 >= val_min && $8 <= val_max) {
+      matrix[$3][$5] = $8; return 0;
+    } else {
+      yyerror("Value out of bounds"); return 1;
+    }
+  }
   ; 
 expr: 
   term '+' expr { $$ = $1 + $3; }
@@ -44,10 +51,9 @@ factor:
 
 void yyerror(char *s) { fprintf(stderr, "%s\n", s); } 
 
-int main(void) { 
-  // yydebug = 1;
-  test();
-  for (int i = 0; i < 4; i++) {
-    printf("[ %d, %d, %d ]", matrix[i][0], matrix[i][1], matrix[i][2]);
-  }
-} 
+// int main(void) { 
+//   // yydebug = 1;
+//   for (int i = 0; i < 4; i++) {
+//     printf("[ %d, %d, %d ]", matrix[i][0], matrix[i][1], matrix[i][2]);
+//   }
+// }

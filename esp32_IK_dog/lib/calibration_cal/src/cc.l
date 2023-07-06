@@ -1,10 +1,9 @@
 %option noyywrap
 %option yylineno
-
 %{
 
 #include <stdlib.h>
-#include "cc.h"
+#include "cc.hpp"
 
 %}
 
@@ -15,7 +14,3 @@
 \n	{ return END; }
 [[:space:]]
 %%
-void test() {
-    yy_scan_string("m[2,2]=100\n");
-    yyparse();
-}
