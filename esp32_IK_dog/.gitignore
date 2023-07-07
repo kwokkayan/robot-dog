@@ -3,3 +3,7 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+cc.cpp
+cc.hpp
+lex.cc.cpp
+lex.cc.hpp

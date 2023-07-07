@@ -31,10 +31,10 @@ class Hardware : public Adafruit_PWMServoDriver {
     const int pulse_min = 105;
     const int pulse_max = 500;
     int s_offset_pulse[4][3] = {
-      {0, 0, 0},
-      {0, 0, 0},
-      {0, 0, 0},
-      {0, 0, 0}
+      {5, -5, 0},
+      {-10, 0, -10},
+      {-5, 0, 20},
+      {0, 0, 5}
     };
     // int s_offset_pulse[4][3] = {
     //   {-3, 20, 10}, // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
@@ -151,6 +151,11 @@ class Hardware : public Adafruit_PWMServoDriver {
     {
       val_min = -100;
       val_max = 100;
+      for (int i = 0; i < 4; i++) {
+        matrix[i][0] = s_offset_pulse[i][0];
+        matrix[i][1] = s_offset_pulse[i][1];
+        matrix[i][2] = s_offset_pulse[i][2];
+      }
       String s;
       while (true) {
         if (Console.available()) {
