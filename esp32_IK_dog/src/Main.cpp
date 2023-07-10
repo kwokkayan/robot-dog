@@ -363,9 +363,11 @@ void loop()
     Console.println("stopped servos for power saving!");
     return;
   }
+
   if (Goble.available()) {
     previousDuration = duration;
     hardware.attach(); // turn on servos if they are off
+#ifndef __NEW_GOBLE__
     switch (state) {
       case 1:
         joystickLY = map(Goble.readJoystickY(), 255, 0, 127, -128);
@@ -384,7 +386,13 @@ void loop()
         joystickLX = 0; joystickLY = 0;
         joystickRX = 0; joystickRY = 0;
     }
-
+#endif
+#ifdef __NEW_GOBLE__
+    joystickLX = map(Goble.readJoystickX(), 0, 255, 127, -128);
+    joystickLY = map(Goble.readJoystickY(), 0, 255, 127, -128);
+    joystickRX = map(Goble.readJoystickX2(), 255, 0, 127, -128);
+    joystickRY = map(Goble.readJoystickY2(), 255, 0, 127, -128);
+#endif
     if (Goble.readSwitchUp() == PRESSED) {
       state = 0;
       buzzer.beepShort();

@@ -9,6 +9,7 @@
 
 // select the way of control
 #define __GOBLE__
+#define __NEW_GOBLE__
 //#define __PS2_GAMEPAD__
 //#define __PS4_GAMEPAD__
 

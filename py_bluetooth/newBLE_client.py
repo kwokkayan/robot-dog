@@ -24,7 +24,7 @@ BUTTON_MAP = {
               "button_start": 6
              }
 button_pressed = [False for _ in range(6)]
-axis_value = [128, 128]
+axis_value = [128, 128, 128, 128]
 # Click const
 UP_ASCII = b'\x1b[A'
 DOWN_ASCII = b'\x1b[B'
@@ -49,9 +49,13 @@ def on_button_pressed(button):
 def on_button_released(button):
     button_pressed[BUTTON_MAP[button.name] - 1] = False
 
-def on_axis_moved(axis):
+def on_left_axis_moved(axis):
     axis_value[0] = convert_axis(axis.x)
     axis_value[1] = convert_axis(-axis.y)
+  
+def on_right_axis_moved(axis):
+    axis_value[2] = convert_axis(-axis.x)
+    axis_value[3] = convert_axis(axis.y)
 
 ### Click
 def getKeyInAscii():
@@ -118,12 +122,12 @@ def bluetooth_main(device):
           while True:
             # parsin'
             num_of_buttons_pressed = reduce(lambda a, b: a + b, button_pressed).to_bytes(1, "big")
-            num_of_joystick_moved = b'\x00'
+            num_of_joystick_moved = b'\x04'
             button_data = b''
             for i in range(len(button_pressed)):
               if button_pressed[i]:
                 button_data += (i+1).to_bytes(1, "big")
-            joystick_data = axis_value[1].to_bytes(1, "big") + axis_value[0].to_bytes(1, "big") + b'\x00\x00' 
+            joystick_data = axis_value[1].to_bytes(1, "big") + axis_value[0].to_bytes(1, "big") + axis_value[3].to_bytes(1, "big") + axis_value[2].to_bytes(1, "big")
             payload = PKG_HEADER + num_of_buttons_pressed + num_of_joystick_moved + button_data + joystick_data
             checksum = reduce(lambda a, b: a + b, payload) % 256
             payload += checksum.to_bytes(1, "big")
@@ -151,7 +155,8 @@ def main():
       controller.button_start.when_released = on_button_released
       controller.button_select.when_pressed = on_button_pressed
       controller.button_select.when_released = on_button_released
-      controller.axis_l.when_moved = on_axis_moved
+      controller.axis_l.when_moved = on_left_axis_moved
+      controller.axis_r.when_moved = on_right_axis_moved
       bluetooth_thread = Thread(target=bluetooth_main, args=(GoBLE_device,))
       bluetooth_thread.start()
       signal.pause()

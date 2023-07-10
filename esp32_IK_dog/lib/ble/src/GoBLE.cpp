@@ -79,11 +79,11 @@ boolean _GoBLE::available() {
 int _GoBLE::readJoystickX() { return _joystickX; }
 int _GoBLE::readJoystickY() { return _joystickY; }
 int _GoBLE::readJoystickX2() {
-  if (rDataPack.address == 0x11) return 127;
+  // if (rDataPack.address == 0x11) return 127;
   return _joystickX2;
 }
 int _GoBLE::readJoystickY2() {
-  if (rDataPack.address == 0x11) return 127;
+  // if (rDataPack.address == 0x11) return 127;
   return _joystickY2;
 }
 boolean _GoBLE::readSwitchUp() { return _button[SWITCH_UP]; }
