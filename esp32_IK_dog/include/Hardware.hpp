@@ -269,12 +269,33 @@ private:
   }
   void print_roll_pitch_yaw()
   {
-    Serial.print("Yaw, Pitch, Roll: ");
-    Serial.print(mpu.getYaw(), 2);
-    Serial.print(", ");
-    Serial.print(mpu.getPitch(), 2);
-    Serial.print(", ");
-    Serial.println(mpu.getRoll(), 2);
+    Console.print("Yaw, Pitch, Roll: ");
+    Console.print(mpu.getYaw(), 2);
+    Console.print(", ");
+    Console.print(mpu.getPitch(), 2);
+    Console.print(", ");
+    Console.println(mpu.getRoll(), 2);
+  }
+  void print_euler()
+  {
+    Console.printf("x, y, z: %0.2f %0.2f %0.2f\n", mpu.getEulerX(), mpu.getEulerY(), mpu.getEulerZ());
+  }
+  void print_mag()
+  {
+    Console.printf("magx, magy, magz: %0.2f %0.2f %0.2f\n", mpu.getMagX(), mpu.getMagY(), mpu.getMagZ());
+  }
+  void print_d()
+  {
+    Console.printf("linx, liny, linz: %0.2f %0.2f %0.2f\n", mpu.getLinearAccX(), mpu.getLinearAccY(), mpu.getLinearAccZ()); 
+  }
+  void print_data()
+  {
+    Console.println("=======Data======");
+    print_roll_pitch_yaw();
+    print_euler();
+    print_mag();
+    print_d();
+    Console.println("=======Data End======");
   }
   void update_mpu_data()
   {
@@ -323,17 +344,9 @@ public:
       }
     }
     // calibrate anytime you want to
-    Console.println("Accel Gyro calibration will start in 5sec.");
-    Console.println("Please leave the device still on the flat plane.");
     mpu.verbose(true);
-    delay(5000);
     mpu.calibrateAccelGyro();
-
-    Console.println("Mag calibration will start in 5sec.");
-    Console.println("Please Wave device in a figure eight until done.");
-    delay(5000);
     mpu.calibrateMag();
-
     print_calibration();
     mpu.verbose(false);
     /*mpu.initialize();

@@ -307,7 +307,7 @@ void setup()
   init_input();
   //: servo calibration mode - while PIN 25 connects to 3.3V, all servos in 90° for servo arm adjustment °
   pinMode(SERVO_CAL_PIN, INPUT_PULLDOWN);
-   while (digitalRead(SERVO_CAL_PIN)) {
+  while (digitalRead(SERVO_CAL_PIN)) {
     hardware.set_offset_with_command();
   }
   buzzer.beepShort();
