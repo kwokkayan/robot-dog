@@ -1,0 +1,19 @@
+services:
+  ros-melodic:
+    build: 
+      context: ./ros_melodic
+    volumes:
+      - type: volume
+        source: tmp
+        target: /dev/shm
+      - type: volume
+        source: champ
+        target: /champ
+    ports:
+      - 6080:80
+      - 5900:5900
+    environment:
+      - RESOLUTION=1920x800
+volumes:
+  tmp:
+  champ:
