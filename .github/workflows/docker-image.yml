@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +%s)"
+        run: echo "date=$(date +%s)" >> $GITHUB_OUTPUT
       -
         name: Checkout
         uses: actions/checkout@v3
