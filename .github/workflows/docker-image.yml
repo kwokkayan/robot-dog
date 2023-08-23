@@ -31,4 +31,4 @@ jobs:
         with:
           context: ./ros/ros_melodic
           push: true
-          tags: ros-melodic:latest,ros-melodic:$(date+%s)
+          tags: ros-melodic:latest,ros-melodic:$(date +%s)
