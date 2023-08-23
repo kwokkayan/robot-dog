@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-    paths: ["DockerFile"]
+    paths: ["Dockerfile"]
 jobs:
   docker:
     runs-on: ubuntu-latest
