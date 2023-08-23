@@ -1,15 +1,18 @@
 FROM dorowu/ubuntu-desktop-lxde-vnc:bionic-lxqt AS install_ros
 SHELL ["/bin/bash", "-c"]
+# Link ROS repositories to apt
 RUN apt update && apt install gpg-agent -y
 RUN sh -c \
   'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > \
   /etc/apt/sources.list.d/ros-latest.list'
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc \
   | apt-key add -
+# Install ROS and update bash profile
 RUN apt update && \
   apt upgrade -y && \
   apt install ros-melodic-desktop-full -y && \
   echo "source /opt/ros/melodic/setup.bash" >> /etc/bash.bashrc
+# Install other dependencies
 RUN source /etc/bash.bashrc && \
   apt install -y \
   ros-melodic-catkin \
@@ -22,9 +25,11 @@ RUN source /etc/bash.bashrc && \
   rosdep init 
 
 FROM install_ros AS build_champ
+# Clone champ repo
 WORKDIR /champ/src
 RUN git clone --recursive https://github.com/chvmp/champ
 RUN git clone https://github.com/chvmp/champ_teleop
+# Build champ and update bash profile
 WORKDIR /champ
 RUN rosdep update --include-eol-distros && \
   rosdep install --from-paths src --ignore-src -r -y --rosdistro melodic
