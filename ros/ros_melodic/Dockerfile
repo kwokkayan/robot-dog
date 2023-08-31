@@ -29,6 +29,7 @@ FROM install_ros AS build_champ
 WORKDIR /champ/src
 RUN git clone --recursive https://github.com/chvmp/champ
 RUN git clone https://github.com/chvmp/champ_teleop
+RUN git clone https://github.com/chvmp/champ_setup_assistant
 # Build champ and update bash profile
 WORKDIR /champ
 RUN rosdep update --include-eol-distros && \
@@ -36,3 +37,4 @@ RUN rosdep update --include-eol-distros && \
 RUN source /opt/ros/melodic/setup.bash && catkin_make
 RUN echo "source /champ/devel/setup.bash" >> /etc/bash.bashrc
 RUN apt autoremove -y
+

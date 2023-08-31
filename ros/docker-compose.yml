@@ -1,5 +1,6 @@
 services:
   ros-melodic:
+    # image: kwokkayan/ros-melodic:latest
     build: 
       context: ./ros_melodic
     volumes:
