@@ -4,10 +4,17 @@
 
 ros::NodeHandle nh;
 
+// ROS PUB/SUB declarations
 std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
+ros::Publisher serial("serial", &str_msg);
 
-char hello[13] = "hello world!";
+void echo(const std_msgs::String &echo_msg)
+{
+  str_msg = echo_msg;
+  serial.publish(&str_msg);
+}
+
+ros::Subscriber<std_msgs::String> sub("echo", &echo);
 
 void setup()
 {
@@ -15,18 +22,13 @@ void setup()
   // put your setup code here, to run once:
   nh.getHardware();
   nh.initNode();
-  nh.advertise(chatter);
+  nh.advertise(serial);
+  nh.subscribe(sub);
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
-  while (!nh.connected())
-  {
-    nh.spinOnce();
-  }
-  str_msg.data = hello;
-  chatter.publish(&str_msg);
   nh.spinOnce();
-  delay(1000);
+  delay(1);
 }

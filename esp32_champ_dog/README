@@ -1,0 +1,6 @@
+## Useful commands
+- `roscore`
+- `rosrun rosserial_python serial_node.py /dev/ttyUSB0`
+- `rosrun rosserial_arduino serial_node.py _port:=/dev/ttyUSB0`
+- `rostopic echo chatter`
+- `rostopic pub /echo std_msgs/String "data: 'test1'" -r 1`
