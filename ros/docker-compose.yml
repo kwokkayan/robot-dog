@@ -1,8 +1,8 @@
 services:
   ros-melodic:
-    # image: kwokkayan/ros-melodic:latest
-    build: 
-      context: ./ros_melodic
+    image: kwokkayan/ros-melodic:latest
+    # build: 
+    # context: ./ros_melodic
     volumes:
       - type: volume
         source: tmp
@@ -10,6 +10,8 @@ services:
       - type: volume
         source: champ
         target: /champ
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
     ports:
       - 6080:80
       - 5900:5900
