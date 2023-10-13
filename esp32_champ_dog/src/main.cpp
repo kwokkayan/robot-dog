@@ -1,3 +1,4 @@
+#include <Config.h>
 #include <Arduino.h>
 #include <ros.h>
 #include <std_msgs/String.h>
@@ -18,7 +19,6 @@ ros::Subscriber<std_msgs::String> sub("echo", &echo);
 
 void setup()
 {
-  Serial.begin(115200);
   // put your setup code here, to run once:
   nh.getHardware();
   nh.initNode();

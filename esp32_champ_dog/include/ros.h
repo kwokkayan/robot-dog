@@ -1,11 +1,11 @@
-// uncomment this to enable wifi connections
-// #define ENABLE_WIFI
 #ifndef _ROS_H_
 #define _ROS_H_
 
 #include "ros/node_handle.h"
 #if defined(ENABLE_WIFI) and (defined(ESP8266) or defined(ESP32) or defined(ROSSERIAL_ARDUINO_TCP))
 #include "ArduinoTcpHardware.h"
+#elif defined(USE_BLUETOOTH)
+#include "Esp32BluetoothHardware.h"
 #else
 #include "ArduinoHardware.h"
 #endif
