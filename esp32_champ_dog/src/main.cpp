@@ -2,6 +2,11 @@
 #include <Arduino.h>
 #include <ros.h>
 #include <std_msgs/String.h>
+#include "champ_topics.h"
+
+void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &champ_joint_trajectory) {
+    // TODO: implement
+}
 
 ros::NodeHandle nh;
 
