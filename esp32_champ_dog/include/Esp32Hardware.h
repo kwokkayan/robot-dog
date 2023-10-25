@@ -8,41 +8,41 @@
 #endif
 
 #if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__) || defined(__MKL26Z64__) || defined(__IMXRT1062__)
-  #if defined(USE_TEENSY_HW_SERIAL)
-    #define SERIAL_CLASS HardwareSerial // Teensy HW Serial
-  #else
-    #include <usb_serial.h>  // Teensy 3.0 and 3.1
-    #define SERIAL_CLASS usb_serial_class
-  #endif
+#if defined(USE_TEENSY_HW_SERIAL)
+#define SERIAL_CLASS HardwareSerial // Teensy HW Serial
+#else
+#include <usb_serial.h> // Teensy 3.0 and 3.1
+#define SERIAL_CLASS usb_serial_class
+#endif
 #elif defined(_SAM3XA_)
-  #include <UARTClass.h>  // Arduino Due
-  #define SERIAL_CLASS UARTClass
+#include <UARTClass.h> // Arduino Due
+#define SERIAL_CLASS UARTClass
 #elif defined(USE_USBCON)
-  // Arduino Leonardo USB Serial Port
-  #define SERIAL_CLASS Serial_
-#elif (defined(__STM32F1__) and !(defined(USE_STM32_HW_SERIAL))) or defined(SPARK) 
-  // Stm32duino Maple mini USB Serial Port
-  #define SERIAL_CLASS USBSerial
+// Arduino Leonardo USB Serial Port
+#define SERIAL_CLASS Serial_
+#elif (defined(__STM32F1__) and !(defined(USE_STM32_HW_SERIAL))) or defined(SPARK)
+// Stm32duino Maple mini USB Serial Port
+#define SERIAL_CLASS USBSerial
 #elif defined(USE_BLUETOOTH)
-  #include <BluetoothSerial.h>
-  #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-  #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-  #endif
+#include <BluetoothSerial.h>
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
 
-  #if !defined(CONFIG_BT_SPP_ENABLED)
-  #error Serial Bluetooth not available or not enabled. It is only available for the ESP32 chip.
-  #endif
-  static BluetoothSerial bluetoothSPP;
-  #define SERIAL_CLASS BluetoothSerial
-#else 
-  #include <HardwareSerial.h>  // Arduino AVR
-  #define SERIAL_CLASS HardwareSerial
+#if !defined(CONFIG_BT_SPP_ENABLED)
+#error Serial Bluetooth not available or not enabled. It is only available for the ESP32 chip.
+#endif
+static BluetoothSerial bluetoothSPP;
+#define SERIAL_CLASS BluetoothSerial
+#else
+#include <HardwareSerial.h> // Arduino AVR
+#define SERIAL_CLASS HardwareSerial
 #endif
 
 class ArduinoHardware
 {
 public:
-  ArduinoHardware(SERIAL_CLASS *io, long baud = 500000)
+  ArduinoHardware(SERIAL_CLASS *io, long baud = 922190)
   {
     iostream = io;
     baud_ = baud;
@@ -54,7 +54,7 @@ public:
 #else
     iostream = &Serial;
 #endif
-    baud_ = 500000;
+    baud_ = 922190;
   }
   ArduinoHardware(ArduinoHardware &h)
   {
@@ -76,25 +76,29 @@ public:
 
   void init()
   {
-#if defined (USE_BLUETOOTH)
+#if defined(USE_BLUETOOTH)
     uint64_t chipid = ESP.getEfuseMac();
     String id = String((uint16_t)(chipid >> 32), HEX);
     id.toUpperCase();
     iostream->begin("KKY-" + id);
 #else
 #if defined(USE_USBCON)
-      // Startup delay as a fail-safe to upload a new sketch
-      delay(3000); 
+    // Startup delay as a fail-safe to upload a new sketch
+    delay(3000);
 #endif
-      iostream->begin(baud_);
+    iostream->begin(baud_);
 #endif
   }
 
-  int read() { 
-#if defined (USE_BLUETOOTH)
-    if (iostream->connected()) {
-      return iostream->read(); 
-    } else {
+  int read()
+  {
+#if defined(USE_BLUETOOTH)
+    if (iostream->connected())
+    {
+      return iostream->read();
+    }
+    else
+    {
       return -1;
     }
 #else
@@ -103,7 +107,10 @@ public:
   };
   void write(uint8_t *data, int length)
   {
-    iostream->write(data, length);
+    for (int i = 0; i < length; i++)
+    {
+      iostream->write(data[i]);
+    }
   }
 
   unsigned long time() { return millis(); }
