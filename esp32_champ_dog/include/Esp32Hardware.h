@@ -42,7 +42,7 @@ static BluetoothSerial bluetoothSPP;
 class ArduinoHardware
 {
 public:
-  ArduinoHardware(SERIAL_CLASS *io, long baud = 922190)
+  ArduinoHardware(SERIAL_CLASS *io, long baud = 1500000)
   {
     iostream = io;
     baud_ = baud;
@@ -52,9 +52,9 @@ public:
 #if defined(USE_BLUETOOTH)
     iostream = &bluetoothSPP;
 #else
-    iostream = &Serial;
+    iostream = &Serial2;
 #endif
-    baud_ = 922190;
+    baud_ = 1500000;
   }
   ArduinoHardware(ArduinoHardware &h)
   {
