@@ -1,0 +1,7 @@
+/champ/*.*
+/champ/build
+/champ/devel
+/champ/src/champ*
+/champ/src/robot_state_plugin
+/champ/src/yocs_velocity_smoother
+/champ/src/*.*

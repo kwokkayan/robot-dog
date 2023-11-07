@@ -1,0 +1,49 @@
+joints_config: &joints
+  - lf_hip_joint
+  - lf_upper_leg_joint
+  - lf_lower_leg_joint
+  - lf_foot_joint
+  - rf_hip_joint
+  - rf_upper_leg_joint
+  - rf_lower_leg_joint
+  - rf_foot_joint
+  - lh_hip_joint
+  - lh_upper_leg_joint
+  - lh_lower_leg_joint
+  - lh_foot_joint
+  - rh_hip_joint
+  - rh_upper_leg_joint
+  - rh_lower_leg_joint
+  - rh_foot_joint
+
+"":
+  joint_states_controller:
+      type: joint_state_controller/JointStateController
+      publish_rate: 50
+
+  joint_group_position_controller:
+      type: position_controllers/JointTrajectoryController
+      joints: *joints
+      gains:
+        lf_hip_joint : {p: 180, d: 0.9, i: 20}
+        lf_upper_leg_joint : {p: 180, d: 0.9, i: 20}
+        lf_lower_leg_joint : {p: 180, d: 0.9, i: 20}
+        lf_foot_joint : {p: 180, d: 0.9, i: 20}
+        rf_hip_joint : {p: 180, d: 0.9, i: 20}
+        rf_upper_leg_joint : {p: 180, d: 0.9, i: 20}
+        rf_lower_leg_joint : {p: 180, d: 0.9, i: 20}
+        rf_foot_joint : {p: 180, d: 0.9, i: 20}
+        lh_hip_joint : {p: 180, d: 0.9, i: 20}
+        lh_upper_leg_joint : {p: 180, d: 0.9, i: 20}
+        lh_lower_leg_joint : {p: 180, d: 0.9, i: 20}
+        lh_foot_joint : {p: 180, d: 0.9, i: 20}
+        rh_hip_joint : {p: 180, d: 0.9, i: 20}
+        rh_upper_leg_joint : {p: 180, d: 0.9, i: 20}
+        rh_lower_leg_joint : {p: 180, d: 0.9, i: 20}
+        rh_foot_joint : {p: 180, d: 0.9, i: 20}
+
+hw_controller:
+  loop_rate: 200
+  baud_rate: 115200
+  port: /dev/ttyUSB0
+  joints: *joints
