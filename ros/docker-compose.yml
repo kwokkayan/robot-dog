@@ -1,6 +1,6 @@
 services:
   ros-melodic:
-    image: kwokkayan/ros-melodic:latest
+    image: ros-melodic:test-openssh
     # build: 
     # context: ./ros_melodic
     volumes:
@@ -12,11 +12,13 @@ services:
         target: /champ
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
+      # - "/dev/ttyUSB1:/dev/ttyUSB1"
     ports:
+      - 22:22
       - 6080:80
       - 5900:5900
     environment:
-      - RESOLUTION=1920x800
+      - RESOLUTION=2140x1444
 volumes:
   tmp:
   champ:

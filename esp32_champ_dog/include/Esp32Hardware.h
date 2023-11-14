@@ -52,7 +52,7 @@ public:
 #if defined(USE_BLUETOOTH)
     iostream = &bluetoothSPP;
 #else
-    iostream = &Serial2;
+    iostream = &Serial;
 #endif
     baud_ = 1500000;
   }

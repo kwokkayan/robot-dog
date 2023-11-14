@@ -4,8 +4,9 @@
 #include <map>
 #ifndef PWM_SERVO_H
 #define PWM_SERVO_H
-
-typedef struct 
+#define I2C_ADDR 0x41
+// #define I2C_ADDR 0x70
+typedef struct
 {
     int pin;
     int pwm;
@@ -19,24 +20,29 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
  * It converts the angle (-PI to PI) to PWM cycles
  * When joints are all straight => 0 radians
  * 90 degree leg => -PI/2 for lower leg, 0 radians for others
+ * ======
+ * PWM definitions:
+ * 90 degree leg = 0 pwm
  */
 class PWM_Servo : public Adafruit_PWMServoDriver
 {
 public:
     PWM_Servo(int);
     PWM_Servo();
+    void begin_hw();
     /**
      * This function updates the pwm value for the pin.
-    */
+     */
     void update_pwm(std::string, float);
     /**
      * sends pwm signals every 30 ms
-    */
+     */
     void spinOnce();
     void debug_info();
+
 private:
     joint_servo_map joint_servo = {
-         // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
+        // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
         {"lf_hip_joint", {15, 0}},
         {"lf_upper_leg_joint", {14, 0}},
         {"lf_lower_leg_joint", {13, 0}},

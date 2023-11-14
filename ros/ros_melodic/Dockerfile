@@ -38,3 +38,8 @@ RUN source /opt/ros/melodic/setup.bash && catkin_make
 RUN echo "source /champ/devel/setup.bash" >> /etc/bash.bashrc
 RUN apt autoremove -y
 
+FROM build_champ AS install_openssh
+RUN apt-get install -y openssh-server
+RUN echo PermitRootLogin=yes >> /etc/ssh/sshd_config 
+RUN echo "root:123" | chpasswd
+RUN /etc/init.d/ssh start
