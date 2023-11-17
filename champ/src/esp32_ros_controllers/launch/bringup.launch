@@ -1,11 +1,11 @@
 <launch>
     <group ns="/">
         <rosparam file="$(find esp32_ros_controllers)/config/controllers.yaml" command="load"/>
-        <node name="controller_spawner" pkg="controller_manager" type="spawner" args="joint_states_controller joint_group_position_controller"/>
-        <node name="esp32_hw_controller" pkg="esp32_ros_controllers" type="esp32_ros_controllers_node"/>
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" args="joint_states_controller joint_group_position_controller" output="log"/>
+        <node name="esp32_hw_controller" pkg="esp32_ros_controllers" type="esp32_ros_controllers_node" output="log"/>
         <node pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
             <param name="port" type="string" value="/dev/ttyUSB0"/>
-            <param name="baud" type="int" value="1500000"/>
+            <param name="baud" type="int" value="2000000"/>
         </node>
     </group>
 </launch>

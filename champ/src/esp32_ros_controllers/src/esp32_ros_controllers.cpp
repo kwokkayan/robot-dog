@@ -13,6 +13,7 @@ namespace esp32_ros_controllers
             ROS_ERROR("No joints found in .yaml! Exiting...");
             exit(-1);
         }
+        // initialize controllers
         this->cmd = (double *) malloc(sizeof(double) * this->joint_names.size());
         this->pos = (double *) malloc(sizeof(double) * this->joint_names.size());
         this->vel = (double *) malloc(sizeof(double) * this->joint_names.size());
@@ -47,9 +48,11 @@ namespace esp32_ros_controllers
         trajectory_msgs::JointTrajectory msg;
         msg.points.resize(1);
         msg.header.stamp = time;
+        msg.points.at(0).velocities.resize(0);
+        msg.points.at(0).effort.resize(0);
         for (int i = 0; i < this->joint_names.size(); i++) {
             msg.joint_names.push_back(joint_names.at(i));
-            msg.points.at(0).positions.push_back(this->cmd[i]);
+            msg.points.at(0).positions.push_back(this->cmd[i]);    
         }
         this->hw_joint_trajectory_pub.publish(msg);
     }
