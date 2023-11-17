@@ -4,3 +4,5 @@
 - `rosrun rosserial_arduino serial_node.py _port:=/dev/ttyUSB0`
 - `rostopic echo chatter`
 - `rostopic pub /echo std_msgs/String "data: 'test1'" -r 1`
+- `roslaunch test_config bringup.launch rviz:=true hardware_connected:=true publish_joint_control:=false calibrate_joints:=true`
+- `roslaunch champ_teleop teleop.launch`

@@ -22,7 +22,8 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &msg)
 void setup()
 {
   // put your setup code here, to run once:
-  nh.getHardware()->setBaud(1500000);
+  Serial2.begin(9600);
+  nh.getHardware()->setBaud(2000000);
   nh.initNode();
   // TODO: new function
   nh.subscribe(joint_trajectory_sub);
@@ -34,6 +35,7 @@ void loop()
 {
   // put your main code here, to run repeatedly:
   nh.spinOnce();
-  Servo.spinOnce();
-  delay(1);
+  // Servo.spinOnce();
+  // Servo.debug_info();
+  // delay(1);
 }
