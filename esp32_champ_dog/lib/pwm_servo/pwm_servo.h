@@ -63,15 +63,15 @@ public:
         {"lf_upper_leg_joint", {14, 0, 0.0f, 1.0f, normal_map_info}},
         {"lf_lower_leg_joint", {13, 0, 0.0f, -1.0f, lower_leg_map_info_left}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-        {"rf_hip_joint", {0, 0, 0.0f, 1.0f, normal_map_info}},
+        {"rf_hip_joint", {0, 0, -0.122173048f, 1.0f, normal_map_info}},
         {"rf_upper_leg_joint", {1, 0, 0.0f, -1.0f, normal_map_info}},
         {"rf_lower_leg_joint", {2, 0, 0.0f, 1.0f, lower_leg_map_info_right}}, // weird result
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-        {"lh_hip_joint", {11, 0, 0.0f, 1.0f, normal_map_info}},
+        {"lh_hip_joint", {11, 0, 0.0f, -1.0f, normal_map_info}},
         {"lh_upper_leg_joint", {10, 0, 0.0f, 1.0f, normal_map_info}},
         {"lh_lower_leg_joint", {9, 0, 0.0f, -1.0f, lower_leg_map_info_left}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
-        {"rh_hip_joint", {4, 0, 0.0f, 1.0f, normal_map_info}},
+        {"rh_hip_joint", {4, 0, 0.0f, -1.0f, normal_map_info}},
         {"rh_upper_leg_joint", {5, 0, 0.0f, -1.0f, normal_map_info}},
         {"rh_lower_leg_joint", {6, 0, 0.0f, 1.0f, lower_leg_map_info_right}},
     };

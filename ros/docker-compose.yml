@@ -11,12 +11,14 @@ services:
         source: champ
         target: /champ
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+        - "/dev/rfcomm1:/dev/ttyUSB0"
+      # - "/dev/ttyUSB0:/dev/ttyUSB0"
       # - "/dev/ttyUSB1:/dev/ttyUSB1"
     ports:
       - 22:22
       - 6080:80
       - 5900:5900
+      - 11411:11411 # ros serial port
     environment:
       - RESOLUTION=2140x1444
 volumes:
