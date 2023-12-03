@@ -113,6 +113,7 @@ public:
     uint64_t chipid = ESP.getEfuseMac();
     String id = String((uint16_t)(chipid >> 32), HEX);
     id.toUpperCase();
+    iostream->setPin("2345");
     iostream->begin("KKY-" + id);
 #else
 #if defined(USE_USBCON)

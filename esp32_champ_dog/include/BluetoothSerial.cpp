@@ -41,7 +41,7 @@
 const char * _spp_server_name = "ESP32SPP";
 
 // Redefining queue sizes
-#define RX_QUEUE_SIZE 2048
+#define RX_QUEUE_SIZE 4096
 #define TX_QUEUE_SIZE 32
 #define SPP_TX_QUEUE_TIMEOUT 1000
 #define SPP_TX_DONE_TIMEOUT 1000

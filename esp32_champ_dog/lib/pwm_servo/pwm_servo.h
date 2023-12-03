@@ -45,14 +45,11 @@ public:
      * This function updates the pwm value for the pin.
      */
     void update_pwm(std::string, float);
-    /**
-     * sends pwm signals every 30 ms
-     */
     void spinOnce();
     void debug_info();
     void debug_pwm();
 
-// private:
+private:
     const float PI_OVER_2 = PI / 2;
     map_info_t normal_map_info = { -PI_OVER_2, PI_OVER_2, 105, 500 };
     map_info_t lower_leg_map_info_left = { 0.698131701f, 2.26892803f, 205, 410 };
