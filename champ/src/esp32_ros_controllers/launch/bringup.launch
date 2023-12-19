@@ -2,8 +2,12 @@
     <group ns="/">
         <arg name="ros_serial_tcp" default="false"/>
         <rosparam file="$(find esp32_ros_controllers)/config/controllers.yaml" command="load"/>
-        <node name="controller_spawner" pkg="controller_manager" type="spawner" args="joint_states_controller joint_group_position_controller" output="log"/>
-        <node name="esp32_hw_controller" pkg="esp32_ros_controllers" type="esp32_ros_controllers_node" output="log"/>
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" 
+            args="joint_states_controller joint_group_position_controller imu_sensor_controller" 
+            output="log"/>
+        <node name="esp32_hw_controller" pkg="esp32_ros_controllers" type="esp32_ros_controllers_node" output="log">
+            <remap from="/imu" to="/imu/data"/>
+        </node>
         <node unless="$(arg ros_serial_tcp)" pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
             <param name="port" type="string" value="/dev/ttyUSB0"/>
             <param name="baud" type="int" value="2000000"/>

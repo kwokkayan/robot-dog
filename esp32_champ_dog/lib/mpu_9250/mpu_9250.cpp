@@ -41,7 +41,7 @@ void MPU_9250::spinOnce()
       // computeEulerAngles can be used -- after updating the
       // quaternion values -- to estimate roll, pitch, and yaw
       this->computeEulerAngles();
-      printIMUData();
+      // printIMUData();
     }
   }
 }
@@ -75,6 +75,31 @@ void MPU_9250::printIMUData()
   SerialPort.println("R/P/Y: " + String(this->roll) + ", " + String(this->pitch) + ", " + String(this->yaw));
   SerialPort.println("Time: " + String(this->time) + " ms");
   SerialPort.println();
+}
+
+sensor_msgs::Imu MPU_9250::composeMsg()
+{
+  sensor_msgs::Imu out;
+
+  out.orientation.w = this->calcQuat(this->qw);
+  out.orientation.x = this->calcQuat(this->qx);
+  out.orientation.y = this->calcQuat(this->qy);
+  out.orientation.z = this->calcQuat(this->qz);
+
+  out.angular_velocity.x = this->calcDegreeToRadians(this->calcGyro(this->gx));
+  out.angular_velocity.y = this->calcDegreeToRadians(this->calcGyro(this->gy));
+  out.angular_velocity.z = this->calcDegreeToRadians(this->calcGyro(this->gz));
+
+  out.linear_acceleration.x = this->calcGToMps(this->calcAccel(this->ax));
+  out.linear_acceleration.y = this->calcGToMps(this->calcAccel(this->ay));
+  out.linear_acceleration.z = this->calcGToMps(this->calcAccel(this->az));
+
+  for (int i = 0; i < 9; i++) {
+    out.orientation_covariance[i] = 0;
+    out.angular_velocity_covariance[i] = 0;
+    out.linear_acceleration_covariance[i] = 0; 
+  }
+  return out;
 }
 
 float MPU_9250::calcDegreeToRadians(float v)

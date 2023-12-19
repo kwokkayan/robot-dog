@@ -67,6 +67,9 @@
 #endif
 static BluetoothSerial bluetoothSPP;
 #define SERIAL_CLASS BluetoothSerial
+void BTConfirmRequestCallback(uint32_t numVal){
+  bluetoothSPP.confirmReply(true);
+}
 #else
 #include <HardwareSerial.h> // Arduino AVR
 #define SERIAL_CLASS HardwareSerial
@@ -113,7 +116,9 @@ public:
     uint64_t chipid = ESP.getEfuseMac();
     String id = String((uint16_t)(chipid >> 32), HEX);
     id.toUpperCase();
-    iostream->setPin("2345");
+    // iostream->setPin("2345");
+    // iostream->enableSSP(); // Must be called before begin
+    iostream->onConfirmRequest(BTConfirmRequestCallback);
     iostream->begin("KKY-" + id);
 #else
 #if defined(USE_USBCON)

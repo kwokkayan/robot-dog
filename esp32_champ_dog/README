@@ -7,5 +7,9 @@
 - `roslaunch test_config bringup.launch rviz:=true hardware_connected:=true publish_joint_control:=false calibrate_joints:=true publish_joint_control:=false calibrate_joints:=true`
 - `roslaunch champ_teleop teleop.launch`
 ## Bluetooth stuff
-- `hcitool cc <MAC>`
-- `hcitool auth <MAC>`
+- `sudo hcitool cc <MAC>`
+- `sudo hcitool auth <MAC>`
+- `sudo rfcomm bind rfcomm1 <MAC>`
+### SSP connection
+1. `sudo rfcomm connect /dev/rfcomm1 <MAC> 1`
+2. `sudo hcitool auth <MAC>`

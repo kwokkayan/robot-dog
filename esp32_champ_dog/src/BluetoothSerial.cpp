@@ -41,8 +41,8 @@
 const char * _spp_server_name = "ESP32SPP";
 
 // Redefining queue sizes
-#define RX_QUEUE_SIZE 4096
-#define TX_QUEUE_SIZE 32
+#define RX_QUEUE_SIZE 16384
+#define TX_QUEUE_SIZE 16384
 #define SPP_TX_QUEUE_TIMEOUT 1000
 #define SPP_TX_DONE_TIMEOUT 1000
 #define SPP_CONGESTED_TIMEOUT 1000
@@ -580,8 +580,24 @@ static void esp_bt_gap_cb(esp_bt_gap_cb_event_t event, esp_bt_gap_cb_param_t *pa
             }
             break;
 
-        case ESP_BT_GAP_MODE_CHG_EVT:
+        case ESP_BT_GAP_MODE_CHG_EVT: // Enum 13
             log_i("ESP_BT_GAP_MODE_CHG_EVT: mode: %d", param->mode_chg.mode);
+            break;
+
+        case ESP_BT_GAP_REMOVE_BOND_DEV_COMPLETE_EVT: // Enum - 14 remove bond device complete event
+            log_i("ESP_BT_GAP_REMOVE_BOND_DEV_COMPLETE_EVT remove bond device complete event");
+            break;
+
+        case ESP_BT_GAP_QOS_CMPL_EVT: // Enum 15 - QOS complete event
+            log_i("ESP_BT_GAP_QOS_CMPL_EVT QOS complete event");
+            break;
+
+        case ESP_BT_GAP_ACL_CONN_CMPL_STAT_EVT: // Enum 16 - ACL connection complete status event
+            log_i("ESP_BT_GAP_ACL_CONN_CMPL_STAT_EVT ACL connection complete status event");
+            break;
+
+        case ESP_BT_GAP_ACL_DISCONN_CMPL_STAT_EVT: // Enum 17 - ACL disconnection complete status event
+            log_i("ESP_BT_GAP_ACL_DISCONN_CMPL_STAT_EVT ACL disconnection complete status event: reason %d, handle %d", param->acl_disconn_cmpl_stat.reason, param->acl_disconn_cmpl_stat.handle);
             break;
 
         default:
@@ -758,7 +774,7 @@ static bool waitForConnect(int timeout) {
     if((rc & SPP_CONNECTED) != 0)
         return true;
     else if((rc & SPP_CLOSED) != 0) {
-        log_d("connection closed!");
+        // log_d("connection closed!");
         return false;
     }
     log_d("timeout");

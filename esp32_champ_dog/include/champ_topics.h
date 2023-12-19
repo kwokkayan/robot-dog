@@ -9,5 +9,5 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &);
 sensor_msgs::Imu champ_imu;
 // TODO: change name
 ros::Subscriber<trajectory_msgs::JointTrajectory> joint_trajectory_sub("/hw_joint_trajectory", &joint_trajectory_callback);
-ros::Publisher imu_pub("/imu/data", &champ_imu);
+ros::Publisher imu_pub("/hw_imu_data", &champ_imu);
 #endif

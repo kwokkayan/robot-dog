@@ -19,7 +19,7 @@ joints_config: &joints
 "":
   joint_states_controller:
       type: joint_state_controller/JointStateController
-      publish_rate: 200
+      publish_rate: 75
 
   joint_group_position_controller:
       type: position_controllers/JointTrajectoryController
@@ -42,6 +42,12 @@ joints_config: &joints
         # lh_foot_joint : {p: 180, d: 0.9, i: 20}
         # rh_foot_joint : {p: 180, d: 0.9, i: 20}
 
+  imu_sensor_controller:
+      type: imu_sensor_controller/ImuSensorController
+      publish_rate: 75
+
 hw_controller:
-  loop_rate: 200
+  loop_rate: 75
   joints: *joints
+  name: "imu"
+  frame_id: "base_link"
