@@ -4,13 +4,27 @@
     <link name="base_link">
       <visual>
         <geometry>
-          <cylinder length="0.1" radius="0.2"/>
+          <!-- <cylinder length="0.1" radius="0.2"/> -->
+            <mesh 
+                filename="package://test_config/meshes/body-bottom.stl" 
+                scale="0.0015 0.0015 0.0015"
+            />
         </geometry>
       </visual>
     </link>
     <link name="lf_hip_debug_link"/>
-    <link name="lf_hip_link"/>
-    <link name="lf_upper_leg_link"/>
+    <link name="lf_hip_link">
+    <visual>
+        <geometry>
+        <mesh 
+            filename="package://test_config/meshes/shoulder-joint-left.stl" 
+            scale="0.0015 0.0015 0.0015"
+            />
+            </geometry>
+      </visual>
+    </link>
+    <link name="lf_upper_leg_link">
+    </link>
     <link name="lf_lower_leg_link"/>
     <link name="lf_foot_link"/>
 
@@ -53,7 +67,7 @@
     </joint>
     <joint name="lf_lower_leg_joint" type="revolute">
         <axis xyz="0 1 0"/>
-        <limit effort="25" lower="-3.14159265359" upper="3.14159265359" velocity="1.5"/>
+        <limit effort="25" lower="-1.57079632679" upper="-1.57079632679" velocity="1.5"/>
         <parent link="lf_upper_leg_link"/>
         <child link="lf_lower_leg_link"/>
         <origin rpy="0 0 0" xyz="0.0 0.0 -0.11"/>
@@ -85,7 +99,7 @@
     </joint>
     <joint name="rf_lower_leg_joint" type="revolute">
         <axis xyz="0 1 0"/>
-        <limit effort="25" lower="-3.14159265359" upper="3.14159265359" velocity="1.5"/>
+        <limit effort="25" lower="-1.57079632679" upper="-1.57079632679" velocity="1.5"/>
         <parent link="rf_upper_leg_link"/>
         <child link="rf_lower_leg_link"/>
         <origin rpy="0 0 0" xyz="0.0 0.0 -0.11"/>
@@ -117,7 +131,7 @@
     </joint>
     <joint name="lh_lower_leg_joint" type="revolute">
         <axis xyz="0 1 0"/>
-        <limit effort="25" lower="-3.14159265359" upper="3.14159265359" velocity="1.5"/>
+        <limit effort="25" lower="-1.57079632679" upper="-1.57079632679" velocity="1.5"/>
         <parent link="lh_upper_leg_link"/>
         <child link="lh_lower_leg_link"/>
         <origin rpy="0 0 0" xyz="0.0 0.0 -0.11"/>
@@ -149,7 +163,7 @@
     </joint>
     <joint name="rh_lower_leg_joint" type="revolute">
         <axis xyz="0 1 0"/>
-        <limit effort="25" lower="-3.14159265359" upper="3.14159265359" velocity="1.5"/>
+        <limit effort="25" lower="-1.57079632679" upper="-1.57079632679" velocity="1.5"/>
         <parent link="rh_upper_leg_link"/>
         <child link="rh_lower_leg_link"/>
         <origin rpy="0 0 0" xyz="0.0 0.0 -0.11"/>

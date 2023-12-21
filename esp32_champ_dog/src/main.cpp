@@ -28,7 +28,7 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &msg)
 void send_imu_data()
 {
   static u_int64_t curr = millis(), prev = 0;
-  if ((curr = millis()) - prev > 1000) {
+  if ((curr = millis()) - prev > 100) {
     prev = curr;
     champ_imu = mpu.composeMsg();
     champ_imu.header.stamp = nh.now();

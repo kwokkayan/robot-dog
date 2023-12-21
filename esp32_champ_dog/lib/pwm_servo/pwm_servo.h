@@ -56,21 +56,21 @@ private:
     map_info_t lower_leg_map_info_right = { -2.26892803f, -0.698131701f, 205, 410 };
     joint_servo_map joint_servo = {
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-        {"lf_hip_joint", {15, 0, -0.0523598776f, 1.0f, normal_map_info}},
+        {"lf_hip_joint", {15, 0, 0.0f, 1.0f, normal_map_info}}, // -0.0523598776f
         {"lf_upper_leg_joint", {14, 0, 0.0f, 1.0f, normal_map_info}},
-        {"lf_lower_leg_joint", {13, 0, 0.0f, -1.0f, lower_leg_map_info_left}},
+        {"lf_lower_leg_joint", {13, 0, PI_OVER_2, -1.0f, normal_map_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-        {"rf_hip_joint", {0, 0, -0.122173048f, 1.0f, normal_map_info}},
+        {"rf_hip_joint", {0, 0, -0.034906585f, 1.0f, normal_map_info}}, // -0.122173048f
         {"rf_upper_leg_joint", {1, 0, 0.0f, -1.0f, normal_map_info}},
-        {"rf_lower_leg_joint", {2, 0, 0.0f, 1.0f, lower_leg_map_info_right}}, // weird result
-        // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
+        {"rf_lower_leg_joint", {2, 0, PI_OVER_2, 1.0f, normal_map_info}}, // weird result
+// ## {shoulder chnl, upper chnl, lower chnl} robot's left front
         {"lh_hip_joint", {11, 0, 0.0f, -1.0f, normal_map_info}},
         {"lh_upper_leg_joint", {10, 0, 0.0f, 1.0f, normal_map_info}},
-        {"lh_lower_leg_joint", {9, 0, 0.0f, -1.0f, lower_leg_map_info_left}},
+        {"lh_lower_leg_joint", {9, 0, PI_OVER_2, -1.0f, normal_map_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
-        {"rh_hip_joint", {4, 0, 0.0f, -1.0f, normal_map_info}},
+        {"rh_hip_joint", {4, 0, -0.0523598776f, -1.0f, normal_map_info}},
         {"rh_upper_leg_joint", {5, 0, 0.0f, -1.0f, normal_map_info}},
-        {"rh_lower_leg_joint", {6, 0, 0.0f, 1.0f, lower_leg_map_info_right}},
+        {"rh_lower_leg_joint", {6, 0, PI_OVER_2, 1.0f, normal_map_info}},
     };
     // set 90 degrees as constraint
     int radiansToPWM(float, map_info_t);
