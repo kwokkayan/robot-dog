@@ -1,3 +1,9 @@
+# Extensions
+
+*.blend1
+
+# Directories
+
 /champ/*.*
 /champ/build
 /champ/devel
