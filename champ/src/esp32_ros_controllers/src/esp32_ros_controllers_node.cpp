@@ -20,6 +20,11 @@ void imu_msg_callback(const sensor_msgs::Imu::ConstPtr& imu)
     esp32Champ->orientation[1] = imu->orientation.y;
     esp32Champ->orientation[2] = imu->orientation.z;
     esp32Champ->orientation[3] = imu->orientation.w;
+    for (int i = 0; i < 9; i++) {
+        esp32Champ->angular_velocity_covariance[i] = imu->angular_velocity_covariance[i];
+        esp32Champ->orientation_covariance[i] = imu->orientation_covariance[i];
+        esp32Champ->linear_acceleration_covariance[i] = imu->linear_acceleration_covariance[i];
+    }
 }
 
 void loop(const ros::TimerEvent& event)

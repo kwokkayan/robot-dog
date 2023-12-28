@@ -25,14 +25,15 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &msg)
   }
 }
 
-void send_imu_data()
+void handleMsgs()
 {
   static u_int64_t curr = millis(), prev = 0;
-  if ((curr = millis()) - prev > 100) {
+  if ((curr = millis()) - prev > 50) {
     prev = curr;
     champ_imu = mpu.composeMsg();
     champ_imu.header.stamp = nh.now();
     imu_pub.publish(&champ_imu);
+    nh.spinOnce();
   }
 }
 
@@ -67,8 +68,7 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  nh.spinOnce();
   Servo.spinOnce();
   mpu.spinOnce();
-  send_imu_data();
+  handleMsgs();
 }

@@ -19,7 +19,8 @@ void MPU_9250::begin_hw()
       delay(5000);
     }
   }
-
+  this->setLPF(42);
+  this->setSampleRate(1000);
   this->dmpBegin(DMP_FEATURE_6X_LP_QUAT |        // Enable 6-axis quat
                      DMP_FEATURE_GYRO_CAL |      // Use gyro calibration
                      DMP_FEATURE_SEND_CAL_GYRO | // send angular velocity
@@ -28,6 +29,23 @@ void MPU_9250::begin_hw()
   // DMP_FEATURE_LP_QUAT can also be used. It uses the
   // accelerometer in low-power mode to estimate quat's.
   // DMP_FEATURE_LP_QUAT and 6X_LP_QUAT are mutually exclusive
+  for (int i = 0; i < 9; i++) {
+    out.orientation_covariance[i] = 0;
+    out.angular_velocity_covariance[i] = 0;
+    out.linear_acceleration_covariance[i] = 0; 
+  }
+  // From datasheet:
+  // gyro Total RMS noise = 0.1 degree/s
+  // accel Total RMS noise = 8 mG
+  out.angular_velocity_covariance[0] = 0.1 * RadianConst;
+  out.angular_velocity_covariance[0] *= out.angular_velocity_covariance[0];
+  out.angular_velocity_covariance[4] = out.angular_velocity_covariance[0];
+  out.angular_velocity_covariance[8] = out.angular_velocity_covariance[0];
+
+  out.linear_acceleration_covariance[0] = 0.008 * G;
+  out.linear_acceleration_covariance[0] *= out.linear_acceleration_covariance[0];
+  out.linear_acceleration_covariance[4] = out.linear_acceleration_covariance[0];
+  out.linear_acceleration_covariance[8] = out.linear_acceleration_covariance[0];
 }
 
 void MPU_9250::spinOnce()
@@ -79,8 +97,6 @@ void MPU_9250::printIMUData()
 
 sensor_msgs::Imu MPU_9250::composeMsg()
 {
-  sensor_msgs::Imu out;
-
   out.orientation.w = this->calcQuat(this->qw);
   out.orientation.x = this->calcQuat(this->qx);
   out.orientation.y = this->calcQuat(this->qy);
@@ -94,11 +110,6 @@ sensor_msgs::Imu MPU_9250::composeMsg()
   out.linear_acceleration.y = this->calcGToMps(this->calcAccel(this->ay));
   out.linear_acceleration.z = this->calcGToMps(this->calcAccel(this->az));
 
-  for (int i = 0; i < 9; i++) {
-    out.orientation_covariance[i] = 0;
-    out.angular_velocity_covariance[i] = 0;
-    out.linear_acceleration_covariance[i] = 0; 
-  }
   return out;
 }
 

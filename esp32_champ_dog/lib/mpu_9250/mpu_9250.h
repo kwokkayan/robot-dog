@@ -9,9 +9,10 @@ public:
     void begin_hw();
     void spinOnce();
     sensor_msgs::Imu composeMsg();
-private:
     void printIMUData();
+private:
     float calcDegreeToRadians(float);
     float calcGToMps(float);
+    sensor_msgs::Imu out;
 };
 #endif

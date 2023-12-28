@@ -45,8 +45,8 @@ namespace esp32_ros_controllers
             linear_acceleration_covariance[i] = 0;
         }
 
-        hardware_interface::ImuSensorHandle imu_handle(name, frame_id, orientation, 
-            orientation_covariance, angular_velocity, angular_velocity_covariance, 
+        hardware_interface::ImuSensorHandle imu_handle(name, frame_id, orientation,
+            orientation_covariance, angular_velocity, angular_velocity_covariance,
             linear_acceleration, linear_acceleration_covariance);
         imu_sensor_interface.registerHandle(imu_handle);
         registerInterface(&imu_sensor_interface);
