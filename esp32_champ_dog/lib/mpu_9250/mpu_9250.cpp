@@ -25,14 +25,17 @@ void MPU_9250::begin_hw()
                      DMP_FEATURE_GYRO_CAL |      // Use gyro calibration
                      DMP_FEATURE_SEND_CAL_GYRO | // send angular velocity
                      DMP_FEATURE_SEND_RAW_ACCEL, // send acceleration
-                 10);                            // Set DMP FIFO rate to 10 Hz
+                 20);                            // Set DMP FIFO rate to 20 Hz
+  delay(100);
+  this->calibrateAccel();
   // DMP_FEATURE_LP_QUAT can also be used. It uses the
   // accelerometer in low-power mode to estimate quat's.
   // DMP_FEATURE_LP_QUAT and 6X_LP_QUAT are mutually exclusive
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 9; i++)
+  {
     out.orientation_covariance[i] = 0;
     out.angular_velocity_covariance[i] = 0;
-    out.linear_acceleration_covariance[i] = 0; 
+    out.linear_acceleration_covariance[i] = 0;
   }
   // From datasheet:
   // gyro Total RMS noise = 0.1 degree/s
@@ -111,6 +114,52 @@ sensor_msgs::Imu MPU_9250::composeMsg()
   out.linear_acceleration.z = this->calcGToMps(this->calcAccel(this->az));
 
   return out;
+}
+
+void MPU_9250::getAccelOffset()
+{
+  long accel_bias[3] = {0, 0, 0};
+  mpu_read_6500_accel_bias(accel_bias);
+  float accelX = this->calcAccel(this->ax);
+  float accelY = this->calcAccel(this->ay);
+  float accelZ = this->calcAccel(this->az);
+  SerialPort.print(this->ax);
+  SerialPort.print(" ");
+  SerialPort.print(this->ay);
+  SerialPort.print(" ");
+  SerialPort.println(this->az);
+  SerialPort.print(accelX);
+  SerialPort.print(" ");
+  SerialPort.print(accelY);
+  SerialPort.print(" ");
+  SerialPort.println(accelZ);
+  SerialPort.print(accel_bias[0]);
+  SerialPort.print(" ");
+  SerialPort.print(accel_bias[1]);
+  SerialPort.print(" ");
+  SerialPort.println(accel_bias[2]);
+  SerialPort.println();
+  delay(100);
+}
+
+void MPU_9250::calibrateAccel()
+{
+  long accel_bias[3] = {0, 0, 0};
+  uint16_t accelsensitivity = 16384; // = 16384 LSB/g
+  for (int i = 0; i < CALIBRATE_SAMPLE_SIZE; i++) {
+    this->dmpUpdateFifo();
+    accel_bias[0] += (long) this->ax;
+    accel_bias[1] += (long) this->ay;
+    accel_bias[2] += (long) this->az - accelsensitivity;
+  }
+  accel_bias[0] /= CALIBRATE_SAMPLE_SIZE;
+  accel_bias[1] /= CALIBRATE_SAMPLE_SIZE;
+  accel_bias[2] /= CALIBRATE_SAMPLE_SIZE;
+
+  accel_bias[0] /= 8;
+  accel_bias[1] /= 8;
+  accel_bias[2] /= 8;
+  mpu_set_accel_bias_6500_reg(accel_bias);
 }
 
 float MPU_9250::calcDegreeToRadians(float v)
