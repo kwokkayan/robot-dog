@@ -102,7 +102,7 @@
     </link>
     <link name="lf_lower_leg_link">
         <visual>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -111,7 +111,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -122,7 +122,7 @@
     </link>
     <link name="lf_foot_link">
         <visual>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -131,7 +131,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -182,7 +182,7 @@
     </link>
     <link name="rf_lower_leg_link">
         <visual>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -191,7 +191,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -202,7 +202,7 @@
     </link>
     <link name="rf_foot_link">
         <visual>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -211,7 +211,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -262,7 +262,7 @@
     </link>
     <link name="lh_lower_leg_link">
         <visual>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -271,7 +271,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -282,7 +282,7 @@
     </link>
     <link name="lh_foot_link">
         <visual>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -291,7 +291,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="1.5707 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="1.5707 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -342,7 +342,7 @@
     </link>
     <link name="rh_lower_leg_link">
         <visual>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -351,7 +351,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/lower-leg.stl"
@@ -362,7 +362,7 @@
     </link>
     <link name="rh_foot_link">
         <visual>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -371,7 +371,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="4.7123 4.7123 0"/>
+            <origin xyz="0 0 0" rpy="4.7123 0 0"/>
             <geometry>
                 <mesh 
                     filename="package://test_config/meshes/foot.stl"
@@ -412,7 +412,7 @@
         <limit lower="-1.57079632679" upper="1.57079632679" effort="25" velocity="1.5"/>
     </joint>
     <joint name="lf_foot_joint" type="fixed">
-        <origin xyz="0.1049 0.0002 -0.0093" rpy="0 0 0"/>
+        <origin xyz="-0.0093 -0.0003 -0.1060" rpy="0 0 0"/>
         <parent link="lf_lower_leg_link"/>
         <child link="lf_foot_link"/>
     </joint>
@@ -438,7 +438,7 @@
         <limit lower="-1.57079632679" upper="1.57079632679" effort="25" velocity="1.5"/>
     </joint>
     <joint name="rf_foot_joint" type="fixed">
-        <origin xyz="0.1049 -0.0002 -0.0093" rpy="0 0 0"/>
+        <origin xyz="-0.0093 -0.0003 -0.1060" rpy="0 0 0"/>
         <parent link="rf_lower_leg_link"/>
         <child link="rf_foot_link"/>
     </joint>
@@ -464,7 +464,7 @@
         <limit lower="-1.57079632679" upper="1.57079632679" effort="25" velocity="1.5"/>
     </joint>
     <joint name="lh_foot_joint" type="fixed">
-        <origin xyz="0.1049 0.0002 -0.0093" rpy="0 0 0"/>
+        <origin xyz="-0.0093 -0.0003 -0.1060" rpy="0 0 0"/>
         <parent link="lh_lower_leg_link"/>
         <child link="lh_foot_link"/>
     </joint>
@@ -490,7 +490,7 @@
         <limit lower="-1.57079632679" upper="1.57079632679" effort="25" velocity="1.5"/>
     </joint>
     <joint name="rh_foot_joint" type="fixed">
-        <origin xyz="0.1049 -0.0002 -0.0093" rpy="0 0 0"/>
+        <origin xyz="-0.0093 -0.0003 -0.1060" rpy="0 0 0"/>
         <parent link="rh_lower_leg_link"/>
         <child link="rh_foot_link"/>
     </joint>
