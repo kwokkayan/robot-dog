@@ -143,13 +143,14 @@ public:
 #else
     return iostream->read();
 #endif
-  };
-  void write(uint8_t *data, int length)
+  }
+  void write(uint8_t data)
   {
-    for (int i = 0; i < length; i++)
-    {
-      iostream->write(data[i]);
-    }
+    iostream->write(data);
+  }
+  void write(const uint8_t *data, int length)
+  {
+    iostream->write(data, length);
   }
 
   unsigned long time() { return millis(); }

@@ -1,5 +1,4 @@
 base: base_link
-
 left_front:
   - lf_hip_link
   - lf_upper_leg_link

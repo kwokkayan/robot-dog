@@ -33,7 +33,6 @@ void handleMsgs()
     champ_imu = mpu.composeMsg();
     champ_imu.header.stamp = nh.now();
     imu_pub.publish(&champ_imu);
-    nh.spinOnce();
   }
 }
 
@@ -68,7 +67,7 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  Servo.spinOnce();
   mpu.spinOnce();
   handleMsgs();
+  nh.spinOnce();
 }

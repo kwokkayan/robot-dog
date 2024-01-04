@@ -9,6 +9,7 @@ namespace esp32_ros_controllers
     {
         this->nh = nh;
         this->hw_joint_trajectory_pub = nh.advertise<trajectory_msgs::JointTrajectory>("hw_joint_trajectory", 100);
+        this->imu_sub = nh.subscribe("/corrected_imu_data", 100, &ESP32Champ::imu_callback, this);
         this->nh.getParam("/hw_controller/joints", this->joint_names);
         this->nh.getParam("/hw_controller/name", this->name);
         this->nh.getParam("/hw_controller/frame_id", this->frame_id);
@@ -86,5 +87,24 @@ namespace esp32_ros_controllers
         }
         this->hw_joint_trajectory_pub.publish(msg);
     }
+    void ESP32Champ::imu_callback(sensor_msgs::Imu::ConstPtr imu)
+    {
+        this->angular_velocity[0] = imu->angular_velocity.x;
+        this->angular_velocity[1] = imu->angular_velocity.y;
+        this->angular_velocity[2] = imu->angular_velocity.z;
 
+        this->linear_acceleration[0] = imu->linear_acceleration.x;
+        this->linear_acceleration[1] = imu->linear_acceleration.y;
+        this->linear_acceleration[2] = imu->linear_acceleration.z;
+
+        this->orientation[0] = imu->orientation.x;
+        this->orientation[1] = imu->orientation.y;
+        this->orientation[2] = imu->orientation.z;
+        this->orientation[3] = imu->orientation.w;
+        for (int i = 0; i < 9; i++) {
+            this->angular_velocity_covariance[i] = imu->angular_velocity_covariance[i];
+            this->orientation_covariance[i] = imu->orientation_covariance[i];
+            this->linear_acceleration_covariance[i] = imu->linear_acceleration_covariance[i];
+        }
+    }
 } // namespace esp32_ros_controllers

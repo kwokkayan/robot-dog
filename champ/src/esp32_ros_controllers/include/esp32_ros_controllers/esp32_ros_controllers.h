@@ -13,20 +13,22 @@ namespace esp32_ros_controllers
         ~ESP32Champ();
         void read(const ros::Time&, const ros::Duration&);
         void write(const ros::Time&, const ros::Duration&);
+    private:
+        ros::NodeHandle nh;
+        ros::Publisher hw_joint_trajectory_pub;
+        ros::Subscriber imu_sub;
+        std::vector<std::string> joint_names;
+        std::string frame_id, name;
+        hardware_interface::JointStateInterface jnt_state_interface;
+        hardware_interface::PositionJointInterface jnt_pos_interface;
+        hardware_interface::ImuSensorInterface imu_sensor_interface;
+        void imu_callback(sensor_msgs::Imu::ConstPtr);
+        double *cmd, *pos, *vel, *eff;
         double *orientation;
         double *orientation_covariance;
         double *angular_velocity;
         double *angular_velocity_covariance;
         double *linear_acceleration;
         double *linear_acceleration_covariance;
-    private:
-        ros::NodeHandle nh;
-        ros::Publisher hw_joint_trajectory_pub, imu_data_pub;
-        std::vector<std::string> joint_names;
-        std::string frame_id, name;
-        hardware_interface::JointStateInterface jnt_state_interface;
-        hardware_interface::PositionJointInterface jnt_pos_interface;
-        hardware_interface::ImuSensorInterface imu_sensor_interface;
-        double *cmd, *pos, *vel, *eff;
     };
 }
