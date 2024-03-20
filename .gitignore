@@ -4,11 +4,6 @@
 
 # Directories
 
-/champ/*.*
-/champ/build
-/champ/devel
-/champ/src/champ*
-/champ/src/robot_state_plugin
-/champ/src/yocs_velocity_smoother
-/champ/src/*.*
-
+/IK_engine/build
+/IK_engine/devel
+/IK_engine/.vscode

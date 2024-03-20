@@ -1,0 +1,65 @@
+# knee_orientation : ">>"
+# pantograph_leg : false
+# odom_scaler: 0.9
+# max_linear_velocity_x : 0.5
+# max_linear_velocity_y : 0.25
+# max_angular_velocity_z : 1.0
+# com_x_translation: 0.0
+# swing_height : 0.04
+# stance_depth : 0.00
+# stance_duration : 0.25
+# nominal_height : 0.20
+
+## HIGH config
+# knee_orientation : ">>"
+# pantograph_leg : false
+# odom_scaler: 0.9
+# max_linear_velocity_x : 0.1
+# max_linear_velocity_y : 0.05
+# max_angular_velocity_z : 0.2
+# com_x_translation: -0.02
+# swing_height : 0.04
+# stance_depth : 0.00
+# stance_duration : 0.25
+# nominal_height : 0.17
+
+
+# # based on open quad
+# knee_orientation : ">>"
+# pantograph_leg : false
+# odom_scaler: 1.15
+# max_linear_velocity_x : 0.3
+# max_linear_velocity_y : 0.15
+# max_angular_velocity_z : 1.0
+# com_x_translation : -0.02
+# swing_height : 0.05
+# stance_depth : 0.0
+# stance_duration : 0.20
+# nominal_height : 0.14
+
+# based on open quad
+# added lidar
+# knee_orientation : ">>"
+# pantograph_leg : false
+# odom_scaler: 1.15
+# max_linear_velocity_x : 0.3
+# max_linear_velocity_y : 0.15
+# max_angular_velocity_z : 1.0
+# com_x_translation : -0.03
+# swing_height : 0.05
+# stance_depth : 0.0
+# stance_duration : 0.20
+# nominal_height : 0.14
+
+# based on open quad (new dog)
+knee_orientation : ">>"
+pantograph_leg : false
+odom_scaler: 0.9
+max_linear_velocity_x : 0.25
+max_linear_velocity_y : 0.25
+max_angular_velocity_z : 1.0
+com_x_translation: -0.025
+swing_height : 0.05
+stance_depth : 0.00
+stance_duration : 0.25
+nominal_height : 0.145

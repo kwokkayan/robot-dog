@@ -1,0 +1,28 @@
+<launch>
+    <group ns="/">
+        <arg name="ros_serial_tcp" default="false"/>
+        <arg name="calibrate_imu" default="false"/>
+        <rosparam file="$(find esp32_ros_controllers)/config/controllers.yaml" command="load"/>
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" 
+            args="joint_states_controller joint_group_position_controller imu_sensor_controller" 
+            output="log"/>
+        <node name="esp32_hw_controller" pkg="esp32_ros_controllers" type="esp32_ros_controllers_node" output="log">
+            <remap from="/imu" to="/imu/data"/>
+        </node>
+        <node unless="$(arg ros_serial_tcp)" pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
+            <param name="port" type="string" value="/dev/ttyUSB0"/>
+            <param name="baud" type="int" value="2000000"/>
+        </node>
+        <node if="$(arg ros_serial_tcp)" pkg="rosserial_python" type="serial_node.py" name="rosserial_python" args="tcp" output="screen"/>
+        <!-- <node if="$(arg calibrate_imu)" pkg="imu_calib" type="do_calib" name="imu_calib_node" output="screen">
+            <remap from="/imu" to="/hw_imu_data"/>
+            <param name="measurements" type="int" value="1000"/>
+        </node>
+        <node unless="$(arg calibrate_imu)" pkg="imu_calib" type="apply_calib" name="imu_corr_node">
+            <remap from="/raw" to="/hw_imu_data"/>
+            <remap from="/corrected" to="/corrected_imu_data"/>
+            <param name="calibrate_gyros" type="bool" value="false"/>
+            <param name="calib_file" type="string" value="$(find esp32_ros_controllers)/config/imu_calib.yaml"/>
+        </node> -->
+    </group>
+</launch>
