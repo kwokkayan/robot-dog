@@ -21,7 +21,8 @@ RUN source /etc/bash.bashrc && \
   python-rosinstall\ 
   python-rosinstall-generator\ 
   python-wstool\ 
-  build-essential &&\
+  build-essential\
+  ros-melodic-rosbridge-suite &&\
   rosdep init 
 
 FROM install_ros AS install_openssh
@@ -31,18 +32,17 @@ RUN apt-get install -y openssh-server
 RUN echo PermitRootLogin=yes >> /etc/ssh/sshd_config
 RUN echo $OS_USER:$OS_PASS | chpasswd
 
-# Uncomment for auto building
-# FROM install_openssh AS install_ik_engine_dep
-# # Copy local files
-# ARG IK_ENGINE_PATH
-# COPY ${IK_ENGINE_PATH} /IK_engine
-# # Build champ and update bash profile
-# WORKDIR /IK_engine
-# RUN rosdep update --include-eol-distros && \
-#   rosdep install --from-paths src --ignore-src -r -y --rosdistro melodic
+FROM install_openssh AS install_ik_engine_dep
+# Copy local files
+ARG IK_ENGINE_PATH
+COPY ${IK_ENGINE_PATH} /IK_engine
+# Build champ and update bash profile
+WORKDIR /IK_engine
+RUN rosdep update --include-eol-distros && \
+  rosdep install --from-paths src --ignore-src -r -y --rosdistro melodic
 
-# FROM install_ik_engine_dep AS build_ik_engine
-# WORKDIR /IK_engine
-# RUN source /opt/ros/melodic/setup.bash && catkin_make
-# RUN echo "source /IK_engine/devel/setup.bash" >> /etc/bash.bashrc
-# RUN apt autoremove -y
+FROM install_ik_engine_dep AS build_ik_engine
+WORKDIR /IK_engine
+RUN source /opt/ros/melodic/setup.bash && catkin_make
+RUN echo "source /IK_engine/devel/setup.bash" >> /etc/bash.bashrc
+RUN apt autoremove -y

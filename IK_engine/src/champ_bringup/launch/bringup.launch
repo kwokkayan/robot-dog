@@ -21,6 +21,9 @@
     <arg name="close_loop_odom"        default="false" />
 
     <group ns="$(arg robot_name)">
+        <!-- websocket -->
+        <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+        
         <param name="tf_prefix" value="$(arg robot_name)"/>
         <param if="$(arg gazebo)" name="use_sim_time" value="true"/>
 

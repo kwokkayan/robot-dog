@@ -7,10 +7,10 @@ services:
         - IK_ENGINE_PATH=./IK_engine
         - OS_USER=root
         - OS_PASS=123
-    volumes:
-      - type: bind
-        source: ./IK_engine
-        target: /IK_engine 
+    # volumes:
+    #   - type: bind
+    #     source: ./IK_engine
+    #     target: /IK_engine 
     devices:
       - "/dev/input/js0:/dev/input/js0"
       # - "/dev/rfcomm1:/dev/ttyUSB0"
