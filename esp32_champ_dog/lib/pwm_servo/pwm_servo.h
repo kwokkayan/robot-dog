@@ -2,11 +2,10 @@
 #include <Wire.h>
 #include <math.h>
 #include <map>
+#include "pwm_servo_offset.h"
 #ifndef PWM_SERVO_H
 #define PWM_SERVO_H
 #define I2C_ADDR 0x41
-#define LOWER_OFFSET 1.5707999999999998f
-#define SHOULDER_MARGIN 0.05f
 // #define I2C_ADDR 0x70
 typedef struct {
     float min_angle;
@@ -54,22 +53,21 @@ private:
     map_info_t map_info = { -PI_OVER_2, PI_OVER_2, 105, 500 };
     joint_servo_map joint_servo = {
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-        {"lf_hip_joint", {5, 0, 0.039616040000000075f - SHOULDER_MARGIN, 1.0f}},
-        {"lf_upper_leg_joint", {6, 0, 0.08566096000000001f, 1.0f}},
-        {"lf_lower_leg_joint", {7, 0, -0.05707607f + LOWER_OFFSET, -1.0f}},
+        {"lf_hip_joint", {5, 0, LF_HIP_JOINT_OFFSET, 1.0f}},
+        {"lf_upper_leg_joint", {6, 0, LF_UPPER_LEG_JOINT_OFFSET, 1.0f}},
+        {"lf_lower_leg_joint", {7, 0, LF_LOWER_LEG_JOINT_OFFSET, -1.0f}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-        //-0.039616039999999964, 0.05717711999999997, -1.59938856
-        {"rf_hip_joint", {10, 0, -0.039616039999999964f + SHOULDER_MARGIN, 1.0f}},
-        {"rf_upper_leg_joint", {9, 0, 0.05717711999999997f, -1.0f}},
-        {"rf_lower_leg_joint", {8, 0, -0.02858856f + LOWER_OFFSET, 1.0f}},
+        {"rf_hip_joint", {10, 0, RF_HIP_JOINT_OFFSET, 1.0f}},
+        {"rf_upper_leg_joint", {9, 0, RF_UPPER_LEG_JOINT_OFFSET, -1.0f}},
+        {"rf_lower_leg_joint", {8, 0, RF_LOWER_LEG_JOINT_OFFSET, 1.0f}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-        {"lh_hip_joint", {3, 0, -0.04764396000000004f - SHOULDER_MARGIN, -1.0f}},
-        {"lh_upper_leg_joint", {2, 0, 0.047542880000000176f, 1.0f}},
-        {"lh_lower_leg_joint", {1, 0, -0.07142271f + LOWER_OFFSET, -1.0f}},
+        {"lh_hip_joint", {3, 0, LH_HIP_JOINT_OFFSET, -1.0f}},
+        {"lh_upper_leg_joint", {2, 0, LH_UPPER_LEG_JOINT_OFFSET, 1.0f}},
+        {"lh_lower_leg_joint", {1, 0, LH_LOWER_LEG_JOINT_OFFSET, -1.0f}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
-        {"rh_hip_joint", {12, 0, -0.09511340000000001f + SHOULDER_MARGIN, -1.0f}},
-        {"rh_upper_leg_joint", {13, 0, -0.15226288f, -1.0f}},
-        {"rh_lower_leg_joint", {14, 0, 0.02858489f + LOWER_OFFSET, 1.0f}},
+        {"rh_hip_joint", {12, 0, RH_HIP_JOINT_OFFSET, -1.0f}},
+        {"rh_upper_leg_joint", {13, 0, RH_UPPER_LEG_JOINT_OFFSET, -1.0f}},
+        {"rh_lower_leg_joint", {14, 0, RH_LOWER_LEG_JOINT_OFFSET, 1.0f}},
     };
     // set 90 degrees as constraint
     int radiansToPWM(float);
