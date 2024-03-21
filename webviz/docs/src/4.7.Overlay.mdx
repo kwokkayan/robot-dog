@@ -1,0 +1,37 @@
+import { Overlay } from './jsx/allLiveEditors'
+
+# Overlay
+
+You can use `<Overlay />` to overlay DOM elements. The renderProp `renderItem` will be called with each component as well as 3d space projected coordinates, which you can use to absolutely position the DOM element on top of the 3d scene. This makes it easy to add interactive React components on top of your 3d scene.
+
+## Props
+
+| Name         | Type                                 | Default | Description                            |
+| ------------ | ------------------------------------ | ------- | -------------------------------------- |
+| `children`   | `T[]`                                | `[]`    | array of Overlay markers to render     |
+| `renderItem` | `(RenderItemInput<T>) => React.Node` |         | custom renderer to render each overlay |
+
+### Example
+
+```js
+type Overlay = {
+  pose: {
+    position: { x: number, y: number, z: number },
+    orientation: { x: number, y: number, z: number, w: number },
+  },
+};
+
+type RenderItemInput<T: Overlay> = {
+  item: T,
+  coordinates: ?{ x: number, y: number, z: number },
+  index: number,
+  dimension: {
+    width: number,
+    height: number,
+    left: number,
+    top: number,
+  },
+};
+```
+
+<Overlay />

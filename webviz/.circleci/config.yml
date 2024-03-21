@@ -1,0 +1,52 @@
+# Copyright (c) 2018-present, GM Cruise LLC
+#
+# This source code is licensed under the Apache License, Version 2.0,
+# found in the LICENSE file in the root directory of this source tree.
+# You may not use this file except in compliance with the License.
+
+version: 2
+jobs:
+  build:
+    machine: true
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - global-deps-{{ checksum "package-lock.json" }}
+            - global-deps-
+      - restore_cache:
+          keys:
+            - regl-worldview-deps-{{ checksum "packages/regl-worldview/package-lock.json" }}
+            - regl-worldview-deps-
+
+      # Get the commit we want to compare to, and print it out for verification.
+      - run: .circleci/find-screenshots-compare-commit.sh
+      - run: echo $REG_SUIT_EXPECTED_KEY
+
+      - run:
+          # We need to explicitly chown the current directory to root running npm scripts.
+          # Otherwise npm will run all scripts as non-root user (see https://docs.npmjs.com/cli/v8/using-npm/scripts#user)
+          # which causes various permission issues
+          command: docker run -v `pwd`:`pwd` -w `pwd` -it --rm -e CI -e CIRCLE_SHA1 -e REG_SUIT_EXPECTED_KEY -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION cruise/webviz-ci:0.0.15 /bin/bash -cx "chown -R root:root . && npm run ci"
+          no_output_timeout: 30m
+
+      - save_cache:
+          paths: ["node_modules"]
+          key: global-deps-{{ checksum "package-lock.json" }}
+      - save_cache:
+          paths: ["packages/regl-worldview/node_modules"]
+          key: regl-worldview-deps-{{ checksum "packages/regl-worldview/package-lock.json" }}
+
+      # Store artifacts
+      - store_artifacts:
+          path: __screenshots__
+
+      # Deploy when on master branch
+      - add_ssh_keys:
+          fingerprints:
+            - "d5:b8:7b:18:02:16:f1:90:6c:6d:34:b7:71:55:ae:b4"
+      - deploy:
+          name: "deploy docs if on master"
+          command: if [ $CIRCLE_BRANCH = "master" ]; then git config --global user.email "$GH_EMAIL" && git config --global user.name "$GH_NAME" && sudo chown -R circleci:circleci . && npm run docs-deploy; fi
