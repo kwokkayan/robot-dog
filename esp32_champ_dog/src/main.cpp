@@ -53,7 +53,7 @@ void setup()
   Serial.begin(115200);
 #else
   Serial2.begin(115200);
-  nh.getHardware()->setBaud(2000000);
+  nh.getHardware()->setBaud(1000000);
 #endif
 #endif
   nh.initNode();

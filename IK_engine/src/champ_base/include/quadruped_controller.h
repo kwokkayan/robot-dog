@@ -54,7 +54,7 @@ class QuadrupedController
 {
     ros::Subscriber cmd_vel_subscriber_;
     ros::Subscriber cmd_pose_subscriber_;
-    // ros::Subscriber cmd_imu_subscriber_;
+    ros::Subscriber cmd_imu_subscriber_;
 
     ros::Publisher joint_states_publisher_;   
     ros::Publisher joint_commands_publisher_;   
@@ -89,7 +89,7 @@ class QuadrupedController
     void cmdVelCallback_(const geometry_msgs::Twist::ConstPtr& msg);
     void cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& msg);
     /** IMU reading */
-    // void cmdImuCallback_(const sensor_msgs::Imu& msg);
+    void cmdImuCallback_(const sensor_msgs::Imu& msg);
 
     public:
         QuadrupedController(ros::NodeHandle *nh, ros::NodeHandle *pnh);
