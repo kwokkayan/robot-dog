@@ -1,6 +1,6 @@
 // uncomment this to enable wifi serial
 // #define ENABLE_WIFI
-#define USE_BLUETOOTH
+// #define USE_BLUETOOTH
 #ifdef ENABLE_WIFI
 #define WIFI_SSID "iinnii"
 #define WIFI_PASSWORD "qwerasdf"

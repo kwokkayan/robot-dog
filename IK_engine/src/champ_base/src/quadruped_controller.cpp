@@ -60,7 +60,7 @@ QuadrupedController::QuadrupedController(ros::NodeHandle *nh, ros::NodeHandle *p
 
     cmd_vel_subscriber_ = nh->subscribe("cmd_vel/smooth", 1, &QuadrupedController::cmdVelCallback_, this);
     cmd_pose_subscriber_ = nh->subscribe("body_pose", 1, &QuadrupedController::cmdPoseCallback_, this);
-    // cmd_imu_subscriber_ = nh->subscribe("/imu/data", 1, &QuadrupedController::cmdImuCallback_, this);
+    cmd_imu_subscriber_ = nh->subscribe("/imu/data", 1, &QuadrupedController::cmdImuCallback_, this);
     
     if(publish_joint_control_)
     {
@@ -136,9 +136,20 @@ void QuadrupedController::cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& 
     req_pose_.position.z = msg->position.z +  gait_config_.nominal_height;
 }
 
-// void QuadrupedController::cmdImuCallback_(const sensor_msgs::Imu& msg) {
-    
-// }
+void QuadrupedController::cmdImuCallback_(const sensor_msgs::Imu& msg) {
+    tf::Quaternion quat(
+    msg.orientation.x,
+    msg.orientation.y,
+    msg.orientation.z,
+    msg.orientation.w);
+    tf::Matrix3x3 m(quat);
+    double roll, pitch, yaw;
+    m.getRPY(roll, pitch, yaw);
+    // TODO: set another var
+    ROS_INFO("%f %f", roll, pitch);
+    req_pose_.orientation.roll = -roll;
+    req_pose_.orientation.pitch = -pitch;
+}
 
 void QuadrupedController::publishJoints_(float target_joints[12])
 {
