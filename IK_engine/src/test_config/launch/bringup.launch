@@ -4,6 +4,7 @@
     <arg name="joints_map_file"        default="$(find test_config)/config/joints/joints.yaml"/> <!--Path to list of joint names. Do not touch this. -->
     <arg name="links_map_file"         default="$(find test_config)/config/links/links.yaml"/> <!-- Path to list of link names. Do not touch this. -->
     <arg name="gait_config_file"       default="$(find test_config)/config/gait/gait.yaml"/>  <!-- Path to gait parameters. Do not touch this. -->
+    <arg name="pid_config_file"        default="$(find test_config)/config/pid/pid.yaml"/>  <!-- Path to gait parameters. Do not touch this. -->
     <arg name="description_file"       default="$(find test_config)/urdf/quadruped.urdf.xacro"/> <!-- Path to URDF file Do not touch this. -->
     <arg name="gazebo"                 default="false" /> <!-- Set to true during simulation. This is auto-set to true from gazebo.launch. -->
     <arg name="rviz"                   default="false"/> <!-- Set to true to run rviz in parallel. -->
@@ -27,6 +28,7 @@
         <arg name="joints_map_file"        value="$(arg joints_map_file)"/>
         <arg name="links_map_file"         value="$(arg links_map_file)"/>
         <arg name="gait_config_file"       value="$(arg gait_config_file)"/>
+        <arg name="pid_config_file"        value="$(arg pid_config_file)"/>
         <arg name="description_file"       value="$(arg description_file)"/>
         <arg name="has_imu"                value="$(arg has_imu)"/>
         <arg name="gazebo"                 value="$(arg gazebo)"/>

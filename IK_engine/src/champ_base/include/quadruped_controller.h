@@ -49,50 +49,60 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 
 #include <sensor_msgs/Imu.h>
+#include <control_toolbox/pid.h>
+#include <std_msgs/Float64.h>
 
 class QuadrupedController
 {
-    ros::Subscriber cmd_vel_subscriber_;
-    ros::Subscriber cmd_pose_subscriber_;
-    ros::Subscriber cmd_imu_subscriber_;
+  ros::Subscriber cmd_vel_subscriber_;
+  ros::Subscriber cmd_pose_subscriber_;
+  ros::Subscriber cmd_imu_subscriber_;
 
-    ros::Publisher joint_states_publisher_;   
-    ros::Publisher joint_commands_publisher_;   
-    ros::Publisher foot_contacts_publisher_;
+  ros::Publisher joint_states_publisher_;
+  ros::Publisher joint_commands_publisher_;
+  ros::Publisher foot_contacts_publisher_;
 
-    ros::Timer loop_timer_;
+  ros::Timer loop_timer_;
 
-    champ::Velocities req_vel_;
-    champ::Pose req_pose_;
-    // champ::Quaternion curr_orientation_;
-    // champ::Velocities curr_accel_;
-    
-    champ::GaitConfig gait_config_;
+  champ::Velocities req_vel_;
+  champ::Pose req_pose_;
+  champ::Pose curr_pose_; // defined by imu data
+  // champ::Velocities curr_accel_;
 
-    champ::QuadrupedBase base_;
-    champ::BodyController body_controller_;
-    champ::LegController leg_controller_;
-    champ::Kinematics kinematics_;
+  champ::GaitConfig gait_config_;
 
-    std::vector<std::string> joint_names_;
+  champ::QuadrupedBase base_;
+  champ::BodyController body_controller_;
+  champ::LegController leg_controller_;
+  champ::Kinematics kinematics_;
 
-    bool publish_foot_contacts_;
-    bool publish_joint_states_;
-    bool publish_joint_control_;
-    bool in_gazebo_;
+  std::vector<std::string> joint_names_;
 
-    void controlLoop_(const ros::TimerEvent& event);
-    
-    void publishJoints_(float target_joints[12]);
-    void publishFootContacts_(bool foot_contacts[4]);
+  control_toolbox::Pid balance_roll_pid_;
+  control_toolbox::Pid balance_pitch_pid_;
 
-    void cmdVelCallback_(const geometry_msgs::Twist::ConstPtr& msg);
-    void cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& msg);
-    /** IMU reading */
-    void cmdImuCallback_(const sensor_msgs::Imu& msg);
+  bool publish_foot_contacts_;
+  bool publish_joint_states_;
+  bool publish_joint_control_;
+  bool in_gazebo_;
 
-    public:
-        QuadrupedController(ros::NodeHandle *nh, ros::NodeHandle *pnh);
+  void controlLoop_(const ros::TimerEvent& event);
+
+  void publishJoints_(float target_joints[12]);
+  void publishFootContacts_(bool foot_contacts[4]);
+
+  void cmdVelCallback_(const geometry_msgs::Twist::ConstPtr& msg);
+  void cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& msg);
+  /** IMU reading */
+  void cmdImuCallback_(const sensor_msgs::Imu& msg);
+  champ::Pose updatePids(ros::Duration dt);
+
+  ros::Publisher req_pitch_pub;
+  ros::Publisher req_roll_pub;
+  ros::Publisher curr_pitch_pub;
+  ros::Publisher curr_roll_pub;
+public:
+  QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* pnh);
 };
 
 #endif

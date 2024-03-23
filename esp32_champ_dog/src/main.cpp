@@ -28,7 +28,8 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &msg)
 void handleMsgs()
 {
   static u_int64_t curr = millis(), prev = 0;
-  if ((curr = millis()) - prev > 50) {
+  if ((curr = millis()) - prev > 5)
+  {
     prev = curr;
     champ_imu = mpu.composeMsg();
     champ_imu.header.stamp = nh.now();

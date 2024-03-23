@@ -19,6 +19,7 @@ find_package(catkin
     urdf
     champ
     message_filters
+    control_toolbox
 )
 
 catkin_package(
