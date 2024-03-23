@@ -26,15 +26,15 @@ RUN source /etc/bash.bashrc && \
   rosdep init 
 
 FROM install_ros AS install_openssh
-ARG OS_USER
-ARG OS_PASS
+ARG OS_USER root
+ARG OS_PASS 123
 RUN apt-get install -y openssh-server
 RUN echo PermitRootLogin=yes >> /etc/ssh/sshd_config
 RUN echo $OS_USER:$OS_PASS | chpasswd
 
 FROM install_openssh AS install_ik_engine_dep
 # Copy local files
-ARG IK_ENGINE_PATH
+ARG IK_ENGINE_PATH ./IK_engine
 COPY ${IK_ENGINE_PATH} /IK_engine
 # Build champ and update bash profile
 WORKDIR /IK_engine
