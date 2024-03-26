@@ -12,10 +12,7 @@ public:
     sensor_msgs::Imu composeMsg();
     void printIMUData();
     void getAccelOffset();
-    void calibrateAccel();
 private:
-    float calcDegreeToRadians(float);
-    float calcGToMps(float);
     sensor_msgs::Imu out;
 };
 #endif

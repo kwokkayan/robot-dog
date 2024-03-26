@@ -81,6 +81,7 @@ QuadrupedController::QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* p
   req_roll_pub = nh->advertise<std_msgs::Float64>("req_roll", 1);
   curr_pitch_pub = nh->advertise<std_msgs::Float64>("curr_pitch", 1);
   curr_roll_pub = nh->advertise<std_msgs::Float64>("curr_roll", 1);
+  
   gait_config_.knee_orientation = knee_orientation.c_str();
 
   base_.setGaitConfig(gait_config_);
@@ -98,14 +99,14 @@ QuadrupedController::QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* p
   balance_pitch_pid_.init(ros::NodeHandle(*nh, "balance_pitch_pid"));
 }
 
-champ::Pose QuadrupedController::updatePids(ros::Duration dt)
+champ::Pose QuadrupedController::updatePosePids(ros::Duration dt)
 {
   champ::Pose out;
   double balanced_roll = balance_roll_pid_.computeCommand(req_pose_.orientation.roll - curr_pose_.orientation.roll, dt);
   double balanced_pitch = balance_pitch_pid_.computeCommand(req_pose_.orientation.pitch - curr_pose_.orientation.pitch, dt);
+  
   auto msg = std_msgs::Float64();
   msg.data = balanced_pitch;
-
   req_pitch_pub.publish(msg);
   msg.data = balanced_roll;
   req_roll_pub.publish(msg);
@@ -132,8 +133,8 @@ void QuadrupedController::controlLoop_(const ros::TimerEvent& event)
   // body_controller_.poseCommand(target_foot_positions, new_pose);
   // leg_controller_.velocityCommand(target_foot_positions, req_vel_, rosTimeToChampTime(ros::Time::now()));
   // kinematics_.inverse(target_joint_positions, target_foot_positions);
-  champ::Pose new_pose = updatePids(event.last_real - event.current_real);
-  body_controller_.poseCommand(target_foot_positions, new_pose);
+  champ::Pose balance_pose = updatePosePids(event.last_real - event.current_real);
+  body_controller_.poseCommand(target_foot_positions, balance_pose);
   leg_controller_.velocityCommand(target_foot_positions, req_vel_, rosTimeToChampTime(ros::Time::now()));
   kinematics_.inverse(target_joint_positions, target_foot_positions);
 
@@ -168,12 +169,12 @@ void QuadrupedController::cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& 
   req_pose_.position.z = msg->position.z + gait_config_.nominal_height;
 }
 
-void QuadrupedController::cmdImuCallback_(const sensor_msgs::Imu& msg) {
+void QuadrupedController::cmdImuCallback_(const sensor_msgs::Imu::ConstPtr& msg) {
   tf::Quaternion quat(
-    msg.orientation.x,
-    msg.orientation.y,
-    msg.orientation.z,
-    msg.orientation.w);
+    msg->orientation.x,
+    msg->orientation.y,
+    msg->orientation.z,
+    msg->orientation.w);
   tf::Matrix3x3 m(quat);
   double roll, pitch, yaw;
 
