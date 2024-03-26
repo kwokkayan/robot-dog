@@ -19,15 +19,14 @@ void MPU_9250::begin_hw()
       delay(5000);
     }
   }
-  this->setLPF(42);
-  this->setSampleRate(1000);
+  this->setLPF(5);
+  this->setSampleRate(200);
   this->dmpBegin(DMP_FEATURE_6X_LP_QUAT |        // Enable 6-axis quat
                      DMP_FEATURE_GYRO_CAL |      // Use gyro calibration
                      DMP_FEATURE_SEND_CAL_GYRO | // send angular velocity
                      DMP_FEATURE_SEND_RAW_ACCEL, // send acceleration
-                 20);                            // Set DMP FIFO rate to 20 Hz
+                 200);                            // Set DMP FIFO rate to 20 Hz
   delay(100);
-  this->calibrateAccel();
   // DMP_FEATURE_LP_QUAT can also be used. It uses the
   // accelerometer in low-power mode to estimate quat's.
   // DMP_FEATURE_LP_QUAT and 6X_LP_QUAT are mutually exclusive
@@ -40,12 +39,12 @@ void MPU_9250::begin_hw()
   // From datasheet:
   // gyro Total RMS noise = 0.1 degree/s
   // accel Total RMS noise = 8 mG
-  out.angular_velocity_covariance[0] = 0.1 * RadianConst;
+  out.angular_velocity_covariance[0] = 0.1;
   out.angular_velocity_covariance[0] *= out.angular_velocity_covariance[0];
   out.angular_velocity_covariance[4] = out.angular_velocity_covariance[0];
   out.angular_velocity_covariance[8] = out.angular_velocity_covariance[0];
 
-  out.linear_acceleration_covariance[0] = 0.008 * G;
+  out.linear_acceleration_covariance[0] = 0.008;
   out.linear_acceleration_covariance[0] *= out.linear_acceleration_covariance[0];
   out.linear_acceleration_covariance[4] = out.linear_acceleration_covariance[0];
   out.linear_acceleration_covariance[8] = out.linear_acceleration_covariance[0];
@@ -78,13 +77,13 @@ void MPU_9250::printIMUData()
   float q2 = this->calcQuat(this->qy);
   float q3 = this->calcQuat(this->qz);
   // angular velocity
-  float gyroX = this->calcDegreeToRadians(this->calcGyro(this->gx));
-  float gyroY = this->calcDegreeToRadians(this->calcGyro(this->gy));
-  float gyroZ = this->calcDegreeToRadians(this->calcGyro(this->gz));
+  float gyroX = this->calcGyro(this->gx);
+  float gyroY = this->calcGyro(this->gy);
+  float gyroZ = this->calcGyro(this->gz);
   // acceleration
-  float accelX = this->calcGToMps(this->calcAccel(this->ax));
-  float accelY = this->calcGToMps(this->calcAccel(this->ay));
-  float accelZ = this->calcGToMps(this->calcAccel(this->az));
+  float accelX = this->calcAccel(this->ax);
+  float accelY = this->calcAccel(this->ay);
+  float accelZ = this->calcAccel(this->az);
 
   SerialPort.println("Accel: " + String(accelX) + ", " +
                      String(accelY) + ", " + String(accelZ) + " mps^2");
@@ -105,13 +104,13 @@ sensor_msgs::Imu MPU_9250::composeMsg()
   out.orientation.y = this->calcQuat(this->qy);
   out.orientation.z = this->calcQuat(this->qz);
 
-  out.angular_velocity.x = this->calcDegreeToRadians(this->calcGyro(this->gx));
-  out.angular_velocity.y = this->calcDegreeToRadians(this->calcGyro(this->gy));
-  out.angular_velocity.z = this->calcDegreeToRadians(this->calcGyro(this->gz));
+  out.angular_velocity.x = this->calcGyro(this->gx);
+  out.angular_velocity.y = this->calcGyro(this->gy);
+  out.angular_velocity.z = this->calcGyro(this->gz);
 
-  out.linear_acceleration.x = this->calcGToMps(this->calcAccel(this->ax));
-  out.linear_acceleration.y = this->calcGToMps(this->calcAccel(this->ay));
-  out.linear_acceleration.z = this->calcGToMps(this->calcAccel(this->az));
+  out.linear_acceleration.x = this->calcAccel(this->ax);
+  out.linear_acceleration.y = this->calcAccel(this->ay);
+  out.linear_acceleration.z = this->calcAccel(this->az);
 
   return out;
 }
@@ -140,34 +139,4 @@ void MPU_9250::getAccelOffset()
   SerialPort.println(accel_bias[2]);
   SerialPort.println();
   delay(100);
-}
-
-void MPU_9250::calibrateAccel()
-{
-  long accel_bias[3] = {0, 0, 0};
-  uint16_t accelsensitivity = 16384; // = 16384 LSB/g
-  for (int i = 0; i < CALIBRATE_SAMPLE_SIZE; i++) {
-    this->dmpUpdateFifo();
-    accel_bias[0] += (long) this->ax;
-    accel_bias[1] += (long) this->ay;
-    accel_bias[2] += (long) this->az - accelsensitivity;
-  }
-  accel_bias[0] /= CALIBRATE_SAMPLE_SIZE;
-  accel_bias[1] /= CALIBRATE_SAMPLE_SIZE;
-  accel_bias[2] /= CALIBRATE_SAMPLE_SIZE;
-
-  accel_bias[0] /= 8;
-  accel_bias[1] /= 8;
-  accel_bias[2] /= 8;
-  mpu_set_accel_bias_6500_reg(accel_bias);
-}
-
-float MPU_9250::calcDegreeToRadians(float v)
-{
-  return v * RadianConst;
-}
-
-float MPU_9250::calcGToMps(float v)
-{
-  return v * G;
 }

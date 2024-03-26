@@ -66,8 +66,7 @@ class QuadrupedController
 
   champ::Velocities req_vel_;
   champ::Pose req_pose_;
-  champ::Pose curr_pose_; // defined by imu data
-  // champ::Velocities curr_accel_;
+  champ::Pose curr_pose_;
 
   champ::GaitConfig gait_config_;
 
@@ -94,13 +93,15 @@ class QuadrupedController
   void cmdVelCallback_(const geometry_msgs::Twist::ConstPtr& msg);
   void cmdPoseCallback_(const geometry_msgs::Pose::ConstPtr& msg);
   /** IMU reading */
-  void cmdImuCallback_(const sensor_msgs::Imu& msg);
-  champ::Pose updatePids(ros::Duration dt);
+  void cmdImuCallback_(const sensor_msgs::Imu::ConstPtr& msg);
+  /** update Pids */
+  champ::Pose updatePosePids(ros::Duration dt);
 
   ros::Publisher req_pitch_pub;
   ros::Publisher req_roll_pub;
   ros::Publisher curr_pitch_pub;
   ros::Publisher curr_roll_pub;
+
 public:
   QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* pnh);
 };
