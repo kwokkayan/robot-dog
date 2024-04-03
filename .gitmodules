@@ -4,3 +4,9 @@
 [submodule "IK_engine/src/champ_teleop"]
 	path = IK_engine/src/champ_teleop
 	url = https://github.com/chvmp/champ_teleop
+[submodule "champ_setup_assistant"]
+	path = champ_setup_assistant
+	url = https://github.com/chvmp/champ_setup_assistant.git
+[submodule "champ_teleop"]
+	path = champ_teleop
+	url = https://github.com/chvmp/champ_teleop.git
