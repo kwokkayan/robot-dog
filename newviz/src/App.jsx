@@ -4,10 +4,11 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import './TestButton.jsx'
 import { RosContext } from './contexts/RosContext.js'
-import ROSLIB from 'roslib';
+import ROSLIB from 'roslib'
 import TestButton from './TestButton/'
 import { Joystick } from 'react-joystick-component'
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { Typography } from '@mui/material'
 
 
 // function MyJoystick() {
@@ -109,6 +110,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <Typography>Hello there</Typography>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}!
