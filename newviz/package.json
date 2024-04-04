@@ -11,14 +11,23 @@
   },
   "dependencies": {
     "@mui/material": "^5.15.14",
+    "@react-three/drei": "^9.102.6",
+    "@react-three/fiber": "^8.16.0",
     "axios": "^1.6.8",
+    "babel-core": "^6.26.3",
+    "perf_hooks": "0.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-joystick-component": "^6.2.1",
     "react-router-dom": "^6.22.3",
+    "react-use-websocket": "^4.8.1",
     "ros3d": "^1.1.0",
     "rosbag": "^4.0.1",
     "roslib": "^1.4.1",
-    "urdf-loader": "^0.12.1"
+    "socket.io": "^4.7.5",
+    "three": "^0.162.0",
+    "urdf-loader": "^0.12.1",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
