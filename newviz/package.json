@@ -13,6 +13,8 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource-variable/jura": "^5.0.19",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.14",
     "@react-three/drei": "^9.102.6",
     "@react-three/fiber": "^8.16.0",

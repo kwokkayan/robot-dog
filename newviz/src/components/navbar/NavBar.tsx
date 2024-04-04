@@ -1,39 +1,38 @@
-import {
-    AppBar,
-    Badge,
-    Box,
-    IconButton,
-    Toolbar,
-    Typography,
-  } from "@mui/material";
-  import LinkButton from "../linkbutton";
-  import { RosContext } from "../../contexts/RosContext";
-  import { useContext, useEffect, useState } from "react";
-  import { useNavigate } from "react-router-dom";
-  import CSS from 'csstype';
-  
-  function NavBar() {
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import LinkButton  from '../linkbutton/LinkButton';
+import { Link } from 'react-router-dom';
+import "@fontsource-variable/jura";
 
-    const navigate = useNavigate();
-  
-    const logoStyle: CSS.Properties = {    
-      height: "64px",
-      width: "64px",
-      mixBlendMode: "multiply",
-    }
-  
-    return (
-      <AppBar color={"primary"}>
+export default function ButtonAppBar() {
+const [pagename, setPagename] = React.useState("Robot Dog");
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed">
         <Toolbar>
-          <img src="/logo.jpg" alt="logo" style={logoStyle}/>
-          <Box sx={{ flexGrow: 1, ml: 3 }}>
-            <LinkButton color="inherit" href="/" label="Home" />
-          </Box>
-          <Box sx={{ display: "flex" }}>
-          </Box>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw' }}>
+          <Button component={Link} color={"inherit"} to={"/"} sx={{ fontFamily: 'Jura, sans-serif', fontWeight: 700, fontSize: '1.5rem', textAlign: 'center' }}>{pagename}</Button>
+          </div>
+          <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"}></LinkButton>
+          <LinkButton color={"inherit"} href={"/map"} label={"Map"}></LinkButton>
+          <LinkButton color={"inherit"} href={"/live"} label={"Live"}></LinkButton>
         </Toolbar>
       </AppBar>
-    );
-  }
-  export default NavBar;
-  
+    </Box>
+  );
+}

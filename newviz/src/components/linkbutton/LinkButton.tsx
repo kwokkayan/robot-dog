@@ -1,11 +1,13 @@
-import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-function LinkButton({ color, href, label }) {
+const LinkButton = ({ color, href, label }) => {
   return (
-    <Button color={color} component={Link} href={href} to={href}>
+    <Button color={color} component={Link} to={href}>
       {label}
     </Button>
   );
-}
+};
+
 export default LinkButton;

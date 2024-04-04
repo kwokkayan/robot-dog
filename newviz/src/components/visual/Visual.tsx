@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Visual({ color, href, label }) {
   return (
-    <div>Hello there</div>
+    <div>{label}</div>
   );
 }
-export default LinkButton;
+export default Visual;

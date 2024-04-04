@@ -9,6 +9,13 @@ import TestButton from './TestButton/'
 import { Joystick } from 'react-joystick-component'
 import { Link } from "react-router-dom"
 import { Typography } from '@mui/material'
+import NavBar from './components/navbar/NavBar'
+import Visual from './components/visual/Visual'
+import { Button } from "@mui/material";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Map from './components/map/Map'
+import Home from './components/home/Home'
+import Live from './components/live/Live'
 
 
 // function MyJoystick() {
@@ -28,6 +35,9 @@ function App() {
   const [ msg, setMsg ] = useState("");
   const [robot, setRobot] = useState({"joints": [1, 2, 3, 4]})
   const [rosInstance, setRosInstance] = useState(undefined);
+  // const [color, setColor] = useState("#05abcd");
+  // const [href, setHref] = useState("/Joystick");
+  // const [label, setLabel] = useState("link button");
 
   
   const handleMove = (event) => {
@@ -95,40 +105,18 @@ function App() {
 
   return (
     <RosContext.Provider value={rosInstance}>
-      <div>
-        <a href="/Joystick" target="_blank">
-          <button>Use Joystick!</button>
-        </a>
-        {/* <button id="joystickButton" onClick={console.log("joystickButton clicked")}>Use Joytick </button> */}
-      </div>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <Typography>Hello there</Typography>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}!
-        </button>
-        <button onClick={() => setRobot({"joints": robot.joints.concat([count])})}>
-          add count to robot joint
-        </button>
-        <TestButton count={count}></TestButton>
-        <Joystick size={100} sticky={false} baseColor="#ffa500" stickColor="#ffcc66" move={handleMove } end={handleEnd} ></Joystick>
-        <p>{msg}</p>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/visual" element={<Visual />} />
+        <Route path="/map" element={<Map />} />
+        <Route path="/live" element={<Live />} />
+      </Routes>
+        {/* <Joystick size={100} sticky={false} baseColor="#ffa500" stickColor="#ffcc66" move={handleMove } end={handleEnd} ></Joystick> */}
+      </BrowserRouter>
     </RosContext.Provider>
+    
   )
 }
 
