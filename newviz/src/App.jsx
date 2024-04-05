@@ -109,7 +109,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/visual" element={<Visual />} />
+        <Route path="/visual" element={<Visual label="simulator"/>} />
         <Route path="/map" element={<Map />} />
         <Route path="/live" element={<Live />} />
       </Routes>
