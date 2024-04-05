@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="quadruped" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:arg name="use_nominal_extrinsics" default="false" />
+     <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
     <link name="base_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -20,6 +22,9 @@
             </geometry>
         </collision>
     </link>
+    <xacro:sensor_d435i parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+        <origin xyz="0.075 0 0.068" rpy="0 0 0"/>
+    </xacro:sensor_d435i>
     <link name="f_bumper_link">
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>

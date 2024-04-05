@@ -39,12 +39,12 @@ void MPU_9250::begin_hw()
   // From datasheet:
   // gyro Total RMS noise = 0.1 degree/s
   // accel Total RMS noise = 8 mG
-  out.angular_velocity_covariance[0] = 0.1;
+  out.angular_velocity_covariance[0] = 0.1 * RadianConst;
   out.angular_velocity_covariance[0] *= out.angular_velocity_covariance[0];
   out.angular_velocity_covariance[4] = out.angular_velocity_covariance[0];
   out.angular_velocity_covariance[8] = out.angular_velocity_covariance[0];
 
-  out.linear_acceleration_covariance[0] = 0.008;
+  out.linear_acceleration_covariance[0] = 0.008 * G;
   out.linear_acceleration_covariance[0] *= out.linear_acceleration_covariance[0];
   out.linear_acceleration_covariance[4] = out.linear_acceleration_covariance[0];
   out.linear_acceleration_covariance[8] = out.linear_acceleration_covariance[0];
@@ -104,13 +104,13 @@ sensor_msgs::Imu MPU_9250::composeMsg()
   out.orientation.y = this->calcQuat(this->qy);
   out.orientation.z = this->calcQuat(this->qz);
 
-  out.angular_velocity.x = this->calcGyro(this->gx);
-  out.angular_velocity.y = this->calcGyro(this->gy);
-  out.angular_velocity.z = this->calcGyro(this->gz);
+  out.angular_velocity.x = this->calcGyro(this->gx) * RadianConst;
+  out.angular_velocity.y = this->calcGyro(this->gy) * RadianConst;
+  out.angular_velocity.z = this->calcGyro(this->gz) * RadianConst;
 
-  out.linear_acceleration.x = this->calcAccel(this->ax);
-  out.linear_acceleration.y = this->calcAccel(this->ay);
-  out.linear_acceleration.z = this->calcAccel(this->az);
+  out.linear_acceleration.x = this->calcAccel(this->ax) * G;
+  out.linear_acceleration.y = this->calcAccel(this->ay) * G;
+  out.linear_acceleration.z = this->calcAccel(this->az) * G;
 
   return out;
 }
