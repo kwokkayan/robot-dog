@@ -34,6 +34,7 @@ if [[ $TARGET == "humble" ]]; then
     DOCKER_ARGS+=("--pid=host")
     DOCKER_ARGS+=("-v /opt/nvidia/vpi2:/opt/nvidia/vpi2")
     DOCKER_ARGS+=("-v /usr/share/vpi2:/usr/share/vpi2")
+    DOCKER_ARGS+=("-v /dev/*:/dev/*")
 
     # If jtop present, give the container access
     if [[ $(getent group jtop) ]]; then
@@ -48,7 +49,6 @@ docker run -it --rm \
     --privileged \
     --network host \
     ${DOCKER_ARGS[@]} \
-    -v /dev/*:/dev/* \
     -v /etc/localtime:/etc/localtime:ro \
     --name "$CONTAINER_NAME" \
     --runtime nvidia \
