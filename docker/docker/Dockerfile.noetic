@@ -1,8 +1,8 @@
-# Dockerfile.melodic
+# Dockerfile.noetic
 #
 # To run Champ packages
 
-FROM ros:melodic-ros-base
+FROM ros:noetic-ros-base
 
 # Override the default SHELL
 
@@ -12,6 +12,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update
 RUN apt-get install -y \
+    git \
     ssh \
     sudo
 
@@ -55,18 +56,18 @@ RUN chmod 644 /root/.ssh/id_rsa.pub
 
 RUN ssh-keyscan github.com > /root/.ssh/known_hosts
 
-# Create ros_custom-melodic workspace
+# Create ros_custom-noetic workspace
 
-RUN mkdir -p /workspaces/ros_custom-melodic/src
+RUN mkdir -p /workspaces/ros_custom-noetic/src
 
-WORKDIR /workspaces/ros_custom-melodic
-RUN git clone --recurse-submodules git@github.com:kwokkayan/robot-dog.git -b ros_custom-melodic src/
+WORKDIR /workspaces/ros_custom-noetic
+RUN git clone --recurse-submodules git@github.com:kwokkayan/robot-dog.git -b ros_custom-noetic src/
 
 RUN apt-get install -y \
-    ros-melodic-rosbridge-suite
+    ros-noetic-rosbridge-suite
 
 RUN rosdep install --from-paths src --ignore-src -r -y
-RUN source /opt/ros/melodic/setup.bash && catkin_make
+RUN source /opt/ros/noetic/setup.bash && catkin_make
 
 # Change workspaces owership
 

@@ -1,0 +1,161 @@
+# Dockerfile.bridge
+#
+# To run ros1_bridge package
+
+# Stage 1
+#
+# Build ros melodic from source
+
+FROM ubuntu:focal AS melodic_build
+
+SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ROS_PYTHON_VERSION=3
+
+RUN apt-get update
+RUN apt-get install -y \
+    curl \
+    gnupg2
+
+RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros.list
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+
+RUN apt-get update
+RUN apt-get install -y \
+    python3-rosdep \
+    python3-rosinstall-generator \
+    python3-rosinstall \
+    python3-vcstool \
+    python-is-python3 \
+    build-essential
+
+RUN rosdep init
+RUN rosdep update --include-eol-distros
+
+RUN mkdir -p /workspaces/ros/melodic/src
+
+WORKDIR /workspaces/ros/melodic
+RUN rosinstall_generator ros_comm --rosdistro melodic --deps --tar > melodic-ros_comm.rosinstall
+RUN vcs import src < melodic-ros_comm.rosinstall
+
+RUN rosdep install --from-paths src --ignore-src --rosdistro melodic -y
+
+RUN ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
+
+# Stage 2
+#
+# Build ros humble from source
+
+FROM ubuntu:jammy AS humble_build
+
+SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    python3-flake8 \
+    python3-flake8-blind-except \
+    python3-flake8-builtins \
+    python3-flake8-class-newline \
+    python3-flake8-comprehensions \
+    python3-flake8-deprecated \
+    python3-flake8-docstrings \
+    python3-flake8-import-order \
+    python3-flake8-quotes \
+    python3-pip \
+    python3-pytest \
+    python3-pytest-cov \
+    python3-pytest-repeat \
+    python3-pytest-rerunfailures \
+    python3-rosdep2 \
+    python3-setuptools \
+    wget
+
+RUN python3 -m pip install -U colcon-common-extensions vcstool
+
+RUN mkdir -p /workspaces/ros/humble/src
+
+WORKDIR /workspaces/ros/humble
+
+RUN vcs import --input https://raw.githubusercontent.com/ros2/ros2/humble/ros2.repos src
+
+RUN rosdep update
+
+RUN rosdep install --from-paths src --ignore-src -y --skip-keys "fastcdr rti-connext-dds-6.0.1 urdfdom_headers"
+
+RUN colcon build --symlink-install
+
+# Stage 3
+#
+# Build ros1_bridge package
+
+FROM humble_build AS base
+
+SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install prerequisites
+
+RUN apt-get update
+RUN apt-get install -y \
+    sudo \
+    git
+
+RUN apt-get upgrade -y
+
+# Setup non-root admin user
+
+ARG USERNAME
+ARG USER_UID
+ARG USER_GID
+
+# Create the 'admin' user if not already exists
+
+RUN if [ ! $(getent passwd ${USERNAME}) ]; then \
+        groupadd --gid ${USER_GID} ${USERNAME} ; \
+        useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} ; \
+    fi
+
+# Update 'admin' user
+
+RUN echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} \
+    && chmod 0440 /etc/sudoers.d/${USERNAME} \
+    && adduser ${USERNAME} video && adduser ${USERNAME} plugdev && adduser ${USERNAME} sudo
+
+ENV USERNAME=${USERNAME}
+ENV USER_GID=${USER_GID}
+ENV USER_UID=${USER_UID}
+
+# Copy the built ros melodic and humble distros
+
+RUN mkdir -p /workspaces/ros
+
+COPY --from=melodic_build /workspaces/ros/melodic /workspaces/ros/melodic
+
+#COPY --from=humble_build /workspaces/ros/humble /workspaces/ros/humble
+
+# Create ros_custom-bridge workspace
+
+RUN mkdir -p /workspaces/ros_custom-bridge/src
+
+WORKDIR /workspaces/ros_custom-bridge/src
+RUN git clone https://github.com/ros2/ros1_bridge.git
+
+WORKDIR /workspaces/ros_custom-bridge
+
+RUN apt-get update
+RUN apt-get install -y \
+    ros-core-dev
+
+RUN source /workspaces/ros/humble/install/local_setup.bash \
+    && colcon build --symlink-install --cmake-force-configure
+
+# Change workspaces owership
+
+RUN chown -R admin:admin /workspaces
