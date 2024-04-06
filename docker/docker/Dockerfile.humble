@@ -4,6 +4,8 @@
 
 FROM nvcr.io/nvidia/isaac/ros:aarch64-ros2_humble_b7e1ed6c02a6fa3c1c7392479291c035
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Setup non-root admin user
 
 ARG USERNAME
@@ -15,6 +17,7 @@ ARG USER_GID
 RUN apt-get update
 RUN apt-get install -y \
     sudo \
+    ssh \
     udev
 
 RUN apt-get upgrade -y
@@ -53,6 +56,21 @@ ENV USERNAME=${USERNAME}
 ENV USER_GID=${USER_GID}
 ENV USER_UID=${USER_UID}
 
+# Get SSH keypairs
+
+ARG SSH_PRV_KEY
+ARG SSH_PUB_KEY
+
+RUN mkdir -p /root/.ssh
+
+RUN echo "$SSH_PRV_KEY" > /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
+
+RUN echo "$SSH_PUB_KEY" > /root/.ssh/id_rsa.pub
+RUN chmod 644 /root/.ssh/id_rsa.pub
+
+RUN ssh-keyscan github.com > /root/.ssh/known_hosts
+
 # Install realsense dependencies
 
 COPY scripts/build-librealsense.sh /opt/realsense/build-librealsense.sh
@@ -74,17 +92,11 @@ COPY udev_rules/99-realsense-libusb-custom.rules /etc/udev/rules.d/99-realsense-
 
 RUN mkdir -p /workspaces/ros_custom-humble/src
 
+WORKDIR /workspaces/ros_custom-humble
+RUN git clone git@github.com:kwokkayan/robot-dog.git -b ros_custom-humble src/
+
 WORKDIR /workspaces/ros_custom-humble/src
-RUN git clone https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git
-RUN git clone https://github.com/IntelRealSense/realsense-ros.git -b 4.51.1
-RUN git clone --recurse-submodules https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_nvblox.git
-
-WORKDIR /workspaces/ros_custom-humble/src/isaac_ros_nvblox
 RUN git lfs pull
-
-WORKDIR /workspaces/ros_custom-humble/src/isaac_ros_nvblox/nvblox_examples/realsense_splitter
-RUN git update-index --assume-unchanged COLCON_IGNORE
-RUN rm COLCON_IGNORE
 
 WORKDIR /workspaces/ros_custom-humble
 

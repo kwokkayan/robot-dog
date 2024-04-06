@@ -71,6 +71,8 @@ RUN apt-get install -y \
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN source /opt/ros/noetic/setup.bash && catkin_make
 
+RUN rm -r /workspaces/ros_custom-noetic/yocs_velocity_smoother
+
 # Change workspaces owership
 
 RUN chown -R admin:admin /workspaces
