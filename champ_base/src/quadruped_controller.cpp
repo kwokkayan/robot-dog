@@ -60,7 +60,7 @@ QuadrupedController::QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* p
 
   cmd_vel_subscriber_ = nh->subscribe("cmd_vel/smooth", 1, &QuadrupedController::cmdVelCallback_, this);
   cmd_pose_subscriber_ = nh->subscribe("body_pose", 1, &QuadrupedController::cmdPoseCallback_, this);
-  cmd_imu_subscriber_ = nh->subscribe("/imu/data", 1, &QuadrupedController::cmdImuCallback_, this);
+  cmd_imu_subscriber_ = nh->subscribe("imu/data", 1, &QuadrupedController::cmdImuCallback_, this);
 
   if (publish_joint_control_)
   {

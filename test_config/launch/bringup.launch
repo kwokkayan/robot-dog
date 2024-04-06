@@ -5,7 +5,7 @@
     <arg name="links_map_file"         default="$(find test_config)/config/links/links.yaml"/> <!-- Path to list of link names. Do not touch this. -->
     <arg name="gait_config_file"       default="$(find test_config)/config/gait/gait.yaml"/>  <!-- Path to gait parameters. Do not touch this. -->
     <arg name="pid_config_file"        default="$(find test_config)/config/pid/pid.yaml"/>  <!-- Path to gait parameters. Do not touch this. -->
-    <arg name="description_file"       default="$(find test_config)/urdf/quadruped.urdf.xacro"/> <!-- Path to URDF file Do not touch this. -->
+    <arg name="description_file"       default="$(find test_config)/urdf/quadruped.urdf"/> <!-- Path to URDF file Do not touch this. -->
     <arg name="gazebo"                 default="false" /> <!-- Set to true during simulation. This is auto-set to true from gazebo.launch. -->
     <arg name="rviz"                   default="false"/> <!-- Set to true to run rviz in parallel. -->
     <arg name="rviz_ref_frame"         default="odom"/> <!-- Default RVIZ reference frame. -->
@@ -47,7 +47,9 @@
         <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0.15 0 0 0 $(arg frame_prefix)base_link $(arg frame_prefix)laser" />
         <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu"   args="0 0 0 0 0 0 $(arg frame_prefix)base_link $(arg frame_prefix)imu_link" />
         <!-- include your hardware launch file here -->
-        <include file="$(find esp32_ros_controllers)/launch/bringup.launch"/>
+        <include file="$(find esp32_ros_controllers)/launch/bringup.launch">
+            <arg name="robot_name"             value="$(arg robot_name)"/>
+        </include>
         <include if="$(arg calibrate_joints)" file="$(find champ_bringup)/launch/joints_gui.launch"/>
     </group>
 </launch>
