@@ -8,7 +8,7 @@ import ROSLIB from 'roslib';
 import TestButton from './TestButton/'
 import { Joystick } from 'react-joystick-component'
 import { Link } from "react-router-dom";
-
+import RobotVisual from "./RobotVisual";
 
 // function MyJoystick() {
 
@@ -126,6 +126,17 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      <h1>My robot</h1>
+      {/* <RobotModel/> */}
+
+      <RobotVisual />
+      {/* <script href=".../urdf-viewer-element.js"></script>
+      <script>customElements.define('urdf-viewer', URDFViewer)</script>
+
+      <body>
+        <urdf-viewer package=".../package/dir/" urdf="T12/urdf/T12.URDF" up="Z+" display-shadow ambient-color="red"></urdf-viewer>
+      </body> */}
     </RosContext.Provider>
   )
 }

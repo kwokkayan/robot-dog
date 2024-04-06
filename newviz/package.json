@@ -26,8 +26,10 @@
     "roslib": "^1.4.1",
     "socket.io": "^4.7.5",
     "three": "^0.162.0",
+    "three-orbitcontrols": "^2.110.3",
     "urdf-loader": "^0.12.1",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "xacro-parser": "^0.3.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
