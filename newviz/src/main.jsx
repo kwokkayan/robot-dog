@@ -4,6 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import Visual from './components/visual/Visual';
+import Map from './components/map/Map';
+import Home from './components/home/Home';
+import Live from './components/live/Live';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RosContextProvider } from './contexts/RosContextProvider.jsx';
 
 const theme = createTheme({
   palette: {
@@ -27,24 +33,50 @@ const theme = createTheme({
       main: "#c9da2a"
     }
   },
-    transitions: {
-      duration: {
-        shortest: 150,
-        shorter: 200,
-        short: 250,
-        standard: 300,
-        complex: 375,
-        enteringScreen: 225,
-        leavingScreen: 195,
-      },
+  transitions: {
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      standard: 300,
+      complex: 375,
+      enteringScreen: 225,
+      leavingScreen: 195,
     },
+  },
 });
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "visual",
+        element: <Visual />,
+      },
+      {
+        path: "map",
+        element: <Map />,
+      },
+      {
+        path: "live",
+        element: <Live />,
+      },
+    ]
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-    <App />
-    </ThemeProvider>
-    
-  </React.StrictMode>,
+    <RosContextProvider>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </RosContextProvider>
+  </React.StrictMode>
 )
