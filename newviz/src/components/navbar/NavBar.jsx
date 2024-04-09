@@ -45,15 +45,14 @@ export default function ButtonAppBar() {
           
           {!isMobile && (
             <Grid container spacing={2} style={{ padding: theme.spacing(2) }}>
-              <Grid item xs={3}></Grid>
-            <Grid item xs={6} sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', padding: 0, margin: 0}}>
+              <Grid item xs={2}></Grid>
+            <Grid item xs={8} sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', padding: 0, margin: 0}}>
             <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <img src="web_logo.png" alt="Robot Dog Logo" style={{ height: '50px' }} />
             </Link>
           </Grid>
-          <Grid item xs={3} sx={{display: 'flex', justifyContent: 'flex-end'}}>
+          <Grid item xs={2} sx={{display: 'flex', justifyContent: 'flex-end'}}>
             <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"} sx={{}}></LinkButton>
-            <LinkButton color={"inherit"} href={"/map"} label={"Map"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} sx={{}}></LinkButton>
 
             <LinkButton color={"inherit"} href={"/control"} label={"Control"} sx={{}}></LinkButton>
@@ -68,7 +67,6 @@ export default function ButtonAppBar() {
           <Box sx={{display: 'flex', flexDirection: 'column'}}>
           <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
             <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"} onClick={() => setMenuOpen(false)} />
-            <LinkButton color={"inherit"} href={"/map"} label={"Map"} onClick={() => setMenuOpen(false)} />
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} onClick={() => setMenuOpen(false)} />
           </Box>
           </Box>
