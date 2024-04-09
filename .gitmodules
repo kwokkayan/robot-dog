@@ -13,3 +13,7 @@
 [submodule "yocs_velocity_smoother"]
 	path = yocs_velocity_smoother
 	url = https://github.com/chvmp/yocs_velocity_smoother.git
+[submodule "realsense-ros"]
+	path = realsense-ros
+	url = https://github.com/IntelRealSense/realsense-ros.git
+	branch = 2.3.2
