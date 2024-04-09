@@ -7,8 +7,8 @@ function Simulator() {
     <Container maxWidth="lg" sx={{ height: 'calc(80vh - 82px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Visual />
-      </Box>
+        </Box>
     </Container>
-  );
-}
+    );
+    };
 export default Simulator;
