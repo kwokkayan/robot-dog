@@ -10,7 +10,11 @@ function Visual() {
     return (<div>{`Waiting on ${import.meta.env.VITE_WS_URL}`}</div>);
   }
   return (
-    <div style={{ width: "75vw", height: "75vh" }}><URDFViewer /></div>
+    <div style={{ display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh', }}><URDFViewer /></div>
   );
 }
 export default Visual;

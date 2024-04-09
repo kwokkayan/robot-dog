@@ -5,7 +5,6 @@ import './index.css'
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Visual from './components/visual/Visual';
-import Map from './components/map/Map';
 import Home from './components/home/Home';
 import Live from './components/live/Live';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -58,10 +57,6 @@ const router = createBrowserRouter([
       {
         path: "visual",
         element: <Visual />,
-      },
-      {
-        path: "map",
-        element: <Map />,
       },
       {
         path: "live",
