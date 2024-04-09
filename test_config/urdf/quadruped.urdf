@@ -41,7 +41,7 @@
       <!-- the mesh origin is at front plate in between the two infrared camera axes -->
       <origin rpy="1.57079632679 0 1.57079632679" xyz="0.0043 -0.0175 0"/>
       <geometry>
-        <mesh filename="package://realsense2_description/meshes/d435.dae"/>
+        <mesh filename="package://realsense-ros/realsense2_description/meshes/d435.dae"/>
       </geometry>
     </visual>
     <collision>
