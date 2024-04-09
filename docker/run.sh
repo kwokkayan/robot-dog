@@ -17,6 +17,10 @@ DOCKER_ARGS+=("-e FASTRTPS_DEFAULT_PROFILES_FILE=/usr/local/share/middleware_pro
 DOCKER_ARGS+=("-e ROS_DOMAIN_ID")
 DOCKER_ARGS+=("-e USER")
 
+if [[ $TARGET == "noetic" ]]; then
+    DOCKER_ARGS+=("-v /dev/ttyUSB0:/dev/ttyUSB0")
+fi
+
 if [[ $TARGET == "humble" ]]; then
     DOCKER_ARGS+=("-v /usr/bin/tegrastats:/usr/bin/tegrastats")
     DOCKER_ARGS+=("-v /tmp/argus_socket:/tmp/argus_socket")
