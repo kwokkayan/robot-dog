@@ -6,6 +6,9 @@ import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { Stage, Grid, OrbitControls, Environment, CameraControls } from "@react-three/drei";
 import ROSLIB from 'roslib';
 import { RosContext } from '../contexts/RosContextProvider';
+// import Cameracontrol from "../components/cameracontrol/Cameracontrol";
+import Control from "../components/control/Control";
+
 
 /*
 Reference coordinate frames for THREE.js and ROS.
@@ -114,6 +117,8 @@ function URDFViewer(props) {
         <ToneMapping />
       </EffectComposer>
       <Environment background preset="sunset" blur={0.8} />
+      {/* <Cameracontrol /> */}
+      <Control />
     </Canvas>
   );
 }

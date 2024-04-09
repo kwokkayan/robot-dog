@@ -55,6 +55,9 @@ export default function ButtonAppBar() {
             <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/map"} label={"Map"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} sx={{}}></LinkButton>
+
+            <LinkButton color={"inherit"} href={"/control"} label={"Control"} sx={{}}></LinkButton>
+
           </Grid>
           </Grid>
         )}

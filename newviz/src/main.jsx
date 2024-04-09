@@ -8,6 +8,7 @@ import Visual from './components/visual/Visual';
 import Map from './components/map/Map';
 import Home from './components/home/Home';
 import Live from './components/live/Live';
+import Control from './components/control/Control';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "live",
         element: <Live />,
+      },
+      {
+        path: "control",
+        element: <Control />,
       },
     ]
   },
