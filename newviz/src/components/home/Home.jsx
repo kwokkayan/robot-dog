@@ -9,44 +9,44 @@ import Live from '../live/Live';
 
 
 const Home = () => {
-  const [sizes, setSizes] = useState({ leftWidth: 40, centerWidth: 40, rightWidth: 20 });
+  const [sizes, setSizes] = useState({ wl: 40, wc: 40, wr: 20 });
 
-  const startResize = (event, direction) => {
+  const startResize = (event, left) => {
     const startX = event.clientX;
-    const startSizes = { ...sizes };
-    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const sizeNow = { ...sizes };
+    const vieww = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 
-    const doDrag = (dragEvent) => {
-      const dx = dragEvent.clientX - startX;
-      const dxVw = (dx / viewportWidth) * 100;
+    const drag = (e) => {
+      const dx = e.clientX - startX;
+      const dxVw = (dx / vieww) * 100;
 
-      if (direction === 'left') {
-        const newLeftWidth = Math.max(20, Math.min(80 - startSizes.rightWidth, startSizes.leftWidth + dxVw));
-        const newCenterWidth = 100 - startSizes.rightWidth - newLeftWidth;
-        setSizes({ leftWidth: newLeftWidth, centerWidth: newCenterWidth, rightWidth: startSizes.rightWidth });
+      if (left) {
+        const newwl = Math.max(20, Math.min(80 - sizeNow.wr, sizeNow.wl + dxVw));
+        const newwc = 100 - sizeNow.wr - newwl;
+        setSizes({ wl: newwl, wc: newwc, wr: sizeNow.wr });
       } else {
-        const newRightWidth = Math.max(10, Math.min(90 - startSizes.leftWidth, startSizes.rightWidth - dxVw));
-        const newCenterWidth = 100 - startSizes.leftWidth - newRightWidth;
-        setSizes({ leftWidth: startSizes.leftWidth, centerWidth: newCenterWidth, rightWidth: newRightWidth });
+        const newwr = Math.max(10, Math.min(90 - sizeNow.wl, sizeNow.wr - dxVw));
+        const newwc = 100 - sizeNow.wl - newwr;
+        setSizes({ wl: sizeNow.wl, wc: newwc, wr: newwr });
       }
     };
 
     const stopDrag = () => {
-      document.removeEventListener('mousemove', doDrag);
+      document.removeEventListener('mousemove', drag);
       document.removeEventListener('mouseup', stopDrag);
     };
 
-    document.addEventListener('mousemove', doDrag);
+    document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', stopDrag);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <div style={{ width: `${sizes.leftWidth}vw`, marginRight: '5px'}}><Live></Live></div>
-      <div onMouseDown={(e) => startResize(e, 'left')} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
-      <div style={{ width: `${sizes.centerWidth}vw`, marginRight: '5px'}}><Visual></Visual></div>
-      <div onMouseDown={(e) => startResize(e, 'right')} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
-      <div style={{ width: `${sizes.rightWidth}vw`}}>Right</div>
+    <div style={{ display: 'flex', flexDirection: 'row'}}>
+      <div style={{ width: `${sizes.wl}vw`, margin: '0px 12px'}}><Live></Live></div>
+      <div onMouseDown={(e) => startResize(e, true)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
+      <div style={{ width: `${sizes.wc}vw`}}><Visual></Visual></div>
+      <div onMouseDown={(e) => startResize(e, false)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
+      <div style={{ width: `${sizes.wr}vw`}}>Right</div>
     </div>
   );
   };

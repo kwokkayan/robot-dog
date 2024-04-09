@@ -52,7 +52,7 @@ export default function ButtonAppBar() {
             </Link>
           </Grid>
           <Grid item xs={2} sx={{display: 'flex', justifyContent: 'flex-end'}}>
-            <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"} sx={{}}></LinkButton>
+            <LinkButton color={"inherit"} href={"/simulator"} label={"Simulator"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} sx={{}}></LinkButton>
           </Grid>
           </Grid>
@@ -63,7 +63,7 @@ export default function ButtonAppBar() {
         {menuOpen && isMobile && (
           <Box sx={{display: 'flex', flexDirection: 'column'}}>
           <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
-            <LinkButton color={"inherit"} href={"/visual"} label={"Simulator"} onClick={() => setMenuOpen(false)} />
+            <LinkButton color={"inherit"} href={"/simulator"} label={"Simulator"} onClick={() => setMenuOpen(false)} />
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} onClick={() => setMenuOpen(false)} />
           </Box>
           </Box>

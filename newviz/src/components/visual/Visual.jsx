@@ -13,8 +13,7 @@ function Visual() {
     <div style={{ display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh', }}><URDFViewer /></div>
+    justifyContent: 'center', height: '100%', width:'100%'}}><URDFViewer /></div>
   );
 }
 export default Visual;
