@@ -1,17 +1,14 @@
 import Visual from "../visual/Visual";
-import { Box } from "@mui/material";
+import { Container, Box } from "@mui/material";
 
 function Simulator() {
 
   return (
-    <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '90vw', 
-        height: '100vh'
-      }}><Visual /></Box>
+    <Container maxWidth="lg" sx={{ height: 'calc(80vh - 82px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Visual />
+      </Box>
+    </Container>
   );
 }
 export default Simulator;
