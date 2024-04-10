@@ -6,7 +6,6 @@ import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { Stage, Grid, OrbitControls, Environment, CameraControls } from "@react-three/drei";
 import ROSLIB from 'roslib';
 import { RosContext } from '../contexts/RosContextProvider';
-// import Cameracontrol from "../components/cameracontrol/Cameracontrol";
 import Control from "../components/control/Control";
 
 
@@ -33,6 +32,7 @@ ROS URDf
 */
 
 function URDFViewer(props) {
+
   const ros = useContext(RosContext);
   const [robot, setRobot] = useState(undefined);
   const cameraControlRef = useRef();
@@ -117,8 +117,7 @@ function URDFViewer(props) {
         <ToneMapping />
       </EffectComposer>
       <Environment background preset="sunset" blur={0.8} />
-      {/* <Cameracontrol /> */}
-      <Control />
+      <Control/>
     </Canvas>
   );
 }
