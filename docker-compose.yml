@@ -1,6 +1,7 @@
 services:
   ros-melodic:
-    build:
+    # privileged: true
+    build: 
       context: ./
       dockerfile: ./dockerfiles/ros-melodic.Dockerfile
       args:
@@ -10,12 +11,12 @@ services:
     # volumes:
     #   - type: bind
     #     source: ./IK_engine
-    #     target: /IK_engine
-    # devices:
-    # - "/dev/input/js0:/dev/input/js0"
-    # - "/dev/rfcomm1:/dev/ttyUSB0"
-    # - "/dev/ttyUSB0:/dev/ttyUSB0"
-    # - "/dev/ttyUSB1:/dev/ttyUSB1"
+    #     target: /IK_engine 
+    devices:
+      - "/dev/input/js0:/dev/input/js0"
+      # - "/dev/rfcomm1:/dev/ttyUSB0"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      # - "/dev/ttyUSB1:/dev/ttyUSB1"
     ports:
       - 22:22
       - 6080:80
