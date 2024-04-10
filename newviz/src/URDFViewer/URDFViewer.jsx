@@ -118,7 +118,7 @@ function URDFViewer(props) {
       </EffectComposer>
       <Environment background preset="sunset" blur={0.8} />
       {/* <Cameracontrol /> */}
-      <Control />
+      <Control position = {[10,10,10]}/>
     </Canvas>
   );
 }

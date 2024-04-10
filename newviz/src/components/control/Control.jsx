@@ -8,6 +8,9 @@ import { useContext, useEffect, useState } from "react";
 import URDFViewer from "../../URDFViewer/URDFViewer";
 import { RosContext } from "../../contexts/RosContextProvider";
 
+// extend({Canvas})
+
+
 // import Control from '.'
 
 // const city = import('@pmndrs/assets/hdri/city.exr')
@@ -133,12 +136,11 @@ export default function Control() {
   
     return (
       <>
-      
-        <group position-y={-0.5}>
-          <Center top>
-          </Center>
+      {/* <Canvas> */}
+        <group position={[100, -100, 0]}>
+          
           {/* <Ground /> */}
-          <CameraControls
+          <CameraControls 
             ref={cameraControlsRef}
             minDistance={minDistance}
             enabled={enabled}
@@ -148,6 +150,7 @@ export default function Control() {
           />
           {/* <Environment files={suspend(city).default} /> */}
         </group>
+        {/* </Canvas> */}
       </>
     )
   }

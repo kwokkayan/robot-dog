@@ -68,10 +68,7 @@ const router = createBrowserRouter([
         path: "live",
         element: <Live />,
       },
-      {
-        path: "control",
-        element: <Control />,
-      },
+      
     ]
   },
 ]);
