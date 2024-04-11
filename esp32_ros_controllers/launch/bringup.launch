@@ -12,7 +12,7 @@
         </node>
         <node unless="$(arg ros_serial_tcp)" pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
             <param name="port" type="string" value="/dev/ttyUSB0"/>
-            <param name="baud" type="int" value="1000000"/>
+            <param name="baud" type="int" value="500000"/>
         </node>
         <node if="$(arg ros_serial_tcp)" pkg="rosserial_python" type="serial_node.py" name="rosserial_python" args="tcp" output="screen"/>
         <!-- <node if="$(arg calibrate_imu)" pkg="imu_calib" type="do_calib" name="imu_calib_node" output="screen">
