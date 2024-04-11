@@ -4,12 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import Visual from './components/visual/Visual';
-import Map from './components/map/Map';
 import Home from './components/home/Home';
 import Live from './components/live/Live';
+import Control from './components/control/Control';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
+import Simulator from './components/simulator/Simulator';
 
 const theme = createTheme({
   palette: {
@@ -56,16 +56,16 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "visual",
-        element: <Visual />,
-      },
-      {
-        path: "map",
-        element: <Map />,
+        path: "simulator",
+        element: <Simulator />,
       },
       {
         path: "live",
         element: <Live />,
+      },
+      {
+        path: "control",
+        element: <Control />,
       },
     ]
   },

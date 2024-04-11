@@ -4,53 +4,51 @@ import { Button } from "@mui/material";
 import { Joystick } from 'react-joystick-component';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
+import Visual from '../visual/Visual';
+import Live from '../live/Live';
 
 
 const Home = () => {
-    const handleMove = (event) => {
-        //ref: https://www.npmjs.com/package/react-joystick-component
-        //event: type, x, y, direction, distance
-        console.log(event);
-        const x = event.x;
-        const y = event.y;
-      };
-      const handleEnd = () => {
-        // console.log("joystick stopped");
-      };
-      const handleButtonClick = (command) => {
-        console.log(`Executing command: ${command}`);
-      };
-      const theme = useTheme();
-      const buttonStyle = {
-        height: '10vh', 
-        width: '10vh', 
-        margin: theme.spacing(1), // Optional: add some space around the buttons
-        transition: theme.transitions.create(['background-color', 'transform'], {
-          duration: theme.transitions.duration.standard,
-        }),
-      };
-    return (
+  const [sizes, setSizes] = useState({ wl: 40, wc: 40, wr: 20 });
 
-      <Grid container spacing={2} style={{ padding: theme.spacing(2) }}>
-      <Grid item xs={12} style={{ textAlign: 'center', marginBottom: theme.spacing(2) }}> {/* Adjust bottom margin for joystick */}
-      <Joystick size={100} sticky={false} baseColor="#aabbcc" stickColor="#ffcc66" move={handleMove } end={handleEnd} />
-      </Grid>
-      <Grid item container xs={12} justifyContent="space-around" spacing={2} style={{ gap: `${theme.spacing(4)} 0` }}> {/* This line adjusts the vertical gap */}
-        {['Forward', 'Backward', 'Left', 'Right', 'Start', 'Stop', 'Custom'].map((btn) => (
-          <Grid item key={btn}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleButtonClick(btn.toLowerCase())}
-              style={buttonStyle}
-            >
-              {btn}
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
-    </Grid>
-    );
+  const startResize = (event, left) => {
+    const startX = event.clientX;
+    const sizeNow = { ...sizes };
+    const vieww = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
+    const drag = (e) => {
+      const dx = e.clientX - startX;
+      const dxVw = (dx / vieww) * 100;
+
+      if (left) {
+        const newwl = Math.max(20, Math.min(80 - sizeNow.wr, sizeNow.wl + dxVw));
+        const newwc = 100 - sizeNow.wr - newwl;
+        setSizes({ wl: newwl, wc: newwc, wr: sizeNow.wr });
+      } else {
+        const newwr = Math.max(10, Math.min(90 - sizeNow.wl, sizeNow.wr - dxVw));
+        const newwc = 100 - sizeNow.wl - newwr;
+        setSizes({ wl: sizeNow.wl, wc: newwc, wr: newwr });
+      }
+    };
+
+    const stopDrag = () => {
+      document.removeEventListener('mousemove', drag);
+      document.removeEventListener('mouseup', stopDrag);
+    };
+
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDrag);
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row'}}>
+      <div style={{ width: `${sizes.wl}vw`, margin: '0px 12px'}}><Live></Live></div>
+      <div onMouseDown={(e) => startResize(e, true)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
+      <div style={{ width: `${sizes.wc}vw`}}><Visual></Visual></div>
+      <div onMouseDown={(e) => startResize(e, false)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
+      <div style={{ width: `${sizes.wr}vw`}}>Right</div>
+    </div>
+  );
   };
   
   export default Home;

@@ -34,13 +34,13 @@ void PWM_Servo::update_pwm(std::string joint_name, float rad)
         return;
     // TODO: calculate offsets and inverse
     servo_info_t *info = &joint_servo[it->first];
-    info->pwm = radiansToPWM((rad + info->angleOffset) * info->scalar);
+    info->pwm = radiansToPWM((rad + info->angleOffset) * info->scalar, info->map_info);
     this->setPWM(info->pin, 0, info->pwm);
 }
 
-int PWM_Servo::radiansToPWM(float rad)
+int PWM_Servo::radiansToPWM(float rad, map_info_t map_info)
 {
-    return (int)round(mapfloat(rad, this->map_info.min_angle, this->map_info.max_angle, this->map_info.pulse_min, this->map_info.pulse_max));
+    return (int)round(mapfloat(rad, map_info.min_angle, map_info.max_angle, map_info.pulse_min, map_info.pulse_max));
 }
 
 void PWM_Servo::debug_info()

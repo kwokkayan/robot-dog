@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <NavBar />
-      <Outlet />
+      <div style={{ marginTop: '82px' }}>
+        <Outlet />
+      </div>
     </>
   )
 }
