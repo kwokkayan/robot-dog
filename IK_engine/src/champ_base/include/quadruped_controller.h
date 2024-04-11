@@ -84,6 +84,7 @@ class QuadrupedController
   bool publish_joint_states_;
   bool publish_joint_control_;
   bool in_gazebo_;
+  bool balance_mode_; 
 
   void controlLoop_(const ros::TimerEvent& event);
 

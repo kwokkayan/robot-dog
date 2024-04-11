@@ -55,9 +55,9 @@ private:
     map_info_t TD8125_info = { -PI_OVER_2, PI_OVER_2, 103, 512 };
     joint_servo_map joint_servo = {
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-        {"lf_hip_joint", {5, 0, LF_HIP_JOINT_OFFSET, 1.0f, TD8125_info}},
-        {"lf_upper_leg_joint", {6, 0, LF_UPPER_LEG_JOINT_OFFSET, 1.0f, TD8125_info}},
-        {"lf_lower_leg_joint", {7, 0, LF_LOWER_LEG_JOINT_OFFSET, -1.0f, map_info}},
+        {"lf_hip_joint", {5, 0, LF_HIP_JOINT_OFFSET, 1.0f, map_info}},
+        {"lf_upper_leg_joint", {6, 0, LF_UPPER_LEG_JOINT_OFFSET, 1.0f, map_info}},
+        {"lf_lower_leg_joint", {7, 0, LF_LOWER_LEG_JOINT_OFFSET, -1.0f, TD8125_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
         {"rf_hip_joint", {10, 0, RF_HIP_JOINT_OFFSET, 1.0f, map_info}},
         {"rf_upper_leg_joint", {9, 0, RF_UPPER_LEG_JOINT_OFFSET, -1.0f, map_info}},

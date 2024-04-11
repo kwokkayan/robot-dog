@@ -20,6 +20,7 @@
     <arg name="publish_local_odom_tf"  default="true" />
     <arg name="run_state_estimation"   default="true" />
     <arg name="close_loop_odom"        default="false" />
+    <arg name="balance_mode"           default="true" />
 
     <group ns="$(arg robot_name)">
         <!-- websocket -->

@@ -57,6 +57,7 @@ QuadrupedController::QuadrupedController(ros::NodeHandle* nh, ros::NodeHandle* p
   pnh->getParam("gazebo", in_gazebo_);
   pnh->getParam("joint_controller_topic", joint_control_topic);
   pnh->getParam("loop_rate", loop_rate);
+  pnh->getParam("balance_mode", balance_mode_);
 
   cmd_vel_subscriber_ = nh->subscribe("cmd_vel/smooth", 1, &QuadrupedController::cmdVelCallback_, this);
   cmd_pose_subscriber_ = nh->subscribe("body_pose", 1, &QuadrupedController::cmdPoseCallback_, this);
@@ -133,7 +134,12 @@ void QuadrupedController::controlLoop_(const ros::TimerEvent& event)
   // body_controller_.poseCommand(target_foot_positions, new_pose);
   // leg_controller_.velocityCommand(target_foot_positions, req_vel_, rosTimeToChampTime(ros::Time::now()));
   // kinematics_.inverse(target_joint_positions, target_foot_positions);
-  champ::Pose balance_pose = updatePosePids(event.last_real - event.current_real);
+  champ::Pose balance_pose;
+  if (balance_mode_) {
+    balance_pose = updatePosePids(event.last_real - event.current_real);
+  } else {
+    balance_pose = req_pose_;
+  }
   body_controller_.poseCommand(target_foot_positions, balance_pose);
   leg_controller_.velocityCommand(target_foot_positions, req_vel_, rosTimeToChampTime(ros::Time::now()));
   kinematics_.inverse(target_joint_positions, target_foot_positions);
