@@ -64,6 +64,15 @@ def generate_launch_description():
             'component_container_name': shared_container_name}.items(),
         condition=UnlessCondition(LaunchConfiguration('from_bag')))
 
+    # IMU filter
+    imu_filter_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            bringup_dir, 'launch', 'sensors', 'imu_filter.launch.py')]),
+        launch_arguments={
+            'attach_to_shared_component_container': 'True',
+            'component_container_name': shared_container_name}.items(),
+        condition=UnlessCondition(LaunchConfiguration('from_bag')))
+    
     # Vslam
     vslam_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
@@ -105,7 +114,9 @@ def generate_launch_description():
         flatten_odometry_to_2d_arg,
         shared_container,
         realsense_launch,
+        imu_filter_launch,
         vslam_launch,
         nvblox_launch,
         bag_play,
-        rviz_launch])
+        rviz_launch
+    ])
