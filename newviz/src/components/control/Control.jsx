@@ -7,6 +7,7 @@ import { suspend } from 'suspend-react'
 import { useContext, useEffect, useState } from "react";
 import URDFViewer from "../../URDFViewer/URDFViewer";
 import { RosContext } from "../../contexts/RosContextProvider";
+import ROSLIB from 'roslib';
 
 
 
@@ -20,6 +21,7 @@ export default function Control() {
   
     var params;
     const contextValue = useContext(RosContext);
+    const [arrayParam, setArrayParam] = useState([]);
       // console.log(contextValue.Topic);
     // const handleGetParam = () => {
     //   if(contextValue){
@@ -29,11 +31,57 @@ export default function Control() {
     //   }
     // };
 
-    contextValue.getParams((params)=>console.log(params));
+    contextValue.getTopics((topics) => console.log(topics));
+    const [imuData, setImuData] = useState(null);
 
-    contextValue.getParams('array', (value) => {
-      
-    })
+    useEffect(() => {
+      if (contextValue) {
+        
+        const listener = new ROSLIB.Topic({
+          ros: contextValue,
+          name: '/joint_states',
+          messageType: 'sensor_msgs/JoinState'
+        });
+        // setImuData(listener.subscribe((message) => {console.log(message)}));
+
+        listener.subscribe((message) => {
+          console.log('Received IMU data:', message);
+          setImuData(message);
+        })
+  
+        // Clean up the subscription when the component unmounts
+        return () => {
+          listener.unsubscribe();
+        };
+      }
+    }, [contextValue]);
+
+    console.log(imuData);
+
+    useEffect(() => {
+      if (contextValue) {
+        
+        const listener = new ROSLIB.Topic({
+          ros: contextValue,
+          name: "/imu/data",
+          messageType: "sensor_msgs/Imu"
+        });
+        // setImuData(listener.subscribe((message) => {console.log(message)}));
+
+        listener.subscribe((message) => {
+          console.log('Received IMU data:', message);
+          setImuData(message);
+        })
+  
+        // Clean up the subscription when the component unmounts
+        return () => {
+          listener.unsubscribe();
+        };
+      }
+    }, [contextValue]);
+
+    console.log(imuData);
+
 
     const { camera } = useThree()
   

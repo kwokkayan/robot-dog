@@ -12,10 +12,10 @@ services:
     #   - type: bind
     #     source: ./IK_engine
     #     target: /IK_engine 
-    devices:
-      - "/dev/input/js0:/dev/input/js0"
+    # devices:
+      # - "/dev/input/js0:/dev/input/js0"
       # - "/dev/rfcomm1:/dev/ttyUSB0"
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      # - "/dev/ttyUSB0:/dev/ttyUSB0"
       # - "/dev/ttyUSB1:/dev/ttyUSB1"
     ports:
       - 22:22
