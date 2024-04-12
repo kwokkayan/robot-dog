@@ -20,6 +20,7 @@
         <arg name="hardware_connected"     value="false"/>
         <arg name="publish_foot_contacts"  value="false"/>
         <arg name="close_loop_odom"        value="true"/>
+        <arg name="balance_mode"           value="false" />
     </include>
 
     <include file="$(find champ_gazebo)/launch/gazebo.launch">

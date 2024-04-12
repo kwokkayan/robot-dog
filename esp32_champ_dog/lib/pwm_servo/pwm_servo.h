@@ -20,6 +20,7 @@ typedef struct
     int pwm;
     float angleOffset; // offset in angles
     float scalar; // scale the pwm signal
+    map_info_t map_info;
 } servo_info_t;
 
 typedef std::map<std::string, servo_info_t> joint_servo_map;
@@ -51,26 +52,27 @@ public:
 private:
     const float PI_OVER_2 = PI / 2;
     map_info_t map_info = { -PI_OVER_2, PI_OVER_2, 105, 500 };
+    map_info_t TD8125_info = { -PI_OVER_2, PI_OVER_2, 103, 512 };
     joint_servo_map joint_servo = {
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right back
-        {"lf_hip_joint", {5, 0, LF_HIP_JOINT_OFFSET, 1.0f}},
-        {"lf_upper_leg_joint", {6, 0, LF_UPPER_LEG_JOINT_OFFSET, 1.0f}},
-        {"lf_lower_leg_joint", {7, 0, LF_LOWER_LEG_JOINT_OFFSET, -1.0f}},
+        {"lf_hip_joint", {5, 0, LF_HIP_JOINT_OFFSET, 1.0f, map_info}},
+        {"lf_upper_leg_joint", {6, 0, LF_UPPER_LEG_JOINT_OFFSET, 1.0f, map_info}},
+        {"lf_lower_leg_joint", {7, 0, LF_LOWER_LEG_JOINT_OFFSET, -1.0f, TD8125_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's right front
-        {"rf_hip_joint", {10, 0, RF_HIP_JOINT_OFFSET, 1.0f}},
-        {"rf_upper_leg_joint", {9, 0, RF_UPPER_LEG_JOINT_OFFSET, -1.0f}},
-        {"rf_lower_leg_joint", {8, 0, RF_LOWER_LEG_JOINT_OFFSET, 1.0f}},
+        {"rf_hip_joint", {10, 0, RF_HIP_JOINT_OFFSET, 1.0f, map_info}},
+        {"rf_upper_leg_joint", {9, 0, RF_UPPER_LEG_JOINT_OFFSET, -1.0f, map_info}},
+        {"rf_lower_leg_joint", {8, 0, RF_LOWER_LEG_JOINT_OFFSET, 1.0f, map_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left front
-        {"lh_hip_joint", {2, 0, LH_HIP_JOINT_OFFSET, -1.0f}},
-        {"lh_upper_leg_joint", {1, 0, LH_UPPER_LEG_JOINT_OFFSET, 1.0f}},
-        {"lh_lower_leg_joint", {0, 0, LH_LOWER_LEG_JOINT_OFFSET, -1.0f}},
+        {"lh_hip_joint", {2, 0, LH_HIP_JOINT_OFFSET, -1.0f, map_info}},
+        {"lh_upper_leg_joint", {1, 0, LH_UPPER_LEG_JOINT_OFFSET, 1.0f, map_info}},
+        {"lh_lower_leg_joint", {0, 0, LH_LOWER_LEG_JOINT_OFFSET, -1.0f, map_info}},
         // ## {shoulder chnl, upper chnl, lower chnl} robot's left back
-        {"rh_hip_joint", {13, 0, RH_HIP_JOINT_OFFSET, -1.0f}},
-        {"rh_upper_leg_joint", {14, 0, RH_UPPER_LEG_JOINT_OFFSET, -1.0f}},
-        {"rh_lower_leg_joint", {15, 0, RH_LOWER_LEG_JOINT_OFFSET, 1.0f}},
+        {"rh_hip_joint", {13, 0, RH_HIP_JOINT_OFFSET, -1.0f, map_info}},
+        {"rh_upper_leg_joint", {14, 0, RH_UPPER_LEG_JOINT_OFFSET, -1.0f, map_info}},
+        {"rh_lower_leg_joint", {15, 0, RH_LOWER_LEG_JOINT_OFFSET, 1.0f, map_info}},
     };
     // set 90 degrees as constraint
-    int radiansToPWM(float);
+    int radiansToPWM(float, map_info_t);
     // spinOnce variables
     u_long curr = 0, prev = 0;
     joint_servo_map_it joint_servo_iterator;

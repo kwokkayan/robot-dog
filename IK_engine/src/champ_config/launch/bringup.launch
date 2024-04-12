@@ -16,6 +16,7 @@
     <arg name="laser"                  default="sim"/>
     <arg name="joint_controller_topic" default="joint_group_position_controller/command" />
     <arg name="hardware_connected"     default="false" />
+    <arg name="balance_mode"           default="false" />
 
     <arg if="$(eval arg('robot_name') == '/')"  name="frame_prefix" value="" />
     <arg unless="$(eval arg('robot_name') == '/')" name="frame_prefix" value="$(arg robot_name)/" />
@@ -38,5 +39,6 @@
         <arg name="publish_foot_contacts"  value="$(arg publish_foot_contacts)" />
         <arg name="publish_joint_control"  value="$(arg publish_joint_control)" />
         <arg name="close_loop_odom"        value="$(arg close_loop_odom)" />
+        <arg name="balance_mode"           value="$(arg balance_mode)" />
     </include>
 </launch>

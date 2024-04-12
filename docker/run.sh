@@ -49,7 +49,7 @@ if [[ $TARGET == "humble" ]]; then
 fi
 
 # Run container from image
-docker run -it \
+docker run --rm -it \
     --privileged \
     --network host \
     ${DOCKER_ARGS[@]} \
