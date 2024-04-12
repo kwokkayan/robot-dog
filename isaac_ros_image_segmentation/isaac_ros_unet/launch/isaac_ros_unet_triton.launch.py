@@ -141,7 +141,7 @@ def generate_launch_description():
             'image_mean': encoder_image_mean,
             'image_stddev': encoder_image_stddev,
         }],
-        remappings=[('encoded_tensor', 'tensor_pub')]
+        remappings=[('encoded_tensor', 'tensor_pub'), ('image', '/camera/color/image_raw')]
     )
 
     triton_node = ComposableNode(
