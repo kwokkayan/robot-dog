@@ -5,7 +5,6 @@ import { Grid, Center, AccumulativeShadows, RandomizedLight, Environment, useGLT
 import { useControls, button, buttonGroup, folder} from 'leva'
 import { suspend } from 'suspend-react'
 import { useContext, useEffect, useState } from "react";
-import URDFViewer from "../../URDFViewer/URDFViewer";
 import { RosContext } from "../../contexts/RosContextProvider";
 import ROSLIB from 'roslib';
 
@@ -15,9 +14,9 @@ const { DEG2RAD } = THREE.MathUtils
 
 
 
-export default function Control() {
-    const meshRef = useRef()
-    const cameraControlsRef = useRef()
+export default function Control(props) {
+    const {meshRef} = props;
+    const cameraControlsRef = useRef();
   
     var params;
     const contextValue = useContext(RosContext);
@@ -30,22 +29,20 @@ export default function Control() {
     //     });
     //   }
     // };
-
-    contextValue.getTopics((topics) => console.log(topics));
     const [imuData, setImuData] = useState(null);
 
     useEffect(() => {
-      if (contextValue) {
+      if (contextValue !== undefined && contextValue.isConnected) {
         
         const listener = new ROSLIB.Topic({
           ros: contextValue,
           name: '/joint_states',
-          messageType: 'sensor_msgs/JoinState'
+          messageType: 'sensor_msgs/JointState'
         });
         // setImuData(listener.subscribe((message) => {console.log(message)}));
 
         listener.subscribe((message) => {
-          console.log('Received IMU data:', message);
+          // console.log('Received IMU data:', message);
           setImuData(message);
         })
   
@@ -56,10 +53,8 @@ export default function Control() {
       }
     }, [contextValue]);
 
-    console.log(imuData);
-
     useEffect(() => {
-      if (contextValue) {
+      if (contextValue !== undefined && contextValue.isConnected) {
         
         const listener = new ROSLIB.Topic({
           ros: contextValue,
@@ -69,7 +64,7 @@ export default function Control() {
         // setImuData(listener.subscribe((message) => {console.log(message)}));
 
         listener.subscribe((message) => {
-          console.log('Received IMU data:', message);
+          // console.log('Received IMU data:', message);
           setImuData(message);
         })
   
@@ -80,15 +75,12 @@ export default function Control() {
       }
     }, [contextValue]);
 
-    console.log(imuData);
 
 
     const { camera } = useThree()
   
     // All same options as the original "basic" example: https://yomotsu.github.io/camera-controls/examples/basic.html
     const { minDistance, enabled, verticalDragToForward, dollyToCursor, infinityDolly } = useControls({
-      top:'50px',
-      
       ShowCloseControlPanel: folder(
         {
         thetaGrp: buttonGroup({
@@ -132,7 +124,7 @@ export default function Control() {
         moveTo: folder(
           {
             vec1: { value: [3, 5, 2], label: 'vec' },
-            'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('moveTo.vec1'), true))
+            'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('ShowCloseControlPanel.moveTo.vec1'), true))
           },
           { collapsed: true }
         ),
@@ -140,14 +132,14 @@ export default function Control() {
         setPosition: folder(
           {
             vec2: { value: [-5, 2, 1], label: 'vec' },
-            'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
+            'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('ShowCloseControlPanel.setPosition.vec2'), true))
           },
           { collapsed: true }
         ),
         setTarget: folder(
           {
             vec3: { value: [3, 0, -3], label: 'vec' },
-            'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('setTarget.vec3'), true))
+            'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('ShowCloseControlPanel.setTarget.vec3'), true))
           },
           { collapsed: true }
         ),
@@ -155,7 +147,7 @@ export default function Control() {
           {
             vec4: { value: [1, 2, 3], label: 'position' },
             vec5: { value: [1, 1, 0], label: 'target' },
-            'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('setLookAt.vec4'), ...get('setLookAt.vec5'), true))
+            'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('ShowCloseControlPanel.setLookAt.vec4'), ...get('ShowCloseControlPanel.setLookAt.vec5'), true))
           },
           { collapsed: true }
         ),
@@ -166,16 +158,15 @@ export default function Control() {
             vec8: { value: [0, 2, 5], label: 'posB' },
             vec9: { value: [-1, 0, 0], label: 'tgtB' },
             t: { value: Math.random(), label: 't', min: 0, max: 1 },
-            'f(…posA,…tgtA,…posB,…tgtB,t)': button((get) => {
-              return cameraControlsRef.current?.lerpLookAt(
-                ...get('lerpLookAt.vec6'),
-                ...get('lerpLookAt.vec7'),
-                ...get('lerpLookAt.vec8'),
-                ...get('lerpLookAt.vec9'),
-                get('lerpLookAt.t'),
+            'f(…posA,…tgtA,…posB,…tgtB,t)': button((get) => cameraControlsRef.current?.lerpLookAt(
+                ...get('ShowCloseControlPanel.lerpLookAt.vec6'),
+                ...get('ShowCloseControlPanel.lerpLookAt.vec7'),
+                ...get('ShowCloseControlPanel.lerpLookAt.vec8'),
+                ...get('ShowCloseControlPanel.lerpLookAt.vec9'),
+                get('ShowCloseControlPanel.lerpLookAt.t'),
                 true
               )
-            })
+            )
           },
           { collapsed: true }
         ),
@@ -191,15 +182,7 @@ export default function Control() {
     })
   
     return (
-      <>
-
-        {/* <div><button onClick={(handleGetParam)}>get</></div> */}
-
-        <group position-y={-0.5}>
-          <Center top>
-          </Center>
-          {/* <Ground /> */}
-          <CameraControls 
+      <CameraControls 
             ref={cameraControlsRef}
             minDistance={minDistance}
             enabled={enabled}
@@ -207,9 +190,25 @@ export default function Control() {
             dollyToCursor={dollyToCursor}
             infinityDolly={infinityDolly}
           />
-          {/* <Environment files={suspend(city).default} /> */}
-        </group>
-      </>
+      // <>
+
+      //   {/* <div><button onClick={(handleGetParam)}>get</></div> */}
+
+      //   <group position-y={-0.5}>
+      //     <Center top>
+      //     </Center>
+      //     {/* <Ground /> */}
+      //     <CameraControls 
+      //       ref={cameraControlsRef}
+      //       minDistance={minDistance}
+      //       enabled={enabled}
+      //       verticalDragToForward={verticalDragToForward}
+      //       dollyToCursor={dollyToCursor}
+      //       infinityDolly={infinityDolly}
+      //     />
+      //     {/* <Environment files={suspend(city).default} /> */}
+      //   </group>
+      // </>
     )
 
     

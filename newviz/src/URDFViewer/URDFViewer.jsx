@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState, useContext } from 'react'
+import { useCallback, useEffect, useRef, useState, useContext } from 'react'
 import { Canvas } from '@react-three/fiber'
 import URDFLoader from 'urdf-loader';
 import { LoadingManager, Euler, Quaternion } from 'three';
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing';
-import { Stage, Grid, OrbitControls, Environment, CameraControls } from "@react-three/drei";
+import { Stage, Grid, OrbitControls, Environment } from "@react-three/drei";
 import ROSLIB from 'roslib';
 import { RosContext } from '../contexts/RosContextProvider';
 import Control from "../components/control/Control";
@@ -31,11 +31,10 @@ ROS URDf
 
 */
 
-function URDFViewer(props) {
-
+function URDFViewer() {
   const ros = useContext(RosContext);
   const [robot, setRobot] = useState(undefined);
-  const cameraControlRef = useRef();
+  const meshRef = useRef();
   const js_callback = useCallback((message) => {
     if (robot) {
       for (const i in message.position) {
@@ -102,13 +101,13 @@ function URDFViewer(props) {
       });
       odom_listener.subscribe(odom_callback)
     }
-  }, [ros, robot]);
+  }, [ros, robot, js_callback, odom_callback]);
 
   return (
     <Canvas flat shadows camera={{ fov: 25 }}>
-      <CameraControls ref={cameraControlRef} />
+      <Control meshRef={meshRef}/>
       <Stage intensity={0.5} environment="city" shadows={{ type: 'accumulative', bias: -0.001, intensity: Math.PI }} adjustCamera={false}>
-        {robot !== undefined && <primitive castShadow receiveShadow object={robot} />}
+        {robot !== undefined && <primitive ref={meshRef} castShadow receiveShadow object={robot} />}
       </Stage>
       <Grid renderOrder={-1} position={[0, -0.15, 0]} infiniteGrid cellSize={0.6} cellThickness={0.6} sectionSize={3.3} sectionThickness={1.5} sectionColor={[0.5, 0.5, 10]} fadeDistance={30} />
       <OrbitControls makeDefault minPolarAngle={Math.PI / 2} maxPolarAngle={Math.PI / 2} />
@@ -117,7 +116,6 @@ function URDFViewer(props) {
         <ToneMapping />
       </EffectComposer>
       <Environment background preset="sunset" blur={0.8} />
-      <Control/>
     </Canvas>
   );
 }
