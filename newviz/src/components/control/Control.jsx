@@ -8,29 +8,33 @@ import { useContext, useEffect, useState } from "react";
 import URDFViewer from "../../URDFViewer/URDFViewer";
 import { RosContext } from "../../contexts/RosContextProvider";
 
-// import Control from '.'
 
-// const city = import('@pmndrs/assets/hdri/city.exr')
-// const suzi = import(`@pmndrs/assets/models/suzi.glb`)
 
 const { DEG2RAD } = THREE.MathUtils
 
-// export default function Control() {
-//     const ros = useContext(RosContext);
-//     const [isConnected, setConnected] = useState(false);
-//     useEffect(() => setConnected(ros !== undefined && ros.isConnected), [ros])
-//     if (!isConnected) {
-//       return (<div>{`Waiting on ${import.meta.env.VITE_WS_URL}`}</div> );
-//     }
-//     return (
-//       <div style={{ width: "75vw", height: "75vh" }}><URDFViewer /></div>
-//     );
-// }
+
 
 export default function Control() {
     const meshRef = useRef()
     const cameraControlsRef = useRef()
   
+    var params;
+    const contextValue = useContext(RosContext);
+      // console.log(contextValue.Topic);
+    // const handleGetParam = () => {
+    //   if(contextValue){
+    //     contextValue.getParams((params) =>{
+    //       console.log(params);
+    //     });
+    //   }
+    // };
+
+    contextValue.getParams((params)=>console.log(params));
+
+    contextValue.getParams('array', (value) => {
+      
+    })
+
     const { camera } = useThree()
   
     // All same options as the original "basic" example: https://yomotsu.github.io/camera-controls/examples/basic.html
@@ -140,7 +144,9 @@ export default function Control() {
   
     return (
       <>
-        
+
+        {/* <div><button onClick={(handleGetParam)}>get</></div> */}
+
         <group position-y={-0.5}>
           <Center top>
           </Center>
@@ -157,6 +163,59 @@ export default function Control() {
         </group>
       </>
     )
+
+    
+    useEffect(() => {
+      const ros = new ROSLIB.Ros();
+      ros.connect('ws://localhost:9090');
+  
+      ros.on('connection', () => {
+        setRosInstance(ros); // we connected!      
+        console.log('Connected to ROS');
+        console.log('hihihihi');
+        ros.getNodes((nodes) => console.log(nodes+"hi"));
+        // console.log("topics")
+        // ros.getTopics((topics) => console.log(topics));
+        
+        // ros.getMessageDetails((msg) => console.log(msg));
+        var listener = new ROSLIB.Topic({
+          ros : ros,
+          name : '/imu/data',
+          messageType : 'sensor_msgs/Imu'
+        });
+
+        // listener.subscribe(function(message){
+        //   for(const i in message.position){
+
+        //   }
+        // };
+        
+
+
+        listener.subscribe(function(message) {
+          for (const i in message.position) {
+            // console.log(`${message.name[i]} ${message.position[i]}`);
+          }
+          
+          listener.unsubscribe();
+        });
+        
+  
+      });
+  
+      ros.on('error', (error) => {
+        console.error('ROS error:', error);
+      });
+  
+      ros.on('close', () => {
+        setRosInstance(undefined);
+        console.log('Disconnected from ROS');
+      });
+  
+      
+    }, []);
+
+
   }
 
 
