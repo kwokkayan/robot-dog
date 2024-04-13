@@ -22,17 +22,17 @@ usb_port_id: ''
 
 rgb_camera:
   profile: '840x480x15'
-color_info_qos: "SENSOR_DATA"
-color_qos: "SENSOR_DATA"
+color_info_qos: "SYSTEM_DEFAULT"
+color_qos: "SYSTEM_DEFAULT"
 
 depth_module:
   profile: '840x480x30'
   emitter_enabled: 1
   emitter_on_off: true
-depth_qos: "SENSOR_DATA"
-depth_info_qos: "SENSOR_DATA"
+depth_qos: "SYSTEM_DEFAULT"
+depth_info_qos: "SYSTEM_DEFAULT"
 
-infra_qos: "SENSOR_DATA"
+infra_qos: "SYSTEM_DEFAULT"
 
 enable_accel: true
 enable_color: true
@@ -52,4 +52,6 @@ pointcloud_texture_index: 0
 pointcloud_texture_stream: RS2_STREAM_ANY
 
 enable_sync: false
-align_depth: false
+
+align_depth:
+  enable: true
