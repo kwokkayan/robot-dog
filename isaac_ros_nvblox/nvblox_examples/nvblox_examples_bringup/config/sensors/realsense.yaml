@@ -52,6 +52,3 @@ pointcloud_texture_index: 0
 pointcloud_texture_stream: RS2_STREAM_ANY
 
 enable_sync: false
-
-align_depth:
-  enable: true
