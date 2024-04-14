@@ -28,7 +28,7 @@ void joint_trajectory_callback(const trajectory_msgs::JointTrajectory &msg)
 void handleMsgs()
 {
   static u_int64_t curr = millis(), prev = 0;
-  if ((curr = millis()) - prev > 50)
+  if ((curr = millis()) - prev > 25)
   {
     prev = curr;
     champ_imu = mpu.composeMsg();
@@ -54,7 +54,7 @@ void setup()
   Serial.begin(115200);
 #else
   Serial2.begin(115200);
-  nh.getHardware()->setBaud(500000);
+  nh.getHardware()->setBaud(1000000);
 #endif
 #endif
   nh.initNode();

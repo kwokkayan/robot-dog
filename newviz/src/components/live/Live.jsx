@@ -1,39 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Button } from "@mui/material";
-import { Paper, Typography, Box } from '@mui/material';
-
+import{ useEffect, useState } from 'react'
+import { Paper, Box, Slider, Typography } from '@mui/material'
 
 const Live = () => {
-    const videoRef = useRef(null);
-
+    const [feedUrl, setFeedURL] = useState(import.meta.env.VITE_CAMERA_STREAM_URL);
+    const [quality, setQuality] = useState(5);
+    const handleChange = (e, newValue) => {
+      setQuality(newValue);
+    };
     useEffect(() => {
-        const getVideo = async () => {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-            }
-          } catch (err) {
-            console.error('Error accessing the webcam', err);
-          }
-        };    
-
-    getVideo();
-
-    return () => {
-        if (videoRef.current && videoRef.current.srcObject) {
-          videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-        }
-      };
-    }, []);
-  
+      setFeedURL(`${import.meta.env.VITE_CAMERA_STREAM_URL}&quality=${quality}`);
+    }, [quality]);
     return (
         <Box sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh', 
+          height: '100vh',
+          rowGap: '20px'
         }}>
           <Paper elevation={3} sx={{
             width: window.innerWidth > window.innerHeight? 'calc(55vw - 32px)' : '80vw',
@@ -45,19 +29,20 @@ const Live = () => {
             padding: '8px',
             flexDirection: 'column',
           }}>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              style={{
-                width: '100%', 
-                height: 'auto',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain' 
-              }}
-            ></video>
+            <img style={{
+              width: '100%', 
+              height: 'auto',
+              maxWidth: '100%',
+              maxHeight: '100%',
+              objectFit: 'contain' 
+            }} src={feedUrl}/>
           </Paper>
+          <Box width={"100%"}>
+          <Typography id="slider" sx={{color: "secondary.main"}}>
+            Stream quality
+          </Typography>
+          <Slider min={1} max={100} value={quality} onChange={handleChange} valueLabelDisplay="auto" aria-labelledby="slider" sx={{color: "secondary.main"}}/>
+          </Box>
         </Box>
       );
   };
