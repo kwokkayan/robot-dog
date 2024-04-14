@@ -10,7 +10,9 @@ import LivePage from './components/live/LivePage';
 import Control from './components/control/Control';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
-import Simulator from './components/simulator/Simulator';
+// import Simulator from './components/simulator/Simulator';
+import SimulatorPage from './components/simulator/SimulatorPage';
+
 
 const theme = createTheme({
   palette: {
@@ -58,7 +60,7 @@ const router = createBrowserRouter([
       },
       {
         path: "simulator",
-        element: <Simulator />,
+        element: <SimulatorPage/>,
       },
       {
         path: "live",

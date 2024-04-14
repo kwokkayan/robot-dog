@@ -4,6 +4,7 @@ import Live from '../live/Live';
 const LivePage = () => {
     const videoRef = useRef(null);
     const winwidth = window.innerWidth;
+    const winheight = window.innerHeight
     useEffect(() => {
         const getVideo = async () => {
           try {
@@ -27,7 +28,7 @@ const LivePage = () => {
 
 
     return(
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', width: winwidth}}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: winheight, width: winwidth}}>
             <video
                 ref={videoRef}
                 autoPlay
@@ -44,30 +45,3 @@ const LivePage = () => {
     );
 };    
 export default LivePage;
-// import React from 'react';
-// import Live from '../live/Live';
-
-// const LivePage = () => {
-
-//     const height = window.innerHeight;
-
-//     const styles = {
-
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     height: `${height - 82}px`,
-//     marginTop: '82px'
-
-//     };
-//     return (
-//     <div style={styles}>
-//         {/* <h1>testing</h1> */}
-//         <Live />
-//     </div>
-//     );
-// };
-
-
-
-// export default LivePage;
