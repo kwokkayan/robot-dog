@@ -5,7 +5,8 @@ import './index.css'
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Home from './components/home/Home';
-import Live from './components/live/Live';
+// import Live from './components/live/Live';
+import LivePage from './components/live/LivePage';
 import Control from './components/control/Control';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: "live",
-        element: <Live/>,
+        element: <LivePage/>,
       },
     ]
   },
