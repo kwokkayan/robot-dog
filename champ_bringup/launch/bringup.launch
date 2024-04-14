@@ -63,6 +63,7 @@
             <param                                    name="publish_foot_contacts"  value="$(arg publish_foot_contacts)" />
             <param                                    name="publish_joint_control"  value="$(arg publish_joint_control)" />
             <param                                    name="joint_controller_topic" value="$(arg joint_controller_topic)" />
+            <param                                    name="balance_mode"           value="$(arg balance_mode)"/>
         </node>
 
         <!-- ==================== STATE ESTIMATION ==================== -->
