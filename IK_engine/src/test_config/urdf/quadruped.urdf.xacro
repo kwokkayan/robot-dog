@@ -22,6 +22,26 @@
             </geometry>
         </collision>
     </link>
+    <link name="tower_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh 
+                    filename="package://test_config/meshes/tower.stl"
+                    scale="0.001 0.001 0.001"
+                />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh 
+                    filename="package://test_config/meshes/tower.stl"
+                    scale="0.001 0.001 0.001"
+                />
+            </geometry>
+        </collision>
+    </link>
     <xacro:sensor_d435i parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
         <origin xyz="0.075 0 0.068" rpy="0 0 0"/>
     </xacro:sensor_d435i>
@@ -385,6 +405,11 @@
             </geometry>
         </collision> 
     </link>
+    <joint name="tower_joint" type="fixed">
+        <origin xyz="0.0056 0.0068 0.10042" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="tower_link"/>
+    </joint>
     <joint name="f_bumper_joint" type="fixed">
         <origin xyz="0.1203 0.0000 -0.0042" rpy="0 0 0"/>
         <parent link="base_link"/>
