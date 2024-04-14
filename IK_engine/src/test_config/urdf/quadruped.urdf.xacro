@@ -43,7 +43,7 @@
         </collision>
     </link>
     <xacro:sensor_d435i parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-        <origin xyz="0.075 0 0.068" rpy="0 0 0"/>
+        <origin xyz="0.075 0 0.099" rpy="0 0 0"/>
     </xacro:sensor_d435i>
     <link name="f_bumper_link">
         <visual>

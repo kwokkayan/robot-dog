@@ -40,7 +40,7 @@
   </link>
   <!-- camera body, with origin at bottom screw mount -->
   <joint name="camera_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.075 0 0.068"/>
+    <origin rpy="0 0 0" xyz="0.075 0 0.099"/>
     <parent link="base_link"/>
     <child link="camera_bottom_screw_frame"/>
   </joint>
