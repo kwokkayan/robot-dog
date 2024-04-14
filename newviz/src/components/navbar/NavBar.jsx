@@ -54,9 +54,6 @@ export default function ButtonAppBar() {
           <Grid item xs={2} sx={{display: 'flex', justifyContent: 'flex-end'}}>
             <LinkButton color={"inherit"} href={"/simulator"} label={"Simulator"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} sx={{}}></LinkButton>
-
-            <LinkButton color={"inherit"} href={"/control"} label={"Control"} sx={{}}></LinkButton>
-
           </Grid>
           </Grid>
         )}

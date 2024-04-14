@@ -1,36 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { Typography } from '@mui/material'
-import { Button } from "@mui/material";
-import { Joystick } from 'react-joystick-component';
-import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material/styles';
-import Visual from '../visual/Visual';
-import Live from '../live/Live';
+import React, { useState } from 'react';
 import { Leva } from 'leva';
-
+import Grid from '@mui/material/Grid';
+import Live from '../live/Live';
+import Visual from '../visual/Visual';
 
 const Home = () => {
-  const [sizes, setSizes] = useState({ wl: 40, wc: 40, wr: 20, levaDx: 0.2 * Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)});
+  const [size, setSize] = useState(50);
 
-  const startResize = (event, left) => {
+  const startResize = (event) => {
     const startX = event.clientX;
-    const sizeNow = { ...sizes };
-    const vieww = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const startSize = size;
+    const viewW = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 
     const drag = (e) => {
       const dx = e.clientX - startX;
-      const dxVw = (dx / vieww) * 100;
-      if (left) {
-        const newwl = Math.max(20, Math.min(80 - sizeNow.wr, sizeNow.wl + dxVw));
-        const newwc = 100 - sizeNow.wr - newwl;
-        const levaDx = (sizeNow.wr / 100) * vieww;
-        setSizes({ wl: newwl, wc: newwc, wr: sizeNow.wr, levaDx });
-      } else {
-        const newwr = Math.max(10, Math.min(90 - sizeNow.wl, sizeNow.wr - dxVw));
-        const newwc = 100 - sizeNow.wl - newwr;
-        const levaDx = (newwr / 100) * vieww;
-        setSizes({ wl: sizeNow.wl, wc: newwc, wr: newwr, levaDx });
-      }
+      const dxVw = (dx / viewW) * 100;
+      const newSize = Math.max(20, Math.min(80, startSize + dxVw));
+      setSize(newSize);
     };
 
     const stopDrag = () => {
@@ -43,19 +29,21 @@ const Home = () => {
   };
 
   return (
-    <div>      
+    <div>
       <div>
-        <Leva titleBar={{position:{x: -sizes.levaDx, y:100}}}/>
+        <Leva titleBar={{ position: { x: 0, y: 100 } }}/>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row'}}>
-        <div style={{ width: `${sizes.wl}vw`, margin: '0px 12px'}}><Live></Live></div>
-        <div onMouseDown={(e) => startResize(e, true)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
-        <div style={{ width: `${sizes.wc}vw`}}><Visual></Visual></div>
-        <div onMouseDown={(e) => startResize(e, false)} style={{ cursor: 'ew-resize', width: '5px', background: '#ccc' }} />
-        <div style={{ width: `${sizes.wr}vw`}}>Right</div>
+      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', backgroundColor: '#333840' }}>
+        <div style={{ width: `${size}vw`, margin: '0px 16px' }}>
+          <Live></Live>
+        </div>
+        <div onMouseDown={startResize} style={{ cursor: 'ew-resize', width: '5px', background: '#888' }} />
+        <div style={{ width: `${100 - size}vw` }}>
+          <Visual></Visual>
+        </div>
       </div>
     </div>
   );
-  };
-  
-  export default Home;
+};
+
+export default Home;

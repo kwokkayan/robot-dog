@@ -30,7 +30,7 @@ const Live = () => {
     return (
         <Box sx={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh', 
@@ -52,7 +52,9 @@ const Live = () => {
               style={{
                 width: '100%', 
                 height: 'auto',
-                maxWidth: '100%', 
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain' 
               }}
             ></video>
           </Paper>
