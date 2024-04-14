@@ -1,11 +1,11 @@
 balance_roll_pid:
-  p: 0.5
-  i: 0.0
-  d: 1.0
-  i_clamp: 0.3
+  p: 0.8
+  i: 0.02
+  d: 0.2
+  i_clamp: 0.2
 
 balance_pitch_pid:
-  p: 0.5
-  i: 0.0
-  d: 1.0
-  i_clamp: 0.3
+  p: 0.8
+  i: 0.02
+  d: 0.2
+  i_clamp: 0.2
