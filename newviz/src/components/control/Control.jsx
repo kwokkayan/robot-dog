@@ -133,6 +133,8 @@ export default function Control(props) {
           {
             vec2: { value: [-5, 2, 1], label: 'vec' },
             'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('ShowCloseControlPanel.setPosition.vec2'), true))
+            // XY:{value:[-180,180]},
+            // 'XY Position': value
           },
           { collapsed: true }
         ),
@@ -175,7 +177,8 @@ export default function Control(props) {
         enabled: { value: true, label: 'controls on' },
         verticalDragToForward: { value: false, label: 'vert. drag to move forward' },
         dollyToCursor: { value: false, label: 'dolly to cursor' },
-        infinityDolly: { value: false, label: 'infinity dolly' }
+        infinityDolly: { value: false, label: 'infinity dolly' },
+        // XY: {value: [180, -180]}
       },
       {collapsed: true}
       )
