@@ -16,7 +16,6 @@ const Live = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh',
           rowGap: '20px'
         }}>
           <Paper elevation={3} sx={{

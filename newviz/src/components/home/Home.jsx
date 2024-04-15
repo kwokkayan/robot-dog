@@ -33,7 +33,7 @@ const Home = () => {
       <div>
         <Leva titleBar={{ position: { x: 0, y: 100 } }}/>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', backgroundColor: '#333840' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#333840', alignItems: "stretch"}}>
         <div style={{ width: `${size}vw`, margin: '0px 16px' }}>
           <Live></Live>
         </div>
