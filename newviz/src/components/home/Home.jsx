@@ -33,12 +33,12 @@ const Home = () => {
       <div>
         <Leva titleBar={{ position: { x: 0, y: 100 } }}/>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#333840', alignItems: "stretch"}}>
-        <div style={{ width: `${size}vw`, margin: '0px 16px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#333840'}}>
+        <div style={{ width: `${size}vw`, padding: "0px 16px"}}>
           <Live></Live>
         </div>
-        <div onMouseDown={startResize} style={{ cursor: 'ew-resize', width: '5px', background: '#888' }} />
-        <div style={{ width: `${100 - size}vw` }}>
+        <div onMouseDown={startResize} style={{ cursor: 'ew-resize', width: '5px', background: '#888', height: '100vh' }} />
+        <div style={{ width: `${100 - size}vw`}}>
           <Visual></Visual>
         </div>
       </div>

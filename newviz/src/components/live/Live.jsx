@@ -16,7 +16,8 @@ const Live = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          rowGap: '20px'
+          rowGap: '20px',
+          height: '100%',
         }}>
           <Paper elevation={3} sx={{
             width: window.innerWidth > window.innerHeight? 'calc(55vw - 32px)' : '80vw',
@@ -29,11 +30,9 @@ const Live = () => {
             flexDirection: 'column',
           }}>
             <img style={{
-              width: '100%', 
-              height: 'auto',
               maxWidth: '100%',
               maxHeight: '100%',
-              objectFit: 'contain' 
+              objectFit: 'fill' 
             }} src={feedUrl}/>
           </Paper>
           <Box width={"100%"}>

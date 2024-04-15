@@ -8,9 +8,9 @@ RUN sh -c \
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc \
   | apt-key add -
 # Install ROS and update bash profile
-RUN apt update && \
-  apt upgrade -y && \
-  apt install ros-melodic-desktop-full -y && \
+RUN apt-get clean && \
+  apt-get update --fix-missing && \ 
+  apt-get install ros-melodic-desktop-full -y && \
   echo "source /opt/ros/melodic/setup.bash" >> /etc/bash.bashrc
 # Install other dependencies
 RUN source /etc/bash.bashrc && \
