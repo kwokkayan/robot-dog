@@ -26,6 +26,13 @@ imu0_config: [false, false, false,
               false, false,  true,
               false, false, false]
 
+imu1: camera/imu/filtered
+imu1_config: [false, false, false,
+              false, false, true,
+              false, false, false,
+              false, false,  true,
+              false, false, false]
+
 odom_frame: odom
 base_link_frame: base_footprint
 world_frame: odom
