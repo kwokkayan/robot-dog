@@ -2,7 +2,7 @@
 #
 # To run Champ packages
 
-FROM ros:noetic-ros-base
+FROM ubuntu:focal 
 
 # Override the default SHELL
 
@@ -14,11 +14,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
 RUN apt-get install -y \
-    git \
-    ssh \
-    sudo
-
-RUN apt-get upgrade -y
+  curl \
+  git \
+  gnupg2 \
+  ssh \
+  sudo \
+  wget
 
 # Setup non-root admin user
 
@@ -29,15 +30,15 @@ ARG USER_GID
 # Create the 'admin' user if not already exists
 
 RUN if [ ! $(getent passwd ${USERNAME}) ]; then \
-        groupadd --gid ${USER_GID} ${USERNAME} ; \
-        useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} ; \
-    fi
+  groupadd --gid ${USER_GID} ${USERNAME} ; \
+  useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} ; \
+  fi
 
 # Update 'admin' user
 
 RUN echo ${USERNAME} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME} \
-    && chmod 0440 /etc/sudoers.d/${USERNAME} \
-    && adduser ${USERNAME} video && adduser ${USERNAME} plugdev && adduser ${USERNAME} sudo
+  && chmod 0440 /etc/sudoers.d/${USERNAME} \
+  && adduser ${USERNAME} video && adduser ${USERNAME} plugdev && adduser ${USERNAME} sudo
 
 ENV USERNAME=${USERNAME}
 ENV USER_GID=${USER_GID}
@@ -58,6 +59,21 @@ RUN chmod 644 /root/.ssh/id_rsa.pub
 
 RUN ssh-keyscan github.com > /root/.ssh/known_hosts
 
+# Install ros neotic
+
+RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros.list
+
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+
+RUN apt-get update
+RUN apt-get install -y ros-noetic-ros-base
+
+RUN apt-get install -y \
+  python3-rosdep \
+  python3-rosinstall \
+  python3-vcstools \
+  build-essential
+
 # Create ros_custom-noetic workspace
 
 RUN mkdir -p /workspaces/ros_custom-noetic/src
@@ -65,14 +81,21 @@ RUN mkdir -p /workspaces/ros_custom-noetic/src
 WORKDIR /workspaces/ros_custom-noetic
 RUN git clone --recurse-submodules git@github.com:kwokkayan/robot-dog.git -b ros_custom-noetic src/
 
-RUN apt-get install -y \
-    ros-noetic-rosbridge-suite
+RUN apt-get install -y ros-noetic-rosbridge-suite
 
-RUN rosdep install --from-paths src --ignore-src -r -y
+RUN rosdep init && rosdep update --rosdistro noetic
+RUN rosdep install --from-paths src --ignore-src --rosdistro noetic -r -y
+
 RUN source /opt/ros/noetic/setup.bash && catkin_make
 
-RUN rm -r /workspaces/ros_custom-noetic/yocs_velocity_smoother
+# RUN rm -r /workspaces/ros_custom-noetic/yocs_velocity_smoother
 
 # Change workspaces owership
 
 RUN chown -R admin:admin /workspaces
+
+# Configure ~/.bashrc
+
+RUN echo "source /workspaces/ros_custom-noetic/install/setup.bash" | tee -a /home/${USERNAME}/.bashrc
+
+
