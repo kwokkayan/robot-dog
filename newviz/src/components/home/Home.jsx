@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Leva } from 'leva';
-import Grid from '@mui/material/Grid';
 import Live from '../live/Live';
 import Visual from '../visual/Visual';
 
 const Home = () => {
-  const [size, setSize] = useState(50);
+  const [size, setSize] = useState(30);
 
   const startResize = (event) => {
     const startX = event.clientX;
@@ -31,7 +30,7 @@ const Home = () => {
   return (
     <div>
       <div>
-        <Leva titleBar={{ position: { x: 0, y: 100 } }}/>
+        <Leva theme={{sizes: {rootWidth: "20vw", rowHeight: "3rem"}, fontSizes:{root: "1rem"}, space: {rowGap: "10px"}}} titleBar={{ position: { x: 0, y: 100 } }}/>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#333840'}}>
         <div style={{ width: `${size}vw`, padding: "0px 16px"}}>

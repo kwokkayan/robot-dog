@@ -81,7 +81,16 @@ export default function Control(props) {
   
     // All same options as the original "basic" example: https://yomotsu.github.io/camera-controls/examples/basic.html
     const { minDistance, enabled, verticalDragToForward, dollyToCursor, infinityDolly } = useControls({
-      ShowCloseControlPanel: folder(
+      "Navigation Controls": folder({
+        exploreGrp: buttonGroup({
+          label: "Toggle frontier exploration",
+          opts: {
+            'on': () => console.log("on"),
+            'off': () => console.log("off")
+          }
+        })
+      }),
+      "Camera Controls": folder(
         {
         thetaGrp: buttonGroup({
           label: 'rotate theta',
