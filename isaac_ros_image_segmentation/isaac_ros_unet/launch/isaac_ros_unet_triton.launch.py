@@ -141,8 +141,10 @@ def generate_launch_description():
             'image_mean': encoder_image_mean,
             'image_stddev': encoder_image_stddev,
         }],
-        remappings=[('encoded_tensor', 'tensor_pub'), ('image', '/camera/color/image_raw')]
-    )
+        remappings=[
+            ('encoded_tensor', 'tensor_pub'),
+            ('image', '/camera/color/image_raw_padded')
+        ])
 
     triton_node = ComposableNode(
         name='triton_node',
@@ -174,12 +176,40 @@ def generate_launch_description():
                               0xFF00FF, 0x1E90FF, 0xDDA0DD, 0xFF1493, 0x87CEFA, 0xFFDEAD],
         }])
 
+    image_padding_node = ComposableNode(
+        name='image_padding_node',
+        package='nvblox_image_padding',
+        plugin='nvblox::ImagePaddingCroppingNode',
+        parameters=[{
+            'image_qos': 'SYSTEM_DEFAULT',
+            'desired_height': 544,
+            'desired_width': 960
+        }],
+        remappings=[
+            ('~/image_in', '/camera/color/image_raw'),
+            ('~/image_out', '/camera/color/image_raw_padded')
+        ])
+
+    image_cropping_node = ComposableNode(
+        name='image_cropping_node',
+        package='nvblox_image_padding',
+        plugin='nvblox::ImagePaddingCroppingNode',
+        parameters=[{
+            'image_qos': 'SENSOR_DATA',
+            'desired_height': 480,
+            'desired_width': 848
+        }],
+        remappings=[
+            ('~/image_in', '/unet/raw_segmentation_mask'),
+            ('~/image_out', '/unet/raw_segmentation_mask_depadded')
+        ])
+
     container = ComposableNodeContainer(
         name='unet_container',
         namespace='',
         package='rclcpp_components',
         executable='component_container_mt',
-        composable_node_descriptions=[encoder_node, triton_node, unet_decoder_node],
+        composable_node_descriptions=[encoder_node, triton_node, unet_decoder_node, image_padding_node, image_cropping_node],
         output='screen'
     )
 
