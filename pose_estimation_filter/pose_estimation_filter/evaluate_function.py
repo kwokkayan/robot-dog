@@ -104,7 +104,7 @@ class PoseEstimationFilter(Node):
 
         intrinsics.coeffs = [i for i in self.camera_info.d]
 
-        coords = rs.rs2_deproject_pixel_to_point(intrinsics, [360, 640], d)
+        coords = rs.rs2_deproject_pixel_to_point(intrinsics, [x, y], d)
 
         point_stamped = PointStamped()
 
@@ -112,9 +112,9 @@ class PoseEstimationFilter(Node):
 
         point_stamped.header.frame_id = "camera_depth_optical_frame"
 
-        point_stamped.point.x = coords[0]
-        point_stamped.point.y = coords[1]
-        point_stamped.point.z = coords[2]
+        point_stamped.point.x = coords[0] / 1000
+        point_stamped.point.y = coords[1] / 1000
+        point_stamped.point.z = coords[2] / 1000
 
         self.publisher.publish(point_stamped)
 
