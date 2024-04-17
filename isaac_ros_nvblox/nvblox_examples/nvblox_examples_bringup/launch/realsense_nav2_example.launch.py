@@ -97,6 +97,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([os.path.join(
             bringup_dir, 'launch', 'nvblox', 'nvblox.launch.py')]),
         launch_arguments={'global_frame': global_frame,
+                          'setup_for_dynamics': 'True',
                           'setup_for_realsense': 'True',
                           'attach_to_shared_component_container': 'True',
                           'component_container_name': shared_container_name}.items())
