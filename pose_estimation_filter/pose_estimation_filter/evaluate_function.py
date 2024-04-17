@@ -4,6 +4,7 @@ import numpy as np
 import pyrealsense2 as rs
 from cv_bridge import CvBridge, CvBridgeError
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import CameraInfo, Image
 from geometry_msgs.msg import PointStamped
 
@@ -19,25 +20,31 @@ class PoseEstimationFilter(Node):
         self.mask_image = None
         self.depth_image = None
 
+        self.qos_policy = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1
+        )
+
         self.camera_info_subscription = self.create_subscription(
             CameraInfo,
             "/camera/depth/camera_info",
             self.camera_info_listener_callback,
-            10
+            self.qos_policy,
         )
 
         self.mask_subscription = self.create_subscription(
             Image,
-            "/unet/raw_segmentation_mask",
+            "/unet/raw_segmentation_mask_depadded",
             self.mask_listener_callback,
-            10
+            self.qos_policy,
         )
 
         self.depth_subscription = self.create_subscription(
             Image,
             "/camera/depth/image_rect_raw",
             self.depth_listener_callback,
-            10
+            self.qos_policy,
         )
 
         self.publisher = self.create_publisher(
@@ -63,21 +70,17 @@ class PoseEstimationFilter(Node):
     def depth_listener_callback(self, msg):
         try:
             self.depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
-            self.get_logger().info("get depth")
         except CvBridgeError as e:
             self.get_logger().error("Depth listener callack exception: {}".format(e))
 
     def evaluate(self):
         if self.camera_info is None or self.mask_image is None or self.depth_image is None:
             return
-        
-        self.get_logger().info("start evaluating")
-        
+    
         ret, mask = cv2.threshold(self.mask_image, 0, 1, cv2.THRESH_BINARY)
 
         num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=4)
-
-        self.get_logger().info(str(num_labels))
+        
         if num_labels <= 1:
             return
 
@@ -85,10 +88,7 @@ class PoseEstimationFilter(Node):
 
         x, y = centroids[largest_label]
 
-        self.get_logger().info(str(self.depth_image.shape))
-
         d = self.depth_image[360, 640]
-        self.get_logger().info(str(x) + "," + str(y) + "," + str(d))
 
         intrinsics = rs.intrinsics()
 
@@ -105,7 +105,6 @@ class PoseEstimationFilter(Node):
         intrinsics.coeffs = [i for i in self.camera_info.d]
 
         coords = rs.rs2_deproject_pixel_to_point(intrinsics, [360, 640], d)
-        self.get_logger().info(str(coords[0]) + "," + str(coords[1]) + "," + str(coords[2]))
 
         point_stamped = PointStamped()
 
