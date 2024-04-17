@@ -20,7 +20,7 @@ def generate_launch_description():
                 parameters=[os.path.join(config_dir, 'imu_filter.yaml')],
                 remappings=[
                     ('/imu/data_raw', '/camera/imu'),                
-                    ('/camera/imu/filtered', '/imu/data'),                
+                    ('/imu/data', '/camera/imu/filtered'),                
                 ],
             )
         ]
