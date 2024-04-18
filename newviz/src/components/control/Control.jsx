@@ -90,14 +90,14 @@ export default function Control(props) {
           }
         })
       }),
-      "Camera Controls": folder(
+      "Camera Control": folder(
         {
         thetaGrp: buttonGroup({
           label: 'rotate theta',
           opts: {
             '+45º': () => cameraControlsRef.current?.rotate(45 * DEG2RAD, 0, true),
             '-45º': () => cameraControlsRef.current?.rotate(-45 * DEG2RAD, 0, true),
-            '+180º': () => cameraControlsRef.current?.rotate(180 * DEG2RAD, 0, true)
+            '-180º': () => cameraControlsRef.current?.rotate(-180 * DEG2RAD, 0, true)
           }
         }),
         phiGrp: buttonGroup({
@@ -133,7 +133,7 @@ export default function Control(props) {
         moveTo: folder(
           {
             vec1: { value: [3, 5, 2], label: 'vec' },
-            'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('ShowCloseControlPanel.moveTo.vec1'), true))
+            'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('Camera Control.moveTo.vec1'), true))
           },
           { collapsed: true }
         ),
@@ -141,24 +141,35 @@ export default function Control(props) {
         setPosition: folder(
           {
             vec2: { value: [-5, 2, 1], label: 'vec' },
-            'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('ShowCloseControlPanel.setPosition.vec2'), true))
+            'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('Camera Control.setPosition.vec2'), true))
             // XY:{value:[-180,180]},
             // 'XY Position': value
           },
           { collapsed: true }
         ),
-        setTarget: folder(
-          {
-            vec3: { value: [3, 0, -3], label: 'vec' },
-            'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('ShowCloseControlPanel.setTarget.vec3'), true))
-          },
-          { collapsed: true }
-        ),
+        setTarget: folder({
+          vec3: { value: [3, 0, -3], label: 'vec' },
+          'setTarget(…vec)': button((get) => {
+            const targetVector = get('Camera Control.setTarget.vec3');
+            console.log("Retrieved target vector:", targetVector); 
+            if (cameraControlsRef.current && Array.isArray(targetVector) && targetVector.length === 3) {
+              cameraControlsRef.current.setTarget(targetVector[0], targetVector[1], targetVector[2], true);
+            } else {
+              console.error('Invalid target vector or camera controls not available', targetVector);
+            }
+          })
+        }, { collapsed: true }),
         setLookAt: folder(
           {
             vec4: { value: [1, 2, 3], label: 'position' },
             vec5: { value: [1, 1, 0], label: 'target' },
-            'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('ShowCloseControlPanel.setLookAt.vec4'), ...get('ShowCloseControlPanel.setLookAt.vec5'), true))
+            'setLookAt(…position, …target)': button((get) => {
+              const vec4 = get('Camera Control.setLookAt.vec4');
+              const vec5 = get('Camera Control.setLookAt.vec5');
+              if (cameraControlsRef.current && vec4 && vec5) {
+                cameraControlsRef.current.setLookAt(vec4[0], vec4[1], vec4[2], vec5[0], vec5[1], vec5[2], true);
+              }
+            })
           },
           { collapsed: true }
         ),
@@ -170,11 +181,11 @@ export default function Control(props) {
             vec9: { value: [-1, 0, 0], label: 'tgtB' },
             t: { value: Math.random(), label: 't', min: 0, max: 1 },
             'f(…posA,…tgtA,…posB,…tgtB,t)': button((get) => cameraControlsRef.current?.lerpLookAt(
-                ...get('ShowCloseControlPanel.lerpLookAt.vec6'),
-                ...get('ShowCloseControlPanel.lerpLookAt.vec7'),
-                ...get('ShowCloseControlPanel.lerpLookAt.vec8'),
-                ...get('ShowCloseControlPanel.lerpLookAt.vec9'),
-                get('ShowCloseControlPanel.lerpLookAt.t'),
+                ...get('Camera Control.lerpLookAt.vec6'),
+                ...get('Camera Control.lerpLookAt.vec7'),
+                ...get('Camera Control.lerpLookAt.vec8'),
+                ...get('Camera Control.lerpLookAt.vec9'),
+                get('Camera Control.lerpLookAt.t'),
                 true
               )
             )
