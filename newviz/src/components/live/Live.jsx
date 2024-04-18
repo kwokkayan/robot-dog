@@ -36,10 +36,10 @@ const Live = () => {
             }} src={feedUrl}/>
           </Paper>
           <Box width={"100%"}>
-          <Typography id="slider" sx={{color: "secondary.main"}}>
+          <Typography id="slider" sx={{color: "white"}}>
             Stream quality
           </Typography>
-          <Slider min={1} max={100} value={quality} onChange={handleChange} valueLabelDisplay="auto" aria-labelledby="slider" sx={{color: "secondary.main"}}/>
+          <Slider min={1} max={100} value={quality} onChange={handleChange} valueLabelDisplay="auto" aria-labelledby="slider" sx={{color: "white"}}/>
           </Box>
         </Box>
       );
