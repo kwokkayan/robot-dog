@@ -3,10 +3,12 @@ import rclpy
 import numpy as np
 import pyrealsense2 as rs
 from cv_bridge import CvBridge, CvBridgeError
+from rclpy.action import ActionClient
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from sensor_msgs.msg import CameraInfo, Image
 from geometry_msgs.msg import PointStamped
+from nav2_msgs.action import NavigateToPose
 
 
 class PoseEstimationFilter(Node):
@@ -54,6 +56,12 @@ class PoseEstimationFilter(Node):
         )
 
         self.timer = self.create_timer(1, self.evaluate)
+
+        self.action_client = ActionClient(
+            self,
+            NavigateToPose,
+            "navigate_to_pose"
+        ) 
     
     def camera_info_listener_callback(self, msg):
         try:
@@ -88,7 +96,10 @@ class PoseEstimationFilter(Node):
 
         x, y = centroids[largest_label]
 
-        d = self.depth_image[360, 640]
+        d = self.depth_image[int(y), int(x)]
+        
+        if d == 0:
+            return 
 
         intrinsics = rs.intrinsics()
 
@@ -117,6 +128,21 @@ class PoseEstimationFilter(Node):
         point_stamped.point.z = coords[2] / 1000
 
         self.publisher.publish(point_stamped)
+
+        goal_msg = NavigateToPose.Goal()
+
+        goal_msg.behavior_tree = "/opt/ros/humble/share/nav2_bt_navigator/behavior_trees/follow_point.xml"
+
+        goal_msg.pose.header.stamp = self.get_clock().now().to_msg()
+        goal_msg.pose.header.frame_id = "odom"
+
+        goal_msg.pose.pose.position.x = coords[0] / 1000
+        goal_msg.pose.pose.position.y = coords[1] / 1000
+        goal_msg.pose.pose.orientation.w = 1.0
+
+        self.action_client.wait_for_server()
+
+        return self.action_client.send_goal_async(goal_msg)
 
 
 def main(args=None):
