@@ -86,15 +86,19 @@ def generate_launch_description():
         name='dnn_image_encoder',
         package='isaac_ros_dnn_image_encoder',
         plugin='nvidia::isaac_ros::dnn_inference::DnnImageEncoderNode',
-        remappings=[('encoded_tensor', 'tensor_pub')],
         parameters=[{
+            'image_qos': 'SENSOR_DATA',
             'input_image_width': input_image_width,
             'input_image_height': input_image_height,
             'network_image_width': network_image_width,
             'network_image_height': network_image_height,
             'image_mean': image_mean,
             'image_stddev': image_stddev,
-        }]
+        }],
+        remappings=[
+            ('encoded_tensor', 'tensor_pub'),
+            ('image', '/camera/color/image_raw')
+        ]
     )
 
     tensor_rt_node = ComposableNode(
