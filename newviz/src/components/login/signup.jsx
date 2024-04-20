@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase'; // Assuming firebase.js is in the same directory as SignUp.jsx
+import { auth } from '../../firebase';
+import './logincss.css';
 
 const SignUp = () => {
     console.log("signup");
@@ -20,21 +21,23 @@ const SignUp = () => {
   };
 
   return (
-    <div>
-      <input
+    <div className='block'>
+      <input className='inputfield'
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
+        onChange={(e) => setEmail(e.target.value)}/>
+
+      <input className='inputfield'
         type="password"
         placeholder="Password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleSignUp}>Sign Up</button>
+        onChange={(e) => setPassword(e.target.value)}/>
+
+      <button className='button' onClick={handleSignUp}>Sign Up</button>
+
       {msg && <p>{msg}</p>}
+
     </div>
   );
 };
