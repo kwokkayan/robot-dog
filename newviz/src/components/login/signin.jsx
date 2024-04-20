@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase'; // Assuming firebase.js is in the same directory as SignIn.jsx
+import { auth } from '../../firebase'; 
 import { useNavigate } from 'react-router-dom';
 import './logincss.css';
 import {Paper, Box, Typography, Button, Input} from '@mui/material';
@@ -15,7 +15,7 @@ const SignIn = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigate('/Home');
+          navigate('/Home');
       })
       .catch((error) => {
         setMsg(error.message);

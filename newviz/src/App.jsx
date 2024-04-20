@@ -1,12 +1,16 @@
 import React from 'react'
 import './App.css'
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import NavBar from './components/navbar/NavBar'
+import loginpage from './components/login/loginpage'
+
 function App() {
 
+  const isLoginPage = useLocation().pathname === '/'
+  
   return (
     <div>
-      <NavBar />
+      {!isLoginPage && <NavBar />}
       <Outlet />
     </div>
   )

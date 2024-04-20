@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App.jsx'
 import './index.css'
@@ -87,7 +87,9 @@ ReactDOM.render(
   <React.StrictMode>
     <RosContextProvider>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: window.innerWidth}}>Loading...</div>}>
+         <RouterProvider router={router} />
+         </Suspense>
       </ThemeProvider>
     </RosContextProvider>
   </React.StrictMode>,

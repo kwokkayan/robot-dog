@@ -35,7 +35,7 @@ export default function ButtonAppBar() {
             </IconButton>
             </Grid>
             <Grid item xs={8} sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Link to="/" >
+            <Link to="/Home" >
             <img src="web_logo.png" alt="Robot Dog Logo" style={{position: 'absolute', height: '36px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}} />
           </Link>
           </Grid>
@@ -47,7 +47,7 @@ export default function ButtonAppBar() {
             <Grid container spacing={2} style={{ padding: theme.spacing(2) }}>
               <Grid item xs={2}></Grid>
             <Grid item xs={8} sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', padding: 0, margin: 0}}>
-            <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Link to="/Home" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <img src="web_logo.png" alt="Robot Dog Logo" style={{ height: '50px' }} />
             </Link>
           </Grid>
