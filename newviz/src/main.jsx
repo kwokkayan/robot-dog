@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import App from './App.jsx'
 import './index.css'
 import { createTheme } from "@mui/material";
@@ -11,7 +11,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
 // import Simulator from './components/simulator/Simulator';
 import SimulatorPage from './components/simulator/SimulatorPage';
-
+import SignUp from './components/login/signup';
+import SignIn from './components/login/signin';
+import LoginPage from './components/login/loginpage';
 
 const theme = createTheme({
   palette: {
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "",
+        path: "home",
         element: <Home />,
       },
       {
@@ -65,16 +67,39 @@ const router = createBrowserRouter([
         path: "live",
         element: <LivePage/>,
       },
+      {
+        path: "signup",
+        element: <SignUp/>,
+      },
+      {
+        path: "signin",
+        element: <SignIn/>,
+      },
+      {
+        path: "",
+        element: <LoginPage/>,
+      },
     ]
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.render(
   <React.StrictMode>
     <RosContextProvider>
       <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>
     </RosContextProvider>
-  </React.StrictMode>
-)
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+// ReactDOM.createRoot(document.getElementById('root')).render(
+//   <React.StrictMode>
+//     <RosContextProvider>
+//       <ThemeProvider theme={theme}>
+//         <RouterProvider router={router} />
+//       </ThemeProvider>
+//     </RosContextProvider>
+//   </React.StrictMode>
+// )
