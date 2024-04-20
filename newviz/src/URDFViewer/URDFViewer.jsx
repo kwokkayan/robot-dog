@@ -115,7 +115,7 @@ function URDFViewer() {
         <Bloom luminanceThreshold={2} mipmapBlur />
         <ToneMapping />
       </EffectComposer>
-      <Environment background preset="sunset" blur={0.8} />
+      <Environment background preset='sunset' blur={0.8} />
     </Canvas>
   );
 }

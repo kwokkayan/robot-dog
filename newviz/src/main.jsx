@@ -11,6 +11,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { RosContextProvider } from './contexts/RosContextProvider.jsx';
 // import Simulator from './components/simulator/Simulator';
 import SimulatorPage from './components/simulator/SimulatorPage';
+import Logging from './components/logging/Logging.jsx';
 
 
 const theme = createTheme({
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: "live",
         element: <LivePage/>,
+      },
+      {
+        path: "log",
+        element: <Logging/>,
       },
     ]
   },
