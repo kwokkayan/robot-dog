@@ -13,6 +13,7 @@ import { RosContextProvider } from './contexts/RosContextProvider.jsx';
 import SimulatorPage from './components/simulator/SimulatorPage';
 import SignUp from './components/login/signup';
 import SignIn from './components/login/signin';
+import LoginPage from './components/login/loginpage';
 
 const theme = createTheme({
   palette: {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "signin",
         element: <SignIn/>,
+      },
+      {
+        path: "loginpage",
+        element: <LoginPage/>,
       },
     ]
   },
