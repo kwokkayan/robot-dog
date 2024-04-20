@@ -23,8 +23,8 @@ usb_port_id: ''
 rgb_camera:
   profile: '848x480x30'
   enable_auto_exposure: false
-color_info_qos: "SENSOR_DATA"
-color_qos: "SENSOR_DATA"
+color_info_qos: "SYSTEM_DEFAULT"
+color_qos: "SYSTEM_DEFAULT"
 
 depth_module:
   profile: '848x480x30'
