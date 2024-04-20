@@ -3,6 +3,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase'; // Assuming firebase.js is in the same directory as SignIn.jsx
 import { useNavigate } from 'react-router-dom';
 import './logincss.css';
+import {Paper, Box, Typography, Button, Input} from '@mui/material';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -22,23 +23,24 @@ const SignIn = () => {
   };
 
   return (
-    <div className='block'>
-      <input className='inputfield'
+    <Box className='block' sx={{borderColor: 'primary.dark', borderWidth: '2px', borderRadius: '8px', borderStyle: 'solid'}}>
+      <Input className='inputfield'
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}/>
+        onChange={(e) => setEmail(e.target.value)}
+        style={{padding: '5px'}}/>
 
-      <input className='inputfield'
+      <Input className='inputfield'
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}/>
 
-      <button className='button' onClick={handleSignIn}>Sign In</button>
+      <Button className='button' onClick={handleSignIn} color='primary' variant='contained' sx={{marginTop: '10px'}}>Sign In</Button>
 
       {msg && <p>{msg}</p>}
-    </div>
+    </Box>
   );
 };
 

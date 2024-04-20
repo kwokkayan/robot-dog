@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import './logincss.css';
+import {Paper, Box, Typography, Button, Input} from '@mui/material';
 
 const SignUp = () => {
     console.log("signup");
@@ -21,24 +22,26 @@ const SignUp = () => {
   };
 
   return (
-    <div className='block'>
-      <input className='inputfield'
+    <Box className='block' sx={{borderColor: 'primary.dark', borderWidth: '2px', borderRadius: '8px', borderStyle: 'solid'}}>
+      <Input className='inputfield'
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}/>
+        onChange={(e) => setEmail(e.target.value)}
+        style={{padding: '5px'}}/>
 
-      <input className='inputfield'
+
+      <Input className='inputfield'
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}/>
 
-      <button className='button' onClick={handleSignUp}>Sign Up</button>
+      <Button className='button' onClick={handleSignUp} color='primary' variant='contained' sx={{marginTop: '10px'}}>Sign Up</Button>
 
       {msg && <p>{msg}</p>}
 
-    </div>
+      </Box>
   );
 };
 
