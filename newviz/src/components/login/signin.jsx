@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider  } from 'firebase/auth';
 import { auth } from '../../firebase'; 
 import { useNavigate } from 'react-router-dom';
 import './logincss.css';
@@ -11,6 +11,8 @@ const SignIn = () => {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
+  const provider = new GoogleAuthProvider();
+
   const handleSignIn = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
@@ -19,6 +21,28 @@ const SignIn = () => {
       })
       .catch((error) => {
         setMsg(error.message);
+      });
+  };
+
+  const signInWithGoogle = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        navigate('/Home');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+    // The email of the user's account used.
+        const email = error.customData.email;
+    // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+    
+        console.error('Google sign-in error:', error);
       });
   };
 
@@ -38,7 +62,8 @@ const SignIn = () => {
         onChange={(e) => setPassword(e.target.value)}/>
 
       <Button className='button' onClick={handleSignIn} color='primary' variant='contained' sx={{marginTop: '10px'}}>Sign In</Button>
-
+      <Typography>--OR--</Typography>
+      <Button variant="contained" onClick={signInWithGoogle}>Sign in with Google</Button>
       {msg && <p>{msg}</p>}
     </Box>
   );
