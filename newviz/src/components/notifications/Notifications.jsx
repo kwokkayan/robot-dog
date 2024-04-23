@@ -12,16 +12,15 @@ const Notifications = () => {
           
           const listener = new ROSLIB.Topic({
             ros: contextValue,
-            name: '/joint_states',
-            messageType: 'sensor_msgs/JointState'
-          });
-          // setImuData(listener.subscribe((message) => {console.log(message)}));
-  
+            name: 'detections_output',
+            messageType: 'vision_msgs/Detection2DArray'
+          }); 
           listener.subscribe((message) => {
-            // console.log('Received IMU data:', message);
-            setLogMsg(logMsg + JSON.stringify(message['position'], null, 2) + '\n');
-          })
-
+            console.log(message);
+            console.log('successful');
+            setLogMsg(message);
+            alert(`Received message: ${JSON.stringify(message)}`);
+          });
           
     
           // Clean up the subscription when the component unmounts
@@ -31,17 +30,6 @@ const Notifications = () => {
         }
       }, [contextValue, logMsg]);
 
-    return(
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            rowGap: '20px',
-            height: '100%',
-        }}>
-        {/* <Typography sx={{alignSelf: 'center'}}>{logMsg}</Typography> */}
-        </Box>
-    );
+    return null;
 };    
 export default Notifications;

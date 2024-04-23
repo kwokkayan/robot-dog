@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Leva } from 'leva';
 import Live from '../live/Live';
 import Visual from '../visual/Visual';
+import Notifications from '../notifications';
 
 const Home = () => {
   const [size, setSize] = useState(30);
@@ -29,6 +30,7 @@ const Home = () => {
 
   return (
     <div>
+      <Notifications></Notifications>
       <div>
         <Leva theme={{sizes: {rootWidth: "20vw", rowHeight: "3rem"}, fontSizes:{root: "1rem"}, space: {rowGap: "10px"}}} titleBar={{ position: { x: 0, y: 100 } }}/>
       </div>
