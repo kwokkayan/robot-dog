@@ -5,6 +5,7 @@ import useTheme from '@mui/material/styles/useTheme';
 import MenuIcon from '@mui/icons-material/Menu';
 import LinkButton from '../linkbutton/LinkButton';
 import "@fontsource-variable/jura";
+import SignOut from '../login/signout';
 
 export default function ButtonAppBar() {
   const [pagename] = React.useState("Robot Dog");
@@ -54,6 +55,7 @@ export default function ButtonAppBar() {
           <Grid item xs={2} sx={{display: 'flex', justifyContent: 'flex-end'}}>
             <LinkButton color={"inherit"} href={"/simulator"} label={"Simulator"} sx={{}}></LinkButton>
             <LinkButton color={"inherit"} href={"/live"} label={"Live"} sx={{}}></LinkButton>
+            <SignOut/>
           </Grid>
           </Grid>
         )}
