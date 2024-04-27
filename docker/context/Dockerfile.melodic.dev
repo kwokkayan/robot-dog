@@ -35,7 +35,7 @@ RUN echo $OS_USER:$OS_PASS | chpasswd
 FROM install_openssh AS install_ik_engine_dep
 # Copy local files
 RUN mkdir -p /IK_engine/src
-ARG IK_ENGINE_PATH ./IK_engine
+ARG IK_ENGINE_PATH
 COPY ${IK_ENGINE_PATH} /IK_engine/src
 # Build champ and update bash profile
 WORKDIR /IK_engine
