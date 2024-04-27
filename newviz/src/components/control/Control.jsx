@@ -88,6 +88,13 @@ export default function Control(props) {
             'on': () => console.log("on"),
             'off': () => console.log("off")
           }
+        }),
+        explore2Grp: buttonGroup({
+          label: "Toggle dynamic object detection",
+          opts: {
+            'on': () => console.log("on"),
+            'off': () => console.log("off")
+          }
         })
       }),
       "Camera Control": folder(

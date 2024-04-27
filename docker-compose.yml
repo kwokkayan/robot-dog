@@ -3,7 +3,7 @@ services:
     # privileged: true
     build:
       context: ./
-      dockerfile: ./docker/compose/Dockerfile
+      dockerfile: ./docker/context/Dockerfile.melodic-dev
       args:
         - IK_ENGINE_PATH=./IK_engine
         - OS_USER=root

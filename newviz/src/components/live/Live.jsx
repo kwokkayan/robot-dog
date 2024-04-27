@@ -3,7 +3,7 @@ import { Paper, Box, Slider, Typography } from '@mui/material'
 
 const Live = () => {
     const [feedUrl, setFeedURL] = useState(import.meta.env.VITE_CAMERA_STREAM_URL);
-    const [quality, setQuality] = useState(5);
+    const [quality, setQuality] = useState(100);
     const handleChange = (e, newValue) => {
       setQuality(newValue);
     };
