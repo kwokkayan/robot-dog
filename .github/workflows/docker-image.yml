@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./dockerfiles/ros-melodic.Dockerfile
+          file: ./docker/context/Dockerfile.melodic-dev
           push: true
           tags: |
             kwokkayan/ros-melodic:latest
