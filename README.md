@@ -24,7 +24,7 @@
    - MPU-9250
    - PCA9685 PWM controller
    - 12 PWM servos (MG996R, MG958, TD81XXG series...)
-   - Nvidia Jetson Nano
+   - Nvidia Jetson Orin Nano Developer Kit
    - Intel Realsense D435i
 
 ## How to run
