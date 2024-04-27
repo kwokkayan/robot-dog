@@ -9,7 +9,7 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAwf2r_hb8mn_-od1705qUwNg3rEDWXLVM",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "robotdog-b9063.firebaseapp.com",
   projectId: "robotdog-b9063",
   storageBucket: "robotdog-b9063.appspot.com",
