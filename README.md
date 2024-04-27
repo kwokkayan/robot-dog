@@ -87,7 +87,7 @@ $ ./run.sh bridge
 > ros2 run ros1_bridge dynamic_bridge 2>/dev/null
 ```
 
-Start the docker container for running ROS humble packages (Note that the building process of ROS packages are done after starting the container as host CUDA library are required)
+Start the docker container for running ROS humble packages (Note that the building process of ROS packages is started after starting the container as host CUDA library are required)
 
 ```bash
 $ cd docker/
