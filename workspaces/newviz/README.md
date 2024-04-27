@@ -15,7 +15,7 @@ Configure [environement file] (.env):
 1. run shell command to install dependencies
 ```npm i```
 2. run shell command to start web server
-   ```npm run dev```
+```npm run dev```
 
 
 ## How to get the API key 
