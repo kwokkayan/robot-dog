@@ -20,9 +20,12 @@
     - Nvidia Jetson Nano
     - Intel Realsense D435i
 ## How to run
+### Install submodules
+- `git submodule update --init` 
 ### Firmware
 1. Use PlatformIO to open `esp32_champ_dog`
 2. Build and flash the firmware to `esp32`
+3. Refer to `README.md` in `esp32_champ_dog` for further information. 
 ### Development: CHAMP with ROS Melodic
 1. Configure `docker-compose.yml`:
     - Web GUI Resoulution is set in `docker-compose.yml`. Please refer to [base image](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc/) for detailed configuration.
@@ -40,6 +43,7 @@
 2. Run `docker-compose up -d`.
     - Use `http://localhost:6080` to access the web GUI.
     - CHAMP and other packages is installed and built under `/IK_engine`.
+3. Refer to `README.md` in `IK_engine` for further information. 
 ### Development: React webapp
 1. `cd newviz`
 2. `npm i`: install dependencies
@@ -49,5 +53,6 @@
     - VITE_WS_URL=`websocket url for middleware`
     - VITE_CAMERA_STREAM_URL=`http url for video stream`
 4. `npm run dev`: start web server
+5. Refer to `README.md` in `newviz` for further information. 
 ### Production environments
 #### TODO

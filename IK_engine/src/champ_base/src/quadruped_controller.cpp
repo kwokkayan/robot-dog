@@ -128,12 +128,6 @@ void QuadrupedController::controlLoop_(const ros::TimerEvent& event)
   float target_joint_positions[12];
   geometry::Transformation target_foot_positions[4];
   bool foot_contacts[4];
-  // auto feedback = readIMU();
-  // auto target_pose = req_pose_;
-  // auto new_pose = pid(target_pose, feedback);
-  // body_controller_.poseCommand(target_foot_positions, new_pose);
-  // leg_controller_.velocityCommand(target_foot_positions, req_vel_, rosTimeToChampTime(ros::Time::now()));
-  // kinematics_.inverse(target_joint_positions, target_foot_positions);
   champ::Pose balance_pose;
   if (balance_mode_) {
     balance_pose = updatePosePids(event.last_real - event.current_real);

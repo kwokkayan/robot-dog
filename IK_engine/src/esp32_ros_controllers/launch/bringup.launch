@@ -1,7 +1,9 @@
 <launch>
     <arg name="robot_name"              default="/"/>  <!-- Change this for namespacing. -->
-    <arg name="ros_serial_tcp" default="false"/>
-    <arg name="calibrate_imu" default="false"/>
+    <arg name="ros_serial_tcp"          default="false"/>
+    <arg name="calibrate_imu"           default="false"/>
+    <arg name="baud_rate"               default="1000000"/>
+    <arg name="device_file"             default="/dev/ttyUSB0"/>
     <rosparam file="$(find esp32_ros_controllers)/config/controllers.yaml" command="load"/>
     <group ns="$(arg robot_name)">
         <node name="controller_spawner" pkg="controller_manager" type="spawner" 
@@ -11,8 +13,8 @@
             <remap from="/imu" to="/imu/data"/>
         </node>
         <node unless="$(arg ros_serial_tcp)" pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
-            <param name="port" type="string" value="/dev/ttyUSB0"/>
-            <param name="baud" type="int" value="1000000"/>
+            <param name="port" type="string" value="$(arg device_file)"/>
+            <param name="baud" type="int" value="$(arg baud_rate)"/>
         </node>
         <node if="$(arg ros_serial_tcp)" pkg="rosserial_python" type="serial_node.py" name="rosserial_python" args="tcp" output="screen"/>
         <!-- <node if="$(arg calibrate_imu)" pkg="imu_calib" type="do_calib" name="imu_calib_node" output="screen">
