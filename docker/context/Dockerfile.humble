@@ -59,14 +59,11 @@ ENV USER_UID=${USER_UID}
 
 # Install realsense dependencies
 
-RUN curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp | tee /etc/apt/keyrings/librealsense.pgp
+COPY scripts/build-librealsense.sh /opt/realsense/build-librealsense.sh
+COPY scripts/install-realsense-dependencies.sh /opt/realsense/install-realsense-dependencies.sh
 
-RUN echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo `lsb_release -cs` main" | tee /etc/apt/sources.list.d/librealsense.list
-
-RUN apt-get update
-RUN apt-get install -y \
-  librealsense2-dkms \
-  librealsense2-utils
+RUN chmod +x /opt/realsense/install-realsense-dependencies.sh && /opt/realsense/install-realsense-dependencies.sh
+RUN chmod +x /opt/realsense/build-librealsense.sh && /opt/realsense/build-librealsense.sh
 
 # Copy hotplug script which will get invoked whenever a devices plugged or un-plugged
 
