@@ -47,15 +47,15 @@
      - usb socket: e.g. `/dev/ttyUSB0:/dev/ttyUSB0`
    - The following ports are opened:
      - 22: ssh
-     - 5900: ?
+     - 5900: vnc
      - 6080: vnc
      - 9090: websocket
      - 11311, 11411: ros serial TCP socket
    - Uncomment `bind volumne` for live development
 2. Run `docker-compose up -d`.
    - Use `http://localhost:6080` to access the web GUI.
-   - CHAMP and other packages is installed and built under `/IK_engine`.
-3. Refer to `README.md` in `IK_engine` for further information.
+   - CHAMP and other packages is installed and built
+3. Refer to `README.md` in `workspaces/ros/noetic` for further information.
 
 ### Development: React webapp
 
