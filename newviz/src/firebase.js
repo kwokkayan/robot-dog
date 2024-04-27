@@ -6,8 +6,8 @@ import { getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+Your web app's Firebase configuration
+For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "robotdog-b9063.firebaseapp.com",
@@ -17,6 +17,7 @@ const firebaseConfig = {
   appId: "1:849893842441:web:4d3714524d797b14f8a2d8",
   measurementId: "G-NFYEF444TW"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

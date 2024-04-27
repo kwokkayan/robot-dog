@@ -9,12 +9,10 @@ const SignOut = () => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         navigate('/');
         console.log('User signed out successfully.');
       })
       .catch((error) => {
-        // An error happened.
         console.log('Sign out error:', error);
       });
   };

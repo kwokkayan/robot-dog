@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import './logincss.css';
 import {Paper, Box, Typography, Button, Input} from '@mui/material';
 
-const SignIn = () => {
+const SignIn = ({SignInSuccess}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
+
 
   const provider = new GoogleAuthProvider();
 
@@ -17,7 +18,8 @@ const SignIn = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-          navigate('/Home');
+          SignInSuccess();
+          // navigate('/Home');
       })
       .catch((error) => {
         setMsg(error.message);
@@ -37,9 +39,7 @@ const SignIn = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-    // The email of the user's account used.
         const email = error.customData.email;
-    // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
     
         console.error('Google sign-in error:', error);

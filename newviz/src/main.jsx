@@ -54,32 +54,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [
-      {
-        path: "home",
-        element: <Home />,
-      },
-      {
-        path: "simulator",
-        element: <SimulatorPage/>,
-      },
-      {
-        path: "live",
-        element: <LivePage/>,
-      },
-      {
-        path: "signup",
-        element: <SignUp/>,
-      },
-      {
-        path: "signin",
-        element: <SignIn/>,
-      },
-      {
-        path: "",
-        element: <LoginPage/>,
-      },
-    ]
+    
   },
 ]);
 
