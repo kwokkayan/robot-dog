@@ -12,9 +12,9 @@ Configure [environement file] (.env):
 
 
 ## Launch the Web
-1. run shell command to install dependencies
+1. run shell command to install dependencies\
 ```npm i```
-2. run shell command to start web server
+2. run shell command to start web server\
 ```npm run dev```
 
 
