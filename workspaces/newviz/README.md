@@ -1,20 +1,25 @@
-## Set up requirment
+## Prerequisite
 1. Google account (for creating Firebase projects)
 
 
-## How to run
-1. npm i to install dependencies
-2. Configure .env:
-   VITE_ROS_PACKAGE=public
-   VITE_URDF_PATH=public/quadruped.urdf
-   VITE_WS_URL=websocket url for middleware
-   VITE_CAMERA_STREAM_URL=http url for video stream
-   VITE_FIREBASE_API_KEY = API key of your firebase project
-3. npm run dev to start web server
+## Configuration
+Configure [environement file] (.env):
+- VITE_ROS_PACKAGE=public
+- VITE_URDF_PATH=public/quadruped.urdf
+- VITE_WS_URL= Websocket URL for ROS connection
+- VITE_CAMERA_STREAM_URL= URL for live camera stream
+- VITE_FIREBASE_API_KEY = API key of your firebase project
+
+
+## Launch the Web
+1. run shell command to install dependencies
+   npm i
+2. run shell command to start web server
+   npm run dev
 
 
 ## How to get the API key 
-1. Visit https://firebase.google.com/ and go to console
+1. Visit [Firebase](https://firebase.google.com/) and go to console
 2. Create a new Firebase project
 3. Go to Project Setting and create a web app
 4. Firebase will generate API key, appId for you
