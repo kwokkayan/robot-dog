@@ -44,21 +44,6 @@ ENV USERNAME=${USERNAME}
 ENV USER_GID=${USER_GID}
 ENV USER_UID=${USER_UID}
 
-# Get SSH keypairs
-
-ARG SSH_PRV_KEY
-ARG SSH_PUB_KEY
-
-RUN mkdir -p /root/.ssh
-
-RUN echo "$SSH_PRV_KEY" > /root/.ssh/id_rsa
-RUN chmod 600 /root/.ssh/id_rsa
-
-RUN echo "$SSH_PUB_KEY" > /root/.ssh/id_rsa.pub
-RUN chmod 644 /root/.ssh/id_rsa.pub
-
-RUN ssh-keyscan github.com > /root/.ssh/known_hosts
-
 # Install ros neotic
 
 RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros.list
@@ -79,7 +64,8 @@ RUN apt-get install -y \
 RUN mkdir -p /workspaces/ros_custom-noetic/src
 
 WORKDIR /workspaces/ros_custom-noetic
-RUN git clone --recurse-submodules git@github.com:kwokkayan/robot-dog.git -b ros_custom-noetic src/
+
+COPY --from=src . src/
 
 RUN apt-get install -y ros-noetic-rosbridge-suite
 
@@ -88,14 +74,11 @@ RUN rosdep install --from-paths src --ignore-src --rosdistro noetic -r -y
 
 RUN source /opt/ros/noetic/setup.bash && catkin_make
 
-# RUN rm -r /workspaces/ros_custom-noetic/yocs_velocity_smoother
-
 # Change workspaces owership
 
 RUN chown -R admin:admin /workspaces
 
 # Configure ~/.bashrc
 
-RUN echo "source /workspaces/ros_custom-noetic/install/setup.bash" | tee -a /home/${USERNAME}/.bashrc
-
+RUN echo "source /workspaces/ros_custom-noetic/devel/setup.bash" | tee -a /home/${USERNAME}/.bashrc
 

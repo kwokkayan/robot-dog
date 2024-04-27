@@ -1,0 +1,4 @@
+[submodule "nvblox"]
+	path = nvblox
+	url = https://github.com/nvidia-isaac/nvblox.git
+	branch = release-0.0.5

@@ -1,0 +1,95 @@
+%YAML 1.2
+# SPDX-FileCopyrightText: NVIDIA CORPORATION & AFFILIATES
+# Copyright (c) 2022-2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+---
+name: detectnet_decoder
+components:
+- name: tensorlist_in
+  type: nvidia::gxf::DoubleBufferReceiver
+  parameters:
+    capacity: 12
+    policy: 0
+- name: detections_out
+  type: nvidia::gxf::DoubleBufferTransmitter
+  parameters:
+    capacity: 12
+    policy: 0
+- name: allocator
+  type: nvidia::gxf::UnboundedAllocator
+- name: detectnet_decoder
+  type: nvidia::isaac_ros::DetectnetDecoder
+  parameters:
+    tensorlist_receiver: tensorlist_in
+    detections_transmitter: detections_out
+    label_list: ["person", "bag", "face"]
+    enable_confidence_threshold: true
+    enable_bbox_area_threshold: true
+    enable_dbscan_clustering: true
+    confidence_threshold: 0.35
+    min_bbox_area: 100.0
+    dbscan_confidence_threshold: 0.35
+    dbscan_eps: 0.7
+    dbscan_min_boxes: 1
+    dbscan_enable_athr_filter: 0
+    dbscan_threshold_athr: 0.0
+    dbscan_clustering_algorithm: 1
+    bounding_box_scale: 35.0
+    bounding_box_offset: 0.0
+- type: nvidia::gxf::MessageAvailableSchedulingTerm
+  parameters:
+    receiver: tensorlist_in
+    min_size: 1
+- type: nvidia::gxf::DownstreamReceptiveSchedulingTerm
+  parameters:
+    transmitter: detections_out
+    min_size: 1
+---
+name: sink
+components:
+- name: signal
+  type: nvidia::gxf::DoubleBufferReceiver
+  parameters:
+    capacity: 2
+    policy: 0
+- type: nvidia::gxf::MessageAvailableSchedulingTerm
+  parameters:
+    receiver: signal
+    min_size: 1
+- name: sink
+  type: nvidia::isaac_ros::MessageRelay
+  parameters:
+    source: signal
+---
+components:
+- name: edge0
+  type: nvidia::gxf::Connection
+  parameters:
+    source: detectnet_decoder/detections_out
+    target: sink/signal
+---
+components:
+- name: clock
+  type: nvidia::gxf::RealtimeClock
+- type: nvidia::gxf::MultiThreadScheduler
+  parameters:
+    clock: clock
+    stop_on_deadlock: false
+    check_recession_period_ms: 1
+    worker_thread_number: 2
+- type: nvidia::gxf::JobStatistics
+  parameters:
+    clock: clock
