@@ -1,7 +1,7 @@
-##Set up requirment:
+## Set up requirment:
 1. Google account (for creating Firebase projects)
 
-##How to run
+## How to run
 1. npm i to install dependencies
 2. Configure .env:
    VITE_ROS_PACKAGE=public
@@ -11,7 +11,7 @@
    VITE_FIREBASE_API_KEY = API key of your firebase project
 3. npm run dev to start web server
 
-##How to get the API key 
+## How to get the API key 
 1. Visit https://firebase.google.com/ and go to console
 2. Create a new Firebase project
 3. Go to Project Setting and create a web app
