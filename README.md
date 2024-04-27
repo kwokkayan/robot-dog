@@ -16,7 +16,7 @@
 
 ## Requirements
 
-1. `docker`, `docker-compose`, and `docker-buildx-plugin`
+1. `docker`, `docker-compose`, and [`docker-buildx-plugin`](https://github.com/docker/buildx)
 2. Alternatively, ROS melodic to run `workspaces/ros/noetic` and ROS humble to run others.
 3. `nodejs` > 21.0.0
 4. Hardware requirements:
@@ -65,7 +65,7 @@
    - VITE_WS_URL=`websocket url for middleware`
    - VITE_CAMERA_STREAM_URL=`http url for video stream`
 4. `npm run dev`: start web server
-5. Refer to `README.md` in `newviz` for further information.
+5. Refer to `README.md` in `workspaces/newviz` for further information.
 
 ### Production environments
 
@@ -87,18 +87,20 @@ $ ./run.sh bridge
 > ros2 run ros1_bridge dynamic_bridge 2>/dev/null
 ```
 
-Start the docker container for running ROS humble packages
+Start the docker container for running ROS humble packages (Note that the building process of ROS packages are done after starting the container as host CUDA library are required)
 
 ```bash
 $ cd docker/
 $ ./build.sh humble
 $ ./run.sh humble
-> ros2 launch nvblox_examples_bringup realsense_nav2_example.launch.py
+> source /opt/ros/humble/setup.bash && colcon build --symlink-install
+> source install/setup.bash && ros2 launch nvblox_examples_bringup realsense_nav2_example.launch.py
 ```
 
-Start the docker container for running the web dashboard
+Start the docker container for running the web dashboard (Please refer to the `README.md` in `workspaces/newviz` for getting a Firebase API key)
 
 ```bash
+$ vim workspaces/newviz/.env # To configure VITE_FIREBASE_API_KEY
 $ cd docker/
 $ ./build.sh newviz
 $ docker run --rm -p 127.0.0.1:8080:80 ros_custom-newviz-$(uname -m)
